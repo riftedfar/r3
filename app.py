@@ -206,7 +206,18 @@ def render_lesson_body(body):
             flush_para(); i += 1; continue
         if s in headings:
             flush_para()
-            out.append('<h3 class="lessonsection">' + html.escape(s) + '</h3>')
+            callout_labels = {
+                "Why This Matters": ("WHY IT MATTERS", "This is the part that connects the Python idea to real programming."),
+                "Try It Yourself": ("MISSION", "Do not just read it. Change the code, run it, break it, and fix it."),
+                "Common Mistake": ("TRAP ALERT", "Try this mistake on purpose once. Reading the error is part of learning."),
+                "Level Up": ("LEVEL UP", "Optional challenge: change the example so it does something different."),
+                "Part Recap": ("CHECKPOINT", "Pause here and explain the idea in your own words before moving on.")
+            }
+            if s in callout_labels:
+                label, tip = callout_labels[s]
+                out.append('<div class="funbreak"><span class="eyebrow">' + label + '</span><strong>' + html.escape(s) + '</strong><p>' + html.escape(tip) + '</p></div>')
+            else:
+                out.append('<h3 class="lessonsection">' + html.escape(s) + '</h3>')
             i += 1
             continue
         if s == "OUTPUT":
@@ -268,18 +279,6 @@ def learn(n):
 
     # Make the source course readable as an actual interactive lesson.
     safe_body=html.escape(l["body"])
-    callouts = {
-        "Why This Matters": ("WHY IT MATTERS", "This is the part that connects the Python idea to real programming."),
-        "Try It Yourself": ("MISSION", "Don't just read it. Change the code, run it, break it, and fix it."),
-        "Common Mistake": ("TRAP ALERT", "Try this mistake on purpose once. Reading the error is part of learning."),
-        "Level Up": ("LEVEL UP", "Optional challenge: change the example so it does something different."),
-        "Part Recap": ("CHECKPOINT", "Pause here. Explain the idea in your own words before moving on.")
-    }
-    for heading,(label,tip) in callouts.items():
-        marker=html.escape(heading)
-        card=f'<div class="funbreak"><span class="eyebrow">{label}</span><strong>{marker}</strong><p>{html.escape(tip)}</p></div>'
-        safe_body=safe_body.replace(marker,card,1)
-
     missions=[
         "Change the example to do something ridiculous. If it still works, you win.",
         "Predict the output first, then run it. Were you right?",
