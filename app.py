@@ -176,6 +176,88 @@ def courses():
         blocks+=f'<section class="section"><div class="eyebrow">{p}</div><h2>{len(ls)} lessons</h2><div class="lessonlist">{items}</div></section>'
     return layout(f'<section class="course"><div class="eyebrow">Course library</div><h1 style="font-size:60px">The Ultimate<br>Python Course</h1><p>Start at the beginning or jump straight into a topic.</p></section>{blocks}',"Courses")
 
+def render_lesson_body(body):
+    """Turn the imported course text into structured, readable lesson HTML."""
+    text = re.sub(r"<PARSED TEXT FOR PAGE:\s*\\d+\s*/\s*\\d+>", "", body)
+    lines = [x.rstrip() for x in text.replace("\\r", "").split("\\n")]
+    lines = [x for x in lines if not re.fullmatch(r"\\s*\\d+\\s*", x)]
+    headings = {
+        "In Plain English","Why This Matters","Try It Yourself","Common Mistake",
+        "Level Up","Part Recap","Where to Go From Here","Common paths from here",
+        "How to actually keep improving","Install the Python extension",
+        "Select the right interpreter","Use the integrated terminal","Try the built-in debugger",
+        "Handy Keyboard Shortcuts","Common String Methods","Common List Methods",
+        "Common Dictionary Methods","Comparison & Logical Operators"
+    }
+    code_start = re.compile(r'^(?:>>>\\s|#|import\\s|from\\s|def\\s|class\\s|@|if\\s|elif\\s|else:|for\\s|while\\s|return\\s|print\\s*\\(|with\\s|try:|except\\b|finally:|raise\\s|assert\\s|[A-Za-z_][\\w.]*\\s*(?:=|\\+=|-=|\\*=|/=|:=)|\\s{2,}(?:\\w|[)\\]\\}]))')
+    out = []
+    i = 0
+    para = []
+    def flush_para():
+        if para:
+            s = " ".join(x.strip() for x in para).strip()
+            if s:
+                out.append("<p>" + html.escape(s) + "</p>")
+            para.clear()
+    while i < len(lines):
+        raw = lines[i]
+        s = raw.strip()
+        if not s:
+            flush_para(); i += 1; continue
+        if s in headings:
+            flush_para()
+            out.append('<h3 class="lessonsection">' + html.escape(s) + '</h3>')
+            i += 1
+            continue
+        if s == "OUTPUT":
+            flush_para()
+            vals = []
+            i += 1
+            while i < len(lines):
+                q = lines[i].strip()
+                if not q: break
+                if q in headings or q == "OUTPUT": break
+                vals.append(lines[i])
+                i += 1
+            out.append('<div class="outlabel">OUTPUT</div><pre class="lessonoutput">' + html.escape("\\n".join(vals).strip()) + '</pre>')
+            continue
+        if s.startswith("• "):
+            flush_para()
+            items = []
+            while i < len(lines) and lines[i].strip().startswith("• "):
+                items.append("<li>" + html.escape(lines[i].strip()[2:]) + "</li>")
+                i += 1
+            out.append("<ul class=\"lessonlisttext\">" + "".join(items) + "</ul>")
+            continue
+        if re.match(r'^\\d+\\.\\s+', s):
+            flush_para()
+            items = []
+            while i < len(lines) and re.match(r'^\\d+\\.\\s+', lines[i].strip()):
+                q = lines[i].strip()
+                items.append("<li>" + html.escape(re.sub(r'^\\d+\\.\\s+', '', q)) + "</li>")
+                i += 1
+            out.append("<ol class=\"lessonlisttext\">" + "".join(items) + "</ol>")
+            continue
+        if code_start.match(raw):
+            flush_para()
+            code = []
+            while i < len(lines):
+                q = lines[i]
+                qs = q.strip()
+                if not qs: break
+                if qs in headings or qs == "OUTPUT" or qs.startswith("• ") or re.match(r'^\\d+\\.\\s+', qs):
+                    break
+                if code and not code_start.match(q) and len(q) - len(q.lstrip()) == 0:
+                    break
+                code.append(q)
+                i += 1
+            out.append('<pre class="lessoncode"><code>' + html.escape("\\n".join(code).strip()) + '</code></pre>')
+            continue
+        para.append(raw)
+        i += 1
+    flush_para()
+    return "".join(out)
+
 @APP.get("/learn/<int:n>")
 def learn(n):
     if n<1 or n>len(COURSE): abort(404)
