@@ -178,95 +178,118 @@ def courses():
     return layout(f'<section class="course"><div class="eyebrow">Course library</div><h1 style="font-size:60px">The Ultimate<br>Python Course</h1><p>Start at the beginning or jump straight into a topic.</p></section>{blocks}',"Courses")
 
 def render_lesson_body(body):
-    """Turn the imported course text into structured, readable lesson HTML."""
-    text = re.sub(r"<PARSED TEXT FOR PAGE:\s*\\d+\s*/\s*\\d+>", "", body)
-    lines = [x.rstrip() for x in text.replace("\\r", "").split("\\n")]
-    lines = [x for x in lines if not re.fullmatch(r"\\s*\\d+\\s*", x)]
+    """Turn imported course text into structured, readable lesson HTML."""
+    text = re.sub(r"<PARSED TEXT FOR PAGE:\s*\d+\s*/\s*\d+>", "", body)
+    lines = [x.rstrip() for x in text.replace("\r", "").split("\n")]
+    lines = [x for x in lines if not re.fullmatch(r"\s*\d+\s*", x)]
+
     headings = {
-        "In Plain English","Why This Matters","Try It Yourself","Common Mistake",
-        "Level Up","Part Recap","Where to Go From Here","Common paths from here",
-        "How to actually keep improving","Install the Python extension",
-        "Select the right interpreter","Use the integrated terminal","Try the built-in debugger",
-        "Handy Keyboard Shortcuts","Common String Methods","Common List Methods",
-        "Common Dictionary Methods","Comparison & Logical Operators"
+        "In Plain English", "Why This Matters", "Try It Yourself", "Common Mistake",
+        "Level Up", "Part Recap", "Where to Go From Here", "Common paths from here",
+        "How to actually keep improving", "Install the Python extension",
+        "Select the right interpreter", "Use the integrated terminal", "Try the built-in debugger",
+        "Handy Keyboard Shortcuts", "Common String Methods", "Common List Methods",
+        "Common Dictionary Methods", "Comparison & Logical Operators"
     }
-    code_start = re.compile(r'^(?:>>>\\s|#|import\\s|from\\s|def\\s|class\\s|@|if\\s|elif\\s|else:|for\\s|while\\s|return\\s|print\\s*\\(|with\\s|try:|except\\b|finally:|raise\\s|assert\\s|[A-Za-z_][\\w.]*\\s*(?:=|\\+=|-=|\\*=|/=|:=)|\\s{2,}(?:\\w|[)\\]\\}]))')
+    callouts = {
+        "Why This Matters": ("WHY IT MATTERS", "This connects the Python idea to real programming."),
+        "Try It Yourself": ("MISSION", "Do not just read it. Change the code, run it, break it, and fix it."),
+        "Common Mistake": ("TRAP ALERT", "Try this mistake on purpose once. Reading the error is part of learning."),
+        "Level Up": ("LEVEL UP", "Optional challenge: change the example so it does something different."),
+        "Part Recap": ("CHECKPOINT", "Pause here and explain the idea in your own words before moving on.")
+    }
+    code_start = re.compile(
+        r'^(?:>>>\s|#|import\s|from\s|def\s|class\s|@|if\s|elif\s|else:|for\s|while\s|'
+        r'return\s|print\s*\(|with\s|try:|except\b|finally:|raise\s|assert\s|'
+        r'[A-Za-z_][\w.]*\s*(?:=|\+=|-=|\*=|/=|:=)|\s{2,}(?:\w|[)\]\}]))'
+    )
+
     out = []
     i = 0
     para = []
+
     def flush_para():
         if para:
             s = " ".join(x.strip() for x in para).strip()
             if s:
                 out.append("<p>" + html.escape(s) + "</p>")
             para.clear()
+
     while i < len(lines):
         raw = lines[i]
         s = raw.strip()
         if not s:
-            flush_para(); i += 1; continue
+            flush_para()
+            i += 1
+            continue
+
         if s in headings:
             flush_para()
-            callout_labels = {
-                "Why This Matters": ("WHY IT MATTERS", "This is the part that connects the Python idea to real programming."),
-                "Try It Yourself": ("MISSION", "Do not just read it. Change the code, run it, break it, and fix it."),
-                "Common Mistake": ("TRAP ALERT", "Try this mistake on purpose once. Reading the error is part of learning."),
-                "Level Up": ("LEVEL UP", "Optional challenge: change the example so it does something different."),
-                "Part Recap": ("CHECKPOINT", "Pause here and explain the idea in your own words before moving on.")
-            }
-            if s in callout_labels:
-                label, tip = callout_labels[s]
-                out.append('<div class="funbreak"><span class="eyebrow">' + label + '</span><strong>' + html.escape(s) + '</strong><p>' + html.escape(tip) + '</p></div>')
+            if s in callouts:
+                label, tip = callouts[s]
+                out.append(
+                    '<div class="funbreak"><span class="eyebrow">' + label +
+                    '</span><strong>' + html.escape(s) + '</strong><p>' +
+                    html.escape(tip) + '</p></div>'
+                )
             else:
                 out.append('<h3 class="lessonsection">' + html.escape(s) + '</h3>')
             i += 1
             continue
+
         if s == "OUTPUT":
             flush_para()
             vals = []
             i += 1
             while i < len(lines):
                 q = lines[i].strip()
-                if not q: break
-                if q in headings or q == "OUTPUT": break
+                if not q or q in headings or q == "OUTPUT":
+                    break
                 vals.append(lines[i])
                 i += 1
-            out.append('<div class="outlabel">OUTPUT</div><pre class="lessonoutput">' + html.escape("\\n".join(vals).strip()) + '</pre>')
+            out.append(
+                '<div class="outlabel">OUTPUT</div><pre class="lessonoutput">' +
+                html.escape("\n".join(vals).strip()) + '</pre>'
+            )
             continue
+
         if s.startswith("• "):
             flush_para()
             items = []
             while i < len(lines) and lines[i].strip().startswith("• "):
                 items.append("<li>" + html.escape(lines[i].strip()[2:]) + "</li>")
                 i += 1
-            out.append("<ul class=\"lessonlisttext\">" + "".join(items) + "</ul>")
+            out.append('<ul class="lessonlisttext">' + "".join(items) + "</ul>")
             continue
-        if re.match(r'^\\d+\\.\\s+', s):
+
+        if re.match(r'^\d+\.\s+', s):
             flush_para()
             items = []
-            while i < len(lines) and re.match(r'^\\d+\\.\\s+', lines[i].strip()):
+            while i < len(lines) and re.match(r'^\d+\.\s+', lines[i].strip()):
                 q = lines[i].strip()
-                items.append("<li>" + html.escape(re.sub(r'^\\d+\\.\\s+', '', q)) + "</li>")
+                items.append("<li>" + html.escape(re.sub(r'^\d+\.\s+', '', q)) + "</li>")
                 i += 1
-            out.append("<ol class=\"lessonlisttext\">" + "".join(items) + "</ol>")
+            out.append('<ol class="lessonlisttext">' + "".join(items) + "</ol>")
             continue
+
         if code_start.match(raw):
             flush_para()
             code = []
             while i < len(lines):
                 q = lines[i]
                 qs = q.strip()
-                if not qs: break
-                if qs in headings or qs == "OUTPUT" or qs.startswith("• ") or re.match(r'^\\d+\\.\\s+', qs):
+                if not qs or qs in headings or qs == "OUTPUT" or qs.startswith("• ") or re.match(r'^\d+\.\s+', qs):
                     break
                 if code and not code_start.match(q) and len(q) - len(q.lstrip()) == 0:
                     break
                 code.append(q)
                 i += 1
-            out.append('<pre class="lessoncode"><code>' + html.escape("\\n".join(code).strip()) + '</code></pre>')
+            out.append('<pre class="lessoncode"><code>' + html.escape("\n".join(code).strip()) + '</code></pre>')
             continue
+
         para.append(raw)
         i += 1
+
     flush_para()
     return "".join(out)
 
@@ -279,7 +302,7 @@ def learn(n):
     nextn=n+1 if n<len(COURSE) else None
 
     # Make the source course readable as an actual interactive lesson.
-    safe_body=html.escape(l["body"])
+    safe_body=render_lesson_body(l["body"])
     missions=[
         "Change the example to do something ridiculous. If it still works, you win.",
         "Predict the output first, then run it. Were you right?",
