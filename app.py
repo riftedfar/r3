@@ -210,30 +210,61 @@ def learn(n):
     # A different playground starter for different concepts, instead of the same loop everywhere.
     t=l["title"].lower()
     if "variable" in t or "data type" in t:
-        starter='name = "Python"
-age = 16\nprint(f"{name} is {age} years old")'
+        starter="""name = "Python"
+age = 16
+print(f"{name} is {age} years old")"""
     elif "number" in t or "math" in t:
-        starter='score = 17\nbonus = 5\nprint(score + bonus)\nprint(score % 2)'
+        starter="""score = 17
+bonus = 5
+print(score + bonus)
+print(score % 2)"""
     elif "string" in t:
-        starter='text = "python is fun"\nprint(text.upper())\nprint(text[::-1])'
+        starter="""text = "python is fun"
+print(text.upper())
+print(text[::-1])"""
     elif "boolean" in t or "comparison" in t:
-        starter='age = 16\nhas_ticket = True\nprint(age >= 13 and has_ticket)'
+        starter="""age = 16
+has_ticket = True
+print(age >= 13 and has_ticket)"""
     elif "list" in t:
-        starter='items = ["pizza", "burger", "fries"]\nitems.append("ice cream")\nprint(items)'
+        starter="""items = ["pizza", "burger", "fries"]
+items.append("ice cream")
+print(items)"""
     elif "tuple" in t or "set" in t:
-        starter='numbers = [1, 2, 2, 3, 3, 4]\nunique = set(numbers)\nprint(unique)'
+        starter="""numbers = [1, 2, 2, 3, 3, 4]
+unique = set(numbers)
+print(unique)"""
     elif "dictionar" in t:
-        starter='player = {"name": "Rex", "score": 100}\nprint(player["name"])\nprint(player["score"] + 50)'
+        starter="""player = {"name": "Rex", "score": 100}
+print(player["name"])
+print(player["score"] + 50)"""
     elif "conditional" in t or "if /" in t:
-        starter='score = 87\nif score >= 90:\n    print("S rank")\nelif score >= 70:\n    print("A rank")\nelse:\n    print("Keep training!")'
+        starter="""score = 87
+if score >= 90:
+    print("S rank")
+elif score >= 70:
+    print("A rank")
+else:
+    print("Keep training!")"""
     elif "loop" in t or "for / while" in t:
-        starter='for level in range(1, 6):\n    print(f"Level {level} unlocked!")'
+        starter="""for level in range(1, 6):
+    print(f"Level {level} unlocked!")"""
     elif "function" in t:
-        starter='def power_up(name):\n    return f"⚡ {name} powered up!"\n\nprint(power_up("Python"))'
+        starter="""def power_up(name):
+    return f"⚡ {name} powered up!"
+
+print(power_up("Python"))"""
     elif "class" in t or "object" in t:
-        starter='class Player:\n    def __init__(self, name):\n        self.name = name\n\np = Player("Rex")\nprint(p.name)'
+        starter="""class Player:
+    def __init__(self, name):
+        self.name = name
+
+p = Player("Rex")
+print(p.name)"""
     else:
-        starter='name = "Python Learner"\nprint("Welcome,", name)\nprint("Now change this code and make it yours!")'
+        starter="""name = "Python Learner"
+print("Welcome,", name)
+print("Now change this code and make it yours!")"""
 
     final_challenge=""
     if n==len(COURSE):
