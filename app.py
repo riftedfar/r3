@@ -83,7 +83,7 @@ def layout(content, title="LearnPython"):
 <meta name="description" content="Interactive Python learning platform built from The Ultimate Python Course.">
 <style>
  :root{{--bg:#050505;--panel:#0d0d0d;--panel2:#151515;--text:#f5f5f5;--muted:#999;--accent:#fff;--accent-ink:#050505;--line:#292929;--danger:#ff6b6b}}
-*{{box-sizing:border-box}}body{{margin:0;background:#050505;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}}a{{color:inherit;text-decoration:none}}button,input{{font:inherit}}nav{{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;position:sticky;top:0;background:#050505ee;backdrop-filter:blur(18px);z-index:5}}.brand{{font-weight:900;letter-spacing:-.04em;font-size:21px}}.brand b{{color:var(--accent)}}.navlinks{{display:flex;gap:22px;align-items:center;color:var(--muted);font-size:14px}}.navlinks a:hover{{color:#fff}}.hello{{color:var(--muted)}}.pill,button{{border:1px solid var(--line);background:var(--panel2);color:#fff;padding:10px 14px;border-radius:11px;cursor:pointer}}.solid{{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}}main{{width:min(1160px,90vw);margin:auto}}.hero{{padding:95px 0 70px;display:grid;grid-template-columns:1.2fr .8fr;gap:45px;align-items:center}}h1{{font-size:clamp(48px,7vw,86px);line-height:.95;letter-spacing:-.07em;margin:0 0 25px}}h2{{font-size:32px;letter-spacing:-.04em}}p{{color:var(--muted);line-height:1.7}}.hero p{{font-size:18px;max-width:680px}}.actions{{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}}.terminal{{background:#0d0d0d;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 25px 70px #0008}}.dots{{color:#59636f}}.code{{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#f0f0f0;white-space:pre-wrap;line-height:1.6}}.grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}}.card{{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:22px}}.card:hover{{border-color:#3b4653;transform:translateY(-2px);transition:.15s}}.eyebrow{{color:var(--accent);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em}}.muted{{color:var(--muted)}}.course{{padding:55px 0}}.lessonlist{{display:grid;gap:9px}}.lesson{{display:flex;justify-content:space-between;gap:20px;align-items:center;background:var(--panel);border:1px solid var(--line);padding:17px 19px;border-radius:14px}}.lesson:hover{{background:var(--panel2)}}.check{{color:var(--accent)}}.lessonpage{{padding:45px 0 80px}}.lessonbody{{white-space:pre-wrap;line-height:1.65;color:#e5e5e5;background:#0d0d0d;border:1px solid var(--line);padding:25px;border-radius:16px;overflow:auto}}.play{{margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}}textarea{{width:100%;min-height:220px;background:#080808;color:#f5f5f5;border:1px solid var(--line);border-radius:12px;padding:16px;font-family:ui-monospace,monospace;resize:vertical}}.output{{min-height:70px;white-space:pre-wrap;background:#07090c;border-radius:12px;padding:14px;margin-top:10px;color:#dbe5ef}}.form{{max-width:480px;margin:70px auto;padding:28px;background:var(--panel);border:1px solid var(--line);border-radius:20px}}label{{display:block;margin:15px 0 7px;color:#e5e5e5}}input[type=email],input[type=password],input[type=text]{{width:100%;padding:13px;border-radius:10px;border:1px solid var(--line);background:#080808;color:#fff}}.form button{{margin-top:18px;width:100%;background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}}.bar{{height:8px;background:#202731;border-radius:99px;overflow:hidden}}.bar i{{display:block;height:100%;background:var(--accent)}}.section{{padding:45px 0}}.inline{{display:inline}}.inline button{{border:0;background:transparent;color:var(--muted);padding:0}}.notice{{padding:12px 15px;background:#1a1515;border:1px solid #412828;color:#ffb7b7;border-radius:10px}}footer{{border-top:1px solid var(--line);padding:40px 5vw;color:var(--muted);margin-top:50px}}.funbreak{{margin:24px 0;padding:18px 20px;border:1px solid #343434;border-left:3px solid #fff;background:#111;border-radius:14px}}.funbreak strong{{display:block;margin-top:5px;font-size:15px}}.funbreak p{{margin:6px 0 0;color:#aaa}}.mission{{margin:24px 0;padding:20px;border:1px solid #3a3a3a;border-radius:16px;background:linear-gradient(135deg,#151515,#0b0b0b);display:flex;justify-content:space-between;align-items:center;gap:20px}}.mission h3{{margin:7px 0 4px;font-size:21px}}.mission p{{margin:0;color:#bdbdbd}}.missionmark{{font-size:30px;flex:none}}.finalboss{{margin-top:30px;padding:28px;border:1px solid #555;border-radius:20px;background:#101010;box-shadow:0 20px 55px #0008}}.finalboss h2{{margin:8px 0 10px}}.bossgrid{{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px}}.bossgrid>div{{padding:15px;border:1px solid var(--line);border-radius:12px;background:#0a0a0a}}.bossgrid p{{margin:6px 0 0;font-size:14px}}.bossrules{{margin-top:15px;padding:13px 15px;border:1px dashed #444;border-radius:12px;color:#bbb}}@media(max-width:800px){{nav{{height:auto;min-height:64px;padding:12px 4vw;gap:10px;align-items:center}}.brand{{font-size:19px;flex:none}}.navlinks{{gap:8px;flex-wrap:wrap;justify-content:flex-end;font-size:13px}}.navlinks>a:not(.pill){{display:none}}.hello{{display:none}}.pill,button{{padding:9px 11px;font-size:13px}}main{{width:min(92vw,700px)}}.hero{{grid-template-columns:1fr;padding:55px 0 45px;gap:28px}}h1{{font-size:clamp(42px,13vw,64px)}}h2{{font-size:27px}}.hero p{{font-size:16px}}.grid{{grid-template-columns:1fr}}.card{{padding:18px}}.course{{padding:35px 0}}.lessonpage{{padding:30px 0 55px}}.lessonbody{{padding:18px;font-size:15px}}.play{{padding:15px}}textarea{{min-height:190px;font-size:14px}}.form{{width:100%;margin:40px auto;padding:20px}}.section{{padding:30px 0}}footer{{padding:30px 4vw;font-size:13px}}.bossgrid{{grid-template-columns:1fr}}.mission{{padding:17px}}.finalboss{{padding:20px}}.actions{{gap:9px}}.actions>*{{flex:1;min-width:140px;text-align:center}}.lesson{{padding:14px 15px;gap:12px;font-size:14px}}}}@media(max-width:420px){{.navlinks{{gap:6px}}.pill,button{{padding:8px 9px;font-size:12px}}h1{{font-size:clamp(38px,12vw,52px)}}.terminal{{padding:17px;border-radius:17px}}.code{{font-size:12px}}.output{{font-size:13px}}.lesson{{font-size:13px}}}}
+*{{box-sizing:border-box}}body{{margin:0;background:#050505;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}}a{{color:inherit;text-decoration:none}}button,input{{font:inherit}}nav{{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;position:sticky;top:0;background:#050505ee;backdrop-filter:blur(18px);z-index:5}}.brand{{font-weight:900;letter-spacing:-.04em;font-size:21px}}.brand b{{color:var(--accent)}}.navlinks{{display:flex;gap:22px;align-items:center;color:var(--muted);font-size:14px}}.navlinks a:hover{{color:#fff}}.hello{{color:var(--muted)}}.pill,button{{border:1px solid var(--line);background:var(--panel2);color:#fff;padding:10px 14px;border-radius:11px;cursor:pointer}}.solid{{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}}main{{width:min(1160px,90vw);margin:auto}}.hero{{padding:95px 0 70px;display:grid;grid-template-columns:1.2fr .8fr;gap:45px;align-items:center}}h1{{font-size:clamp(48px,7vw,86px);line-height:.95;letter-spacing:-.07em;margin:0 0 25px}}h2{{font-size:32px;letter-spacing:-.04em}}p{{color:var(--muted);line-height:1.7}}.hero p{{font-size:18px;max-width:680px}}.actions{{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}}.terminal{{background:#0d0d0d;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 25px 70px #0008}}.dots{{color:#59636f}}.code{{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#f0f0f0;white-space:pre-wrap;line-height:1.6}}.grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}}.card{{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:22px}}.card:hover{{border-color:#3b4653;transform:translateY(-2px);transition:.15s}}.eyebrow{{color:var(--accent);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em}}.muted{{color:var(--muted)}}.course{{padding:55px 0}}.lessonlist{{display:grid;gap:9px}}.lesson{{display:flex;justify-content:space-between;gap:20px;align-items:center;background:var(--panel);border:1px solid var(--line);padding:17px 19px;border-radius:14px}}.lesson:hover{{background:var(--panel2)}}.check{{color:var(--accent)}}.lessonpage{{padding:45px 0 80px}}.lessonbody{{white-space:pre-wrap;line-height:1.65;color:#e5e5e5;background:#0d0d0d;border:1px solid var(--line);padding:25px;border-radius:16px;overflow:auto}}.play{{margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}}textarea{{width:100%;min-height:220px;background:#080808;color:#f5f5f5;border:1px solid var(--line);border-radius:12px;padding:16px;font-family:ui-monospace,monospace;resize:vertical}}.output{{min-height:70px;white-space:pre-wrap;background:#07090c;border-radius:12px;padding:14px;margin-top:10px;color:#dbe5ef}}.form{{max-width:480px;margin:70px auto;padding:28px;background:var(--panel);border:1px solid var(--line);border-radius:20px}}label{{display:block;margin:15px 0 7px;color:#e5e5e5}}input[type=email],input[type=password],input[type=text]{{width:100%;padding:13px;border-radius:10px;border:1px solid var(--line);background:#080808;color:#fff}}.form button{{margin-top:18px;width:100%;background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}}.bar{{height:8px;background:#202731;border-radius:99px;overflow:hidden}}.bar i{{display:block;height:100%;background:var(--accent)}}.section{{padding:45px 0}}.inline{{display:inline}}.inline button{{border:0;background:transparent;color:var(--muted);padding:0}}.notice{{padding:12px 15px;background:#1a1515;border:1px solid #412828;color:#ffb7b7;border-radius:10px}}footer{{border-top:1px solid var(--line);padding:40px 5vw;color:var(--muted);margin-top:50px}}.lessonhead{{position:relative}}.stats{{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0 8px}}.stats span,.labstats{{display:inline-flex;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#0d0d0d;color:#aaa;font-size:12px}}.funbreak{{margin:24px 0;padding:18px 20px;border:1px solid #343434;border-left:3px solid #fff;background:#111;border-radius:14px}}.funbreak strong{{display:block;margin-top:5px;font-size:15px}}.funbreak p{{margin:6px 0 0;color:#aaa}}.mission{{margin:24px 0;padding:20px;border:1px solid #3a3a3a;border-radius:16px;background:linear-gradient(135deg,#151515,#0b0b0b);display:flex;justify-content:space-between;align-items:center;gap:20px}}.mission h3{{margin:7px 0 4px;font-size:21px}}.mission p{{margin:0;color:#bdbdbd}}.missionmark{{font-size:30px;flex:none}}.playtop{{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}}.xppop{{height:24px;color:#fff;font-weight:900;text-align:right;opacity:0;transform:translateY(4px)}}.xppop.show{{animation:xpgain .7s ease-out}}@keyframes xpgain{{0%{{opacity:1;transform:translateY(8px)}}100%{{opacity:0;transform:translateY(-8px)}}}}.finalboss{{margin-top:30px;padding:28px;border:1px solid #555;border-radius:20px;background:#101010;box-shadow:0 20px 55px #0008}}.finalboss h2{{margin:8px 0 10px}}.bossgrid{{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px}}.bossgrid>div{{padding:15px;border:1px solid var(--line);border-radius:12px;background:#0a0a0a}}.bossgrid p{{margin:6px 0 0;font-size:14px}}.bossrules{{margin-top:15px;padding:13px 15px;border:1px dashed #444;border-radius:12px;color:#bbb}}.funbreak{{margin:24px 0;padding:18px 20px;border:1px solid #343434;border-left:3px solid #fff;background:#111;border-radius:14px}}.funbreak strong{{display:block;margin-top:5px;font-size:15px}}.funbreak p{{margin:6px 0 0;color:#aaa}}.mission{{margin:24px 0;padding:20px;border:1px solid #3a3a3a;border-radius:16px;background:linear-gradient(135deg,#151515,#0b0b0b);display:flex;justify-content:space-between;align-items:center;gap:20px}}.mission h3{{margin:7px 0 4px;font-size:21px}}.mission p{{margin:0;color:#bdbdbd}}.missionmark{{font-size:30px;flex:none}}.finalboss{{margin-top:30px;padding:28px;border:1px solid #555;border-radius:20px;background:#101010;box-shadow:0 20px 55px #0008}}.finalboss h2{{margin:8px 0 10px}}.bossgrid{{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px}}.bossgrid>div{{padding:15px;border:1px solid var(--line);border-radius:12px;background:#0a0a0a}}.bossgrid p{{margin:6px 0 0;font-size:14px}}.bossrules{{margin-top:15px;padding:13px 15px;border:1px dashed #444;border-radius:12px;color:#bbb}}@media(max-width:800px){{nav{{height:auto;min-height:64px;padding:12px 4vw;gap:10px;align-items:center}}.brand{{font-size:19px;flex:none}}.navlinks{{gap:8px;flex-wrap:wrap;justify-content:flex-end;font-size:13px}}.navlinks>a:not(.pill){{display:none}}.hello{{display:none}}.pill,button{{padding:9px 11px;font-size:13px}}main{{width:min(92vw,700px)}}.hero{{grid-template-columns:1fr;padding:55px 0 45px;gap:28px}}h1{{font-size:clamp(42px,13vw,64px)}}h2{{font-size:27px}}.hero p{{font-size:16px}}.grid{{grid-template-columns:1fr}}.card{{padding:18px}}.course{{padding:35px 0}}.lessonpage{{padding:30px 0 55px}}.lessonbody{{padding:18px;font-size:15px}}.play{{padding:15px}}textarea{{min-height:190px;font-size:14px}}.form{{width:100%;margin:40px auto;padding:20px}}.section{{padding:30px 0}}footer{{padding:30px 4vw;font-size:13px}}.playtop{{flex-direction:column}}.stats span,.labstats{{font-size:11px}}.bossgrid{{grid-template-columns:1fr}}.mission{{padding:17px}}.finalboss{{padding:20px}}.actions{{gap:9px}}.actions>*{{flex:1;min-width:140px;text-align:center}}.lesson{{padding:14px 15px;gap:12px;font-size:14px}}}}@media(max-width:420px){{.navlinks{{gap:6px}}.pill,button{{padding:8px 9px;font-size:12px}}h1{{font-size:clamp(38px,12vw,52px)}}.terminal{{padding:17px;border-radius:17px}}.code{{font-size:12px}}.output{{font-size:13px}}.lesson{{font-size:13px}}}}
 </style></head><body><nav><a class="brand" href="/">Learn<b>Python</b></a><div class="navlinks">{nav}{auth}</div></nav><main>{content}</main><footer>LearnPython · Interactive Python learning · Built from The Ultimate Python Course</footer></body></html>"""
 
 @APP.after_request
@@ -135,55 +135,92 @@ def learn(n):
     if u:
         con=db(); done=bool(con.execute("SELECT completed FROM progress WHERE user_id=? AND lesson_id=?",(u["id"],n)).fetchone()); con.close()
     nextn=n+1 if n<len(COURSE) else None
-    safe_body=html.escape(l["body"])
-    # Turn the course text into a more playful lesson experience without changing the source material.
-    callouts = {
-        "Why This Matters": ("WHY IT MATTERS", "This is your reason to care. If you can explain this idea to someone else, you actually own it."),
-        "Try It Yourself": ("MISSION", "Don’t just read it — break the code on purpose, fix it, then change it into something that feels like yours."),
-        "Common Mistake": ("TRAP ALERT", "Python is about to let you step on a rake. Try the mistake once, see what happens, then fix it."),
-        "Level Up": ("LEVEL UP", "Optional XP-style challenge: experiment with this idea and change at least one thing. There is no single “correct” way to play."),
-        "Part Recap": ("CHECKPOINT", "Quick checkpoint: if you can explain the recap without looking back, you’re ready for the next level.")
-    }
-    for heading, (label, tip) in callouts.items():
-        marker = html.escape(heading)
-        card = f'<div class="funbreak"><span class="eyebrow">{label}</span><strong>{marker}</strong><p>{html.escape(tip)}</p></div>'
-        safe_body = safe_body.replace(marker, card, 1)
 
-    lesson_missions = [
-        "Make the example do something ridiculous. If it still works, you win.",
-        "Change three values in the example and predict the output before you run it.",
-        "Build a tiny version of this idea around something you actually like.",
-        "Intentionally create one bug, read the error, and fix it without copying the answer.",
-        "Explain this concept in one sentence, then prove it with a 5-line program."
+    # Make the source course readable as an actual interactive lesson.
+    safe_body=html.escape(l["body"])
+    callouts = {
+        "Why This Matters": ("WHY IT MATTERS", "This is the part that connects the Python idea to real programming."),
+        "Try It Yourself": ("MISSION", "Don't just read it. Change the code, run it, break it, and fix it."),
+        "Common Mistake": ("TRAP ALERT", "Try this mistake on purpose once. Reading the error is part of learning."),
+        "Level Up": ("LEVEL UP", "Optional challenge: change the example so it does something different."),
+        "Part Recap": ("CHECKPOINT", "Pause here. Explain the idea in your own words before moving on.")
+    }
+    for heading,(label,tip) in callouts.items():
+        marker=html.escape(heading)
+        card=f'<div class="funbreak"><span class="eyebrow">{label}</span><strong>{marker}</strong><p>{html.escape(tip)}</p></div>'
+        safe_body=safe_body.replace(marker,card,1)
+
+    missions=[
+        "Change the example to do something ridiculous. If it still works, you win.",
+        "Predict the output first, then run it. Were you right?",
+        "Make your own tiny version using something you actually like.",
+        "Create one bug on purpose, read the error, and fix it.",
+        "Explain this concept in one sentence, then prove it with code."
     ]
-    mission = lesson_missions[(n-1) % len(lesson_missions)]
-    mission_card = f'<div class="mission"><div><span class="eyebrow">SIDE QUEST · +XP</span><h3>Today’s mission</h3><p>{html.escape(mission)}</p></div><span class="missionmark">✦</span></div>'
-    final_challenge = ""
-    if n == len(COURSE):
-        final_challenge = """<section class="finalboss">
+    mission=missions[(n-1)%len(missions)]
+    mission_card=f'<div class="mission"><div><span class="eyebrow">SIDE QUEST · +25 XP</span><h3>Today's mission</h3><p>{html.escape(mission)}</p></div><span class="missionmark">✦</span></div>'
+
+    # A different playground starter for different concepts, instead of the same loop everywhere.
+    t=l["title"].lower()
+    if "variable" in t or "data type" in t:
+        starter='name = "Python"
+age = 16\nprint(f"{name} is {age} years old")'
+    elif "number" in t or "math" in t:
+        starter='score = 17\nbonus = 5\nprint(score + bonus)\nprint(score % 2)'
+    elif "string" in t:
+        starter='text = "python is fun"\nprint(text.upper())\nprint(text[::-1])'
+    elif "boolean" in t or "comparison" in t:
+        starter='age = 16\nhas_ticket = True\nprint(age >= 13 and has_ticket)'
+    elif "list" in t:
+        starter='items = ["pizza", "burger", "fries"]\nitems.append("ice cream")\nprint(items)'
+    elif "tuple" in t or "set" in t:
+        starter='numbers = [1, 2, 2, 3, 3, 4]\nunique = set(numbers)\nprint(unique)'
+    elif "dictionar" in t:
+        starter='player = {"name": "Rex", "score": 100}\nprint(player["name"])\nprint(player["score"] + 50)'
+    elif "conditional" in t or "if /" in t:
+        starter='score = 87\nif score >= 90:\n    print("S rank")\nelif score >= 70:\n    print("A rank")\nelse:\n    print("Keep training!")'
+    elif "loop" in t or "for / while" in t:
+        starter='for level in range(1, 6):\n    print(f"Level {level} unlocked!")'
+    elif "function" in t:
+        starter='def power_up(name):\n    return f"⚡ {name} powered up!"\n\nprint(power_up("Python"))'
+    elif "class" in t or "object" in t:
+        starter='class Player:\n    def __init__(self, name):\n        self.name = name\n\np = Player("Rex")\nprint(p.name)'
+    else:
+        starter='name = "Python Learner"\nprint("Welcome,", name)\nprint("Now change this code and make it yours!")'
+
+    final_challenge=""
+    if n==len(COURSE):
+        final_challenge="""<section class="finalboss">
 <div class="eyebrow">FINAL BOSS · CAPSTONE</div>
-<h2>Build something people would actually want to use.</h2>
-<p>Pick one: a terminal game, a personal automation tool, a CLI utility, a mini web app, a quiz game, or your own idea. Use Python concepts from the course instead of following a tutorial line-for-line.</p>
+<h2>Build your own Python creation.</h2>
+<p>Choose a game, automation tool, CLI utility, quiz, mini web app, or completely weird idea. Use what you learned instead of following a tutorial line-for-line.</p>
 <div class="bossgrid">
-<div><strong>1 · Plan</strong><p>Write the goal, inputs, outputs, and 3 features.</p></div>
-<div><strong>2 · Build</strong><p>Start small. Get one working version before adding extras.</p></div>
-<div><strong>3 · Break it</strong><p>Try weird inputs and deliberately find bugs.</p></div>
-<div><strong>4 · Ship it</strong><p>Clean the code, add a README, and show someone the result.</p></div>
+<div><strong>01 · IDEA</strong><p>Pick a problem or something fun you want to build.</p></div>
+<div><strong>02 · BUILD</strong><p>Make the smallest working version first.</p></div>
+<div><strong>03 · BREAK</strong><p>Feed it weird inputs and hunt for bugs.</p></div>
+<div><strong>04 · SHIP</strong><p>Clean it up, document it, and show someone.</p></div>
 </div>
-<div class="bossrules"><strong>Boss rules:</strong> no copy-paste tutorial marathon. Search for syntax when needed, but make the decisions yourself.</div>
+<div class="bossrules"><strong>Boss rule:</strong> searching for syntax is allowed. Copying an entire project is not. Make the important decisions yourself.</div>
 </section>"""
+
     js=f"""<script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script><script>
-let py; async function boot(){{document.getElementById('run').disabled=true;document.getElementById('run').textContent='Loading Python…';py=await loadPyodide();document.getElementById('run').disabled=false;document.getElementById('run').textContent='Run code';}}
-async function runCode(){{const out=document.getElementById('out'), code=document.getElementById('code').value;out.textContent='Running…';try{{await py.runPythonAsync("import sys,io\nsys.stdout=io.StringIO()\nsys.stderr=io.StringIO()");await py.runPythonAsync(code);out.textContent=py.runPython("sys.stdout.getvalue()")}} catch(e){{out.textContent=String(e)}}}}
-async function complete(){{const r=await fetch('/api/progress/{n}',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{csrf:'{csrf()}'}})}});if(r.ok)location.reload();}}
-boot();</script>"""
-    code = re.findall(r'(?s)(?:(?:^|\n))(?:[a-zA-Z_].*?\n)?',l["body"])[:1]
-    starter = "print('Hello, Python!')"
-    if "def " in l["body"]: starter="def is_even(n):\n    return n % 2 == 0\n\nprint(is_even(10))"
-    elif "for " in l["body"]: starter="for i in range(5):\n    print(i)"
-    elif "class " in l["body"]: starter="class Dog:\n    def __init__(self, name):\n        self.name = name\n\nprint(Dog('Rex').name)"
-    c=f"""<section class="lessonpage"><a class="muted" href="/courses">← All courses</a><div style="margin-top:30px" class="eyebrow">{l["part"]}</div><h1 style="font-size:56px">Chapter {l["n"]}: {l["title"]}</h1><div class="lessonbody">{safe_body}</div>{mission_card}{final_challenge}
-<div class="play"><div class="eyebrow">Interactive Python playground</div><h2>Try it yourself</h2><p>Runs in your browser. Nothing you execute here is sent to the backend.</p><textarea id="code">{starter}</textarea><div class="actions"><button id="run" class="solid" onclick="runCode()" disabled>Loading Python…</button>{f'<button onclick="complete()">✓ Mark complete</button>' if u else '<a class="pill" href="/login">Log in to save progress</a>'}</div><div id="out" class="output">Output will appear here.</div></div>
+let py;
+const xpKey="learnpython_xp";
+const runKey="learnpython_runs";
+function getXP(){{return Number(localStorage.getItem(xpKey)||0)}}
+function addXP(amount){{const next=getXP()+amount;localStorage.setItem(xpKey,next);document.getElementById("xp").textContent=next+" XP";const pop=document.getElementById("xpPop");pop.textContent="+"+amount+" XP";pop.classList.remove("show");void pop.offsetWidth;pop.classList.add("show");}}
+function updateRuns(){{const n=Number(localStorage.getItem(runKey)||0)+1;localStorage.setItem(runKey,n);document.getElementById("runs").textContent=n+" runs";}}
+async function boot(){{const out=document.getElementById("out"),run=document.getElementById("run");try{{out.textContent="Loading your Python engine…";py=await loadPyodide();run.disabled=false;run.textContent="▶ Run code";out.textContent="Python ready. Your move.";}}catch(e){{out.textContent="Could not load Python: "+e;}}}}
+async function runCode(){{const out=document.getElementById("out"),code=document.getElementById("code").value;run.disabled=true;out.textContent="Running…";try{{await py.runPythonAsync("import sys, io; sys.stdout=io.StringIO(); sys.stderr=io.StringIO()");await py.runPythonAsync(code);const stdout=py.runPython("sys.stdout.getvalue()");const stderr=py.runPython("sys.stderr.getvalue()");out.textContent=stdout||stderr||"✓ Code ran successfully — but it printed nothing.";updateRuns();addXP(5);}}catch(e){{out.textContent=String(e);addXP(2);}}finally{{run.disabled=false;}}}}
+function resetCode(){{document.getElementById("code").value=document.getElementById("starter").value;document.getElementById("out").textContent="Reset. Try changing one thing.";}}
+async function complete(){{const r=await fetch('/api/progress/{n}',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{csrf:'{csrf()}'}})}});if(r.ok){{addXP(25);document.getElementById("done").textContent="✓ Lesson complete · +25 XP";document.getElementById("done").disabled=true;}}}}
+document.addEventListener("DOMContentLoaded",()=>{{document.getElementById("xp").textContent=getXP()+" XP";document.getElementById("runs").textContent=(localStorage.getItem(runKey)||0)+" runs";boot();}});
+</script>"""
+
+    c=f"""<section class="lessonpage"><a class="muted" href="/courses">← All courses</a>
+<div class="lessonhead"><div style="margin-top:30px" class="eyebrow">{l["part"]}</div><h1 style="font-size:56px">Chapter {l["n"]}: {l["title"]}</h1><div class="stats"><span>⚡ <b id="xp">0 XP</b></span><span>⌨ <b id="runs">0 runs</b></span></div></div>
+<div class="lessonbody">{safe_body}</div>{mission_card}{final_challenge}
+<div class="play"><div class="playtop"><div><div class="eyebrow">CODE LAB</div><h2>Build. Run. Break. Fix.</h2></div><div class="labstats">+5 XP / run</div></div><p>Edit the starter code, run it, and watch the result. Python runs locally in your browser.</p><textarea id="code">{html.escape(starter)}</textarea><textarea id="starter" hidden>{html.escape(starter)}</textarea><div class="actions"><button id="run" class="solid" onclick="runCode()" disabled>Loading Python…</button><button onclick="resetCode()">↻ Reset</button>{f'<button id="done" onclick="complete()">✓ Complete lesson</button>' if u else '<a class="pill" href="/login">Log in to save progress</a>'}</div><div id="out" class="output">Loading Python…</div><div id="xpPop" class="xppop"></div></div>
 <div class="actions"><a class="pill" href="/courses">Course index</a>{f'<a class="pill solid" href="/learn/{nextn}">Next lesson →</a>' if nextn else ''}</div></section>{js}"""
     return layout(c,f'Chapter {n}: {l["title"]}')
 
