@@ -18,7 +18,6 @@ APP.config.update(
     MAX_FORM_PARTS=32,
 )
 DB = os.environ.get("DATABASE_PATH","course.db")
-)
 
 def db():
     con=sqlite3.connect(DB, timeout=10)
