@@ -101,7 +101,7 @@ def learn(n):
     safe_body=l["body"].replace("</","<\\/")
     js=f"""<script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script><script>
 let py; async function boot(){{document.getElementById('run').disabled=true;document.getElementById('run').textContent='Loading Python…';py=await loadPyodide();document.getElementById('run').disabled=false;document.getElementById('run').textContent='Run code';}}
-async function runCode(){{const out=document.getElementById('out'), code=document.getElementById('code').value;out.textContent='Running…';try{{await py.runPythonAsync("import sys,io\nsys.stdout=io.StringIO()\nsys.stderr=io.StringIO()");await py.runPythonAsync(code);out.textContent=py.runPython("sys.stdout.getvalue()")} }catch(e){{out.textContent=String(e)}}}}
+async function runCode(){{const out=document.getElementById('out'), code=document.getElementById('code').value;out.textContent='Running…';try{{await py.runPythonAsync("import sys,io\nsys.stdout=io.StringIO()\nsys.stderr=io.StringIO()");await py.runPythonAsync(code);out.textContent=py.runPython("sys.stdout.getvalue()")}} catch(e){{out.textContent=String(e)}}}}
 async function complete(){{const r=await fetch('/api/progress/{n}',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify({{csrf:'{csrf()}'}})}});if(r.ok)location.reload();}}
 boot();</script>"""
     code = re.findall(r'(?s)(?:(?:^|\n))(?:[a-zA-Z_].*?\n)?',l["body"])[:1]
