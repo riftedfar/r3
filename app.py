@@ -380,7 +380,6 @@ def progress(n):
     con=db(); con.execute("INSERT INTO progress(user_id,lesson_id,completed) VALUES(?,?,1) ON CONFLICT(user_id,lesson_id) DO UPDATE SET completed=1,updated_at=CURRENT_TIMESTAMP",(u["id"],n)); con.commit(); con.close()
     return jsonify(ok=True)
 
-))
 
 @APP.route("/register",methods=["GET","POST"])
 def register():
