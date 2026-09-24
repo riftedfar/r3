@@ -158,7 +158,7 @@ def learn(n):
         "Explain this concept in one sentence, then prove it with code."
     ]
     mission=missions[(n-1)%len(missions)]
-    mission_card=f'<div class="mission"><div><span class="eyebrow">SIDE QUEST · +25 XP</span><h3>Today's mission</h3><p>{html.escape(mission)}</p></div><span class="missionmark">✦</span></div>'
+    mission_card=f"<div class=\"mission\"><div><span class=\"eyebrow\">SIDE QUEST · +25 XP</span><h3>Today's mission</h3><p>{html.escape(mission)}</p></div><span class=\"missionmark\">✦</span></div>"
 
     # A different playground starter for different concepts, instead of the same loop everywhere.
     t=l["title"].lower()
