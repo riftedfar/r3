@@ -7,6 +7,8 @@ def _install():
         app = getattr(mod, "APP", None) if mod else None
         if app is not None and hasattr(mod, "COURSE") and hasattr(mod, "render_lesson_body"):
             try:
+                from mysql_adapter import install as install_mysql
+                install_mysql(mod)
                 from additional_courses import COURSES
                 import html as H
                 import secrets
