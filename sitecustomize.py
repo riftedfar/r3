@@ -81,3 +81,5 @@ def _install():
         time.sleep(0.1)
 
 threading.Thread(target=_install,daemon=True).start()
+
+# Load the modern home/auth UI upgrade after Flask initializes.\nimport ui_upgrade\n
