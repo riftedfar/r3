@@ -221,3 +221,17 @@ def dashboard_v2():
         rows.append(f'''<a class="card" href="/courses/{slug if slug!="python" else ""}"><div class="eyebrow">{html.escape(c["title"])}</div><h2>{count}/{c["total"]}</h2><div class="bar"><i style="width:{pct}%"></i></div><p>{pct}% complete</p></a>''')
     return layout(f'<section class="course"><div class="eyebrow">YOUR LEARNING</div><h1 style="font-size:60px">Keep building, {html.escape(str(u["name"]))}.</h1><div class="grid">{"".join(rows)}</div></section>',"Dashboard")
 APP.view_functions["dashboard"]=dashboard_v2
+
+def home_v2():
+    cards=[]
+    for slug,x in list(COURSES.items())[:5]:
+        cards.append(f'<a class="card" href="/courses/{slug}"><div class="eyebrow">{html.escape(x["category"])} · {html.escape(x["level"])}</div><h2>{html.escape(x["title"])}</h2><p>{html.escape(x["description"])}</p><strong>{len(x["lessons"])} lessons →</strong></a>')
+    return layout(f'''<section class="hero"><div><div class="eyebrow">INTERACTIVE LEARNING PLATFORM</div><h1>Learn.<br><span>Build. Ship.</span></h1><p>Choose a skill, learn it in short lessons, practice immediately, and build projects that prove you can actually use it.</p><div class="actions"><a class="pill solid" href="/courses">Explore all courses</a><a class="pill" href="/register">Create free account</a></div></div><div class="terminal"><div class="dots">● ● ●</div><div class="code" style="margin-top:20px">learn("HTML")
+practice()
+build("your idea")
+ship()
+
+→ skill unlocked</div></div></section>
+<section class="section"><div class="eyebrow">COURSE LIBRARY</div><h2>Start with a path.</h2><div class="grid">{"".join(cards)}</div></section>
+<section class="section"><div class="card"><div class="eyebrow">WHY THIS FEELS DIFFERENT</div><h2>Learn by doing.</h2><p>Interactive browser labs, missions, progress tracking, searchable courses and project-focused lessons — all in one place.</p></div></section>''',"Learn · Build · Ship")
+APP.view_functions["home"]=home_v2
