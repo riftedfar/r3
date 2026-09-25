@@ -76,6 +76,7 @@ def _install():
                 app.add_url_rule("/api/course-progress/<slug>/<int:n>",endpoint="extra_course_progress",view_func=save_progress,methods=["POST"])
                 app.view_functions["courses"]=library
                 print("[LearnPython] loaded extra courses:",", ".join(c["slug"] for c in COURSES))
+                import platform_upgrade
                 return
             except Exception as e:
                 print("[LearnPython] course extension failed:",repr(e))
