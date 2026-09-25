@@ -143,6 +143,7 @@ def install():
                 app.view_functions["extra_course_progress"]=save_progress
             else:
                 app.add_url_rule("/api/course-progress/<slug>/<int:n>",endpoint="extra_course_progress",view_func=save_progress,methods=["POST"])
+            mod.layout=layout
             app.layout=layout
             print("[LearnPython] platform UI installed: course library + auth + dashboard")
             return
