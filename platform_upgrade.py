@@ -10,7 +10,7 @@ def install():
             continue
         try:
             from additional_courses import COURSES as EXTRA
-            from flask import abort, redirect, request, jsonify
+            from flask import abort, redirect, request, jsonify, Response
 
             def L(body, title="LearnPython"):
                 return mod.layout(body, title)
@@ -25,9 +25,18 @@ def install():
                     return '<a class="navbtn" href="/dashboard">Dashboard</a><span class="userchip">Hi, '+html.escape(str(u["name"]))+'</span><form method="post" action="/logout" class="inline"><input type="hidden" name="csrf" value="'+html.escape(str(mod.csrf()))+'"><button class="ghost">Log out</button></form>'
                 return '<a class="navbtn" href="/login">Log in</a><a class="navbtn primary" href="/register">Create account</a>'
 
-            def layout(body,title="LearnPython"):
-                return f'''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(title)} · LearnPython</title>
-<meta name="description" content="Interactive coding courses with lessons, labs, projects and progress tracking.">
+            def layout(body,title="LearnPython",description="Interactive coding courses with lessons, labs, projects and progress tracking."):
+                canonical=html.escape(request.base_url, quote=True)
+                desc=html.escape(description[:160], quote=True)
+                page_title=html.escape(title, quote=True)
+                base=request.url_root.rstrip("/")
+                return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{page_title} · LearnPython</title>
+<meta name="description" content="{desc}">
+<link rel="canonical" href="{canonical}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website"><meta property="og:site_name" content="LearnPython"><meta property="og:title" content="{page_title} · LearnPython"><meta property="og:description" content="{desc}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{html.escape(base + '/og.svg', quote=True)}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{page_title} · LearnPython"><meta name="twitter:description" content="{desc}"><meta name="twitter:image" content="{html.escape(base + '/og.svg', quote=True)}">
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"EducationalOrganization","name":"LearnPython","url":{__import__('json').dumps(base)},"description":{__import__('json').dumps(description)}}}</script>
 <style>
 :root{{--bg:#060606;--panel:#0d0d0d;--panel2:#141414;--line:#292929;--text:#f5f5f5;--muted:#9a9a9a;--soft:#cfcfcf}}
 *{{box-sizing:border-box}}html{{scroll-behavior:smooth}}body{{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}}a{{color:inherit;text-decoration:none}}button,input{{font:inherit}}button{{cursor:pointer}}
