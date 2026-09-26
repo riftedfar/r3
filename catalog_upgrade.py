@@ -119,7 +119,7 @@ def catalog():
     q=request.args.get("q","").strip().lower()
     cat=request.args.get("category","All")
     cards=[]
-    all_courses=[("python","The Ultimate Python Course","Programming","Intermediate",47,"The complete Python path with browser code labs, projects and progress tracking.")]
+    all_courses=[("python","The Ultimate Python Course","Programming","Intermediate",len(COURSE),"The complete Python path with browser code labs, projects and progress tracking.")]
     for slug,c in COURSES.items():
         all_courses.append((slug,c["title"],c["category"],c["level"],len(c["lessons"]),c["description"]))
     for slug,title,category,level,count,desc in all_courses:
@@ -134,7 +134,7 @@ def catalog():
           <div class="coursemeta"><span>{count} lessons</span><span>Interactive</span><span>Projects</span></div>
           <strong>Start learning →</strong>
         </a>''')
-    cats=["All","Programming","Web","Data","AI","Tools"]
+    cats=["All","Programming","Web","Data","AI","Tools","Security"]
     filters="".join(f'<a class="filter {"active" if cat==x else ""}" href="/courses?category={x}">{x}</a>' for x in cats)
     body=f'''<section class="cataloghero"><div class="eyebrow">THE LEARNING LIBRARY</div>
     <h1>Pick a skill.<br><span>Build something.</span></h1>
@@ -216,7 +216,7 @@ def dashboard_v2():
     u=user()
     if not u: return redirect("/login")
     rows=[]
-    for slug,c in [("python",{"title":"The Ultimate Python Course","total":47})]+[(s,{"title":x["title"],"total":len(x["lessons"])}) for s,x in COURSES.items()]:
+    for slug,c in [("python",{"title":"The Ultimate Python Course","total":len(COURSE)})]+[(s,{"title":x["title"],"total":len(x["lessons"])}) for s,x in COURSES.items()]:
         if slug=="python":
             con=db(); count=con.execute("SELECT COUNT(*) FROM progress WHERE user_id=? AND completed=1",(u["id"],)).fetchone()[0]; con.close()
         else: count=len(_progress(slug))
