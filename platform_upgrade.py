@@ -32,11 +32,11 @@ def install():
                 base=request.url_root.rstrip("/")
                 return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{page_title} · LearnPython</title>
 <meta name="description" content="{desc}">
-<link rel="canonical" href="{canonical}">
+<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}"><link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website"><meta property="og:site_name" content="LearnPython"><meta property="og:title" content="{page_title} · LearnPython"><meta property="og:description" content="{desc}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{html.escape(base + '/og.svg', quote=True)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{page_title} · LearnPython"><meta name="twitter:description" content="{desc}"><meta name="twitter:image" content="{html.escape(base + '/og.svg', quote=True)}">
-<script type="application/ld+json">{{"@context":"https://schema.org","@type":"EducationalOrganization","name":"LearnPython","url":{__import__('json').dumps(base)},"description":{__import__('json').dumps(description)}}}</script>
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebSite","name":"LearnPython","url":{__import__('json').dumps(base)},"description":{__import__('json').dumps(description)}}}</script>
 <style>
 :root{{--bg:#060606;--panel:#0d0d0d;--panel2:#141414;--line:#292929;--text:#f5f5f5;--muted:#9a9a9a;--soft:#cfcfcf}}
 *{{box-sizing:border-box}}html{{scroll-behavior:smooth}}body{{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}}a{{color:inherit;text-decoration:none}}button,input{{font:inherit}}button{{cursor:pointer}}
