@@ -92,7 +92,10 @@ COURSES = {
     }
 }
 
-def _init_catalog_db():
+def from catalog_expansion import apply_expansion
+COURSES = apply_expansion(COURSES)
+
+_init_catalog_db():
     con=db()
     con.execute("""CREATE TABLE IF NOT EXISTS course_progress(
         user_id INTEGER NOT NULL, course_slug TEXT NOT NULL, lesson_id INTEGER NOT NULL,
