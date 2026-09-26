@@ -52,7 +52,7 @@ def install():
 .dash{{padding:50px 0}}.dashgrid{{display:grid;grid-template-columns:1fr 320px;gap:16px}}.progress{{border:1px solid var(--line);border-radius:16px;background:#0d0d0d;padding:20px}}.bar{{height:8px;background:#222;border-radius:99px;overflow:hidden}}.bar i{{display:block;height:100%;background:#fff}}.statgrid{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}}.stat{{border:1px solid var(--line);border-radius:13px;padding:15px;background:#0c0c0c}}.stat strong{{font-size:24px;display:block}}.stat span{{color:#777;font-size:12px}}
 @media(max-width:850px){{.top{{padding:0 3vw;gap:10px}}.nav a:not(.primary):not(.navbtn){{display:none}}.userchip{{display:none}}.hero{{grid-template-columns:1fr;padding:55px 0 35px}}.cgrid{{grid-template-columns:1fr}}.path{{grid-template-columns:1fr 1fr}}.catalog,.dashgrid{{grid-template-columns:1fr}}.side{{position:static}}.banner{{align-items:flex-start;flex-direction:column}}.section{{padding:35px 0}}.shell{{width:92vw}}}}
 @media(max-width:480px){{.logo{{font-size:19px}}.top{{height:62px}}.navbtn,.nav a{{padding:8px 9px;font-size:12px}}.path{{grid-template-columns:1fr}}h1{{font-size:42px}}.hero p{{font-size:16px}}}}
-</style></head><body><header class="top"><a class="logo" href="/">Learn<span>Python</span></a><nav class="nav"><a href="/courses">Courses</a><a href="/tools">Toolkit</a>{nav_auth()}</nav></header><main class="shell">{body}</main><footer>LearnPython · Learn → practice → build · Free to start</footer></body></html>'''
+</style></head><body><header class="top"><a class="logo" href="/">Learn<span>Python</span></a><nav class="nav"><a href="/courses">Courses</a><a href="/tools">Toolkit</a>{nav_auth()}</nav></header><main class="shell">{body}</main><footer>LearnPython · Learn → practice → build · Free to start · <a href="/about">About</a> · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/disclaimer">Disclaimer</a></footer></body></html>'''
 
             def home():
                 u=mod.user()
@@ -76,6 +76,12 @@ def install():
                     rows=''.join(f'<a class="lessonrow" href="/learn/{slug}/{i}"><span class="num">{i}</span><span><b>{html.escape(x["title"])}</b><br><span class="hint">Learn · practice · build</span></span><small>Lesson →</small></a>' for i,x in enumerate(c["lessons"],1))
                 return layout(f'''<section class="libraryhero"><a class="hint" href="/courses">← Course library</a><div class="coursehero"><div class="eyebrow">{html.escape(c["tag"])}</div><h1 style="font-size:clamp(42px,6vw,68px)">{html.escape(c["title"])}</h1><p>{html.escape(c["description"])}</p><div class="actions"><a class="btn primary" href="{"/learn/1" if slug=="python" else f"/learn/{slug}/1"}">Start from lesson 1 →</a><a class="btn" href="/dashboard">My progress</a></div></div></section><section class="section" style="padding-top:5px"><div class="sectionhead"><div><div class="eyebrow">CURRICULUM</div><h2>{len(c["lessons"])} lessons</h2></div></div>{rows}</section>''',f'{c["title"]} Course')
 
+            @app.route("/favicon.svg")
+            def favicon_page():
+                return Response('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#080808"/><path d="M18 16h28v8H26v8h17v8H26v8h20v8H18z" fill="#fff"/></svg>',mimetype="image/svg+xml")
+            @app.route("/og.svg")
+            def og_page():
+                return Response('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#070707"/><text x="80" y="240" fill="white" font-family="Arial" font-size="76" font-weight="800">LearnPython</text><text x="82" y="315" fill="#aaa" font-family="Arial" font-size="34">Learn code. Actually build.</text></svg>',mimetype="image/svg+xml")
             def _legal(title, body):
                 return L(f'<section class="section"><nav class="hint"><a href="/">Home</a> / {html.escape(title)}</nav><h1>{html.escape(title)}</h1><p style="max-width:850px;font-size:17px">{html.escape(body)}</p></section>',title)
             @app.route("/about")
