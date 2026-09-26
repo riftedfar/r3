@@ -425,6 +425,9 @@ COURSE = json.loads(r'''[{"n":1,"title":"Why Python & Installing It","part":"Par
 from python_expansion import extend_python
 COURSE = extend_python(COURSE)
 
+from python_extension import EXTENDED_PYTHON
+COURSE.extend(EXTENDED_PYTHON)
+
 import catalog_upgrade
 
 if __name__ == "__main__":
