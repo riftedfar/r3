@@ -57,4 +57,4 @@ COURSES=[
 ]
 
 # Add deeper modules and additional tracks after the original curriculum.
-extend_courses(COURSES)
+COURSES=extend_courses(COURSES)
