@@ -1,0 +1,5 @@
+# LearnPython
+
+LearnPython is an educational coding platform for programming lessons, practice and projects.
+
+Course content is provided for educational purposes. Verify important technical, security, legal, financial and operational decisions against current authoritative documentation.
