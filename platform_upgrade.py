@@ -72,13 +72,30 @@ def install():
                 if not u: return redirect("/login")
                 con=mod.db()
                 done=int(con.execute("SELECT COUNT(*) AS n FROM progress WHERE user_id=? AND completed=1",(u["id"],)).fetchone()["n"])
-                recent=con.execute("SELECT lesson_id,updated_at FROM progress WHERE user_id=? AND completed=1 ORDER BY updated_at DESC LIMIT 8",(u["id"],)).fetchall()
+                recent=con.execute("SELECT lesson_id,updated_at FROM progress WHERE user_id=? AND completed=1 ORDER BY updated_at DESC LIMIT 10",(u["id"],)).fetchall()
                 con.close()
                 total=len(mod.COURSE)+sum(len(c["lessons"]) for c in EXTRA)
                 pct=round(min(done/total*100,100)) if total else 0
-                recent_html=''.join(f'<a class="lessonrow" href="/learn/{r["lesson_id"]}"><span class="num">✓</span><span><b>Python lesson {r["lesson_id"]}</b><br><span class="hint">Completed {html.escape(str(r["updated_at"]))}</span></span><small>→</small></a>' for r in recent) or '<p class="hint">Nothing completed yet. Pick a course and start lesson 1.</p>'
-                return layout(f'''<section class="dash"><div class="eyebrow">YOUR LEARNING SPACE</div><h1 style="font-size:clamp(42px,6vw,68px)">Welcome, {html.escape(str(u["name"]))}.</h1><div class="statgrid"><div class="stat"><strong>{done}</strong><span>lessons complete</span></div><div class="stat"><strong>{pct}%</strong><span>overall progress</span></div><div class="stat"><strong>{len(EXTRA)+1}</strong><span>learning paths</span></div></div><div class="dashgrid"><div><div class="progress"><div style="display:flex;justify-content:space-between"><b>Keep your streak alive</b><span>{pct}%</span></div><div class="bar" style="margin-top:12px"><i style="width:{pct}%"></i></div><p>Every completed lesson is one more thing you can actually build with.</p><div class="actions"><a class="btn primary" href="/courses">Choose a course →</a></div></div><section class="section"><div class="eyebrow">RECENT</div><h2>Your progress</h2>{recent_html}</section></div><aside class="card"><div class="eyebrow">ALL PATHS</div><h3>Keep exploring</h3><p>Switch between Python, AI, Go, TypeScript, HTML and CSS whenever you want.</p><a class="btn primary" href="/courses">Browse courses</a></aside></div></section>''',"Dashboard")
 
+                recent_items=[]
+                for r in recent:
+                    lid=int(r["lesson_id"])
+                    if lid <= len(mod.COURSE):
+                        target=f"/learn/{lid}"
+                        label=f"Python · Lesson {lid}"
+                    else:
+                        code=lid-1000
+                        course_index=(code-1)//100
+                        lesson_no=(code-1)%100+1
+                        if 0 <= course_index < len(EXTRA) and 1 <= lesson_no <= len(EXTRA[course_index]["lessons"]):
+                            target=f"/learn/{EXTRA[course_index]['slug']}/{lesson_no}"
+                            label=f"{EXTRA[course_index]['title']} · Lesson {lesson_no}"
+                        else:
+                            continue
+                    recent_items.append(f'<a class="lessonrow" href="{target}"><span class="num">✓</span><span><b>{html.escape(label)}</b><br><span class="hint">Completed {html.escape(str(r["updated_at"]))}</span></span><small>→</small></a>')
+                recent_html="".join(recent_items) or '<p class="hint">Nothing completed yet. Pick a course and start lesson 1.</p>'
+
+                return layout(f'''<section class="dash"><div class="eyebrow">YOUR LEARNING SPACE</div><h1 style="font-size:clamp(42px,6vw,68px)">Welcome, {html.escape(str(u["name"]))}.</h1><div class="statgrid"><div class="stat"><strong>{done}</strong><span>lessons complete</span></div><div class="stat"><strong>{pct}%</strong><span>overall progress</span></div><div class="stat"><strong>{len(EXTRA)+1}</strong><span>learning paths</span></div></div><div class="dashgrid"><div><div class="progress"><div style="display:flex;justify-content:space-between"><b>Keep your streak alive</b><span>{pct}%</span></div><div class="bar" style="margin-top:12px"><i style="width:{pct}%"></i></div><p>Every completed lesson is one more thing you can actually build with.</p><div class="actions"><a class="btn primary" href="/courses">Choose a course →</a></div></div><section class="section"><div class="eyebrow">RECENT</div><h2>Your progress</h2>{recent_html}</section></div><aside class="card"><div class="eyebrow">ALL PATHS</div><h3>Keep exploring</h3><p>Switch between Python, AI, Go, TypeScript, HTML, CSS, JavaScript, SQL, and Git whenever you want.</p><a class="btn primary" href="/courses">Browse courses</a></aside></div></section>''',"Dashboard")
             def login():
                 if mod.user(): return redirect("/dashboard")
                 if request.method=="POST":
