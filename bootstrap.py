@@ -14,4 +14,4 @@ platform_upgrade.install()
 
 # SEO, crawl directives, social metadata, and custom 404.
 import seo_routes
-seo_routes.install(APP, sys.modules["app"], APP.layout)
+seo_routes.install(APP, sys.modules["app"], lambda: platform_upgrade.all_courses() if hasattr(platform_upgrade, "all_courses") else [])
