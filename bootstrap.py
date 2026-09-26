@@ -14,4 +14,11 @@ platform_upgrade.install()
 
 # SEO, crawl directives, social metadata, and custom 404.
 import seo_routes
-seo_routes.install(APP, sys.modules["app"], lambda: platform_upgrade.all_courses() if hasattr(platform_upgrade, "all_courses") else [])
+from additional_courses import COURSES as EXTRA_COURSES
+
+def seo_courses():
+    py={"slug":"python","title":"Python","tag":"PYTHON","description":"The complete Python learning path.","lessons":sys.modules["app"].COURSE,"href":"/courses/python"}
+    extras=[{"slug":c["slug"],"title":c["title"],"tag":c["tag"],"description":c["description"],"lessons":c["lessons"],"href":"/courses/"+c["slug"]} for c in EXTRA_COURSES]
+    return [py]+extras
+
+seo_routes.install(APP, sys.modules["app"], seo_courses)
