@@ -1,3 +1,5 @@
+from curriculum_expansion import extend_courses
+
 def make_lessons(rows):
     return [{"title":t,"body":f"In Plain English\n{ex}\n\nWhy This Matters\n{why}\n\nTry It Yourself\n{tryit}\n\nCommon Mistake\n{mistake}\n\nLevel Up\n{level}"} for t,ex,why,tryit,mistake,level in rows]
 
@@ -53,3 +55,6 @@ COURSES=[
 ("CSS Capstone","Design a polished responsive interface for a portfolio, dashboard, course platform, game menu, or landing page.","A final build makes you combine layout, typography, responsiveness, and interaction styling.","Use Grid or Flexbox, custom properties, focus states, and one tasteful animation.","Ignoring the phone layout until the very end.","Test at a narrow width and eliminate horizontal scrolling.")
 ])}
 ]
+
+# Add deeper modules and additional tracks after the original curriculum.
+extend_courses(COURSES)
