@@ -11,3 +11,7 @@ mysql_adapter.install(sys.modules["app"])
 
 import platform_upgrade
 platform_upgrade.install()
+
+# SEO, crawl directives, social metadata, and custom 404.
+import seo_routes
+seo_routes.install(APP, sys.modules["app"], APP.layout)
