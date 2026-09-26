@@ -24,6 +24,9 @@ def _append(slug, rows, courses):
     courses[slug]["lessons"].extend(_lesson(*row) for row in rows)
 
 def extend_courses(courses):
+    list_mode = isinstance(courses, list)
+    if list_mode:
+        courses = {c["slug"]: c for c in courses}
     _append("ai", [
         ("Data Cleaning & Preprocessing","Real datasets contain missing, duplicated, inconsistent, and noisy values. Cleaning is the process of deciding what those values mean and transforming data deliberately.","Take a messy table and write down five cleaning decisions before touching the data.","Deleting every unusual row instead of understanding why it is unusual.","Document each transformation and test whether it changes the distribution unexpectedly."),
         ("Features & Representations","Models need useful representations of information. A feature can be a raw value, a transformed value, or a representation created from several inputs.","Design five features for a house-price predictor and label which are available before prediction.","Using information that would only exist after the prediction happens.","Separate raw fields, derived features, and the target variable."),
@@ -187,4 +190,4 @@ def extend_courses(courses):
         ]
     }
 
-    return courses
+    return list(courses.values()) if list_mode else courses
