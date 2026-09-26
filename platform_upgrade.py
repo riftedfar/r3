@@ -26,7 +26,7 @@ def install():
                 return '<a class="navbtn" href="/login">Log in</a><a class="navbtn primary" href="/register">Create account</a>'
 
             def layout(body,title="LearnPython",description="Interactive coding courses with lessons, labs, projects and progress tracking."):
-                canonical=html.escape(request.base_url, quote=True)
+                canonical=html.escape("https://easewithpy.de5.net" + request.path, quote=True)
                 desc=html.escape(description[:160], quote=True)
                 page_title=html.escape(title, quote=True)
                 base=request.url_root.rstrip("/")
