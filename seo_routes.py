@@ -1,7 +1,7 @@
 """SEO, crawl directives and structured-data integration."""
 import json
 import xml.sax.saxutils as sax
-from flask import Response
+from flask import Response, request
 
 BASE="https://easewithpy.de5.net"
 
@@ -65,7 +65,7 @@ Course material and code examples are provided for educational and informational
                 body=response.get_data(as_text=True)
                 if "<head>" in body:
                     body=body.replace("<head>","<head><meta name=\"referrer\" content=\"strict-origin-when-cross-origin\">",1)
-                path=mod.request.path
+                path=request.path
                 if path.startswith("/courses/") and path.count("/") == 2:
                     slug=path.rsplit("/",1)[-1]
                     course=next((x for x in all_courses() if x["slug"]==slug),None)
