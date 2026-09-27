@@ -21,4 +21,4 @@ def seo_courses():
     extras=[{"slug":c["slug"],"title":c["title"],"tag":c["tag"],"description":c["description"],"lessons":c["lessons"],"href":"/courses/"+c["slug"]} for c in EXTRA_COURSES]
     return [py]+extras
 
-seo_routes.install(APP, sys.modules["app"], seo_courses)
+seo_routes.install(APP, sys.modules["app"], seo_courses, sys.modules["app"].layout)
