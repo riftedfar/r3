@@ -1,5 +1,5 @@
 """LearnPython platform UI: course library, auth, dashboard, and extra-course routing."""
-import sys, threading, time, html
+import sys, threading, time, html, traceback
 
 def install():
     for _ in range(120):
@@ -194,7 +194,7 @@ def install():
             print("[LearnPython] platform UI installed: course library + auth + dashboard")
             return
         except Exception as e:
-            print("[LearnPython] platform install retry:",repr(e))
+            print("[LearnPython] platform install retry:",repr(e)); traceback.print_exc()
             time.sleep(1)
 
 threading.Thread(target=install,daemon=True).start()
