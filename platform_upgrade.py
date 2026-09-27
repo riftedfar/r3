@@ -76,12 +76,15 @@ def install():
                     rows=''.join(f'<a class="lessonrow" href="/learn/{slug}/{i}"><span class="num">{i}</span><span><b>{html.escape(x["title"])}</b><br><span class="hint">Learn · practice · build</span></span><small>Lesson →</small></a>' for i,x in enumerate(c["lessons"],1))
                 return layout(f'''<section class="libraryhero"><a class="hint" href="/courses">← Course library</a><div class="coursehero"><div class="eyebrow">{html.escape(c["tag"])}</div><h1 style="font-size:clamp(42px,6vw,68px)">{html.escape(c["title"])}</h1><p>{html.escape(c["description"])}</p><div class="actions"><a class="btn primary" href="{"/learn/1" if slug=="python" else f"/learn/{slug}/1"}">Start from lesson 1 →</a><a class="btn" href="/dashboard">My progress</a></div></div></section><section class="section" style="padding-top:5px"><div class="sectionhead"><div><div class="eyebrow">CURRICULUM</div><h2>{len(c["lessons"])} lessons</h2></div></div>{rows}</section>''',f'{c["title"]} Course')
 
-            @app.route("/favicon.svg")
-            def favicon_page():
-                return Response('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#080808"/><path d="M18 16h28v8H26v8h17v8H26v8h20v8H18z" fill="#fff"/></svg>',mimetype="image/svg+xml")
-            @app.route("/og.svg")
-            def og_page():
-                return Response('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#070707"/><text x="80" y="240" fill="white" font-family="Arial" font-size="76" font-weight="800">LearnPython</text><text x="82" y="315" fill="#aaa" font-family="Arial" font-size="34">Learn code. Actually build.</text></svg>',mimetype="image/svg+xml")
+            if "favicon_page" not in app.view_functions:
+                def favicon_page():
+                    return Response('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#080808"/><path d="M18 16h28v8H26v8h17v8H26v8h20v8H18z" fill="#fff"/></svg>',mimetype="image/svg+xml")
+                app.add_url_rule("/favicon.svg","favicon_page",favicon_page)
+
+            if "og_page" not in app.view_functions:
+                def og_page():
+                    return Response('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#070707"/><text x="80" y="240" fill="white" font-family="Arial" font-size="76" font-weight="800">LearnPython</text><text x="82" y="315" fill="#aaa" font-family="Arial" font-size="34">Learn code. Actually build.</text></svg>',mimetype="image/svg+xml")
+                app.add_url_rule("/og.svg","og_page",og_page)
             def _legal(title, body):
                 return L(f'<section class="section"><nav class="hint"><a href="/">Home</a> / {html.escape(title)}</nav><h1>{html.escape(title)}</h1><p style="max-width:850px;font-size:17px">{html.escape(body)}</p></section>',title)
             @app.route("/about")
