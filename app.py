@@ -91,6 +91,7 @@ def layout(content, title="LearnPython"):
 def terms():
     return layout("""<section class="section"><div class="eyebrow">LEGAL</div><h1>Terms of Use</h1>
     <p>LearnPython is an educational project. Use the service lawfully and responsibly.</p>
+    <h2>Audience</h2><p>LearnPython is a general-audience coding platform and is not directed to children under 13. Do not create an account if you are under 13.</p>
     <h2>Educational use</h2><p>Lessons, code, labs and projects are provided for learning and experimentation. They are not professional legal, financial, medical, security or other regulated advice.</p>
     <h2>No guarantee</h2><p>Examples may contain mistakes or become outdated. Review, test and secure code before using it in real systems.</p>
     <h2>Responsible use</h2><p>Do not use the platform to abuse, disrupt, attack or gain unauthorized access to systems. Security material is for authorized learning environments.</p>
@@ -102,6 +103,8 @@ def privacy():
     <p>If you create an account, LearnPython may store your name, email, password hash and lesson-progress data needed to operate the service.</p>
     <p>Passwords are stored as hashes rather than plaintext. Do not submit passwords, API keys or other secrets into exercises or public content.</p>
     <p>Application data may be processed by infrastructure providers used to operate the service. Data may be retained as needed for service operation and backups.</p>
+    <p>LearnPython currently does not use Google Fonts or other externally hosted font libraries, session-replay analytics, recurring subscriptions, marketing email, or user-uploaded profile images/media.</p>
+    <p>LearnPython is a general-audience service and is not directed to children under 13. If we ever knowingly collect personal information from a child under 13, additional child-privacy requirements may apply.</p>
     <p class="hint">This is a general privacy notice, not jurisdiction-specific legal advice.</p></section>""","Privacy")
 
 @APP.get("/disclaimer")
@@ -411,12 +414,12 @@ def register():
     if request.method=="POST":
         require_csrf(); email=request.form.get("email","").strip().lower(); name=request.form.get("name","").strip(); pw=request.form.get("password",""); confirm=request.form.get("confirm_password","")
         if not rate_limit("register:"+request.remote_addr+":"+email,5,600): return layout('<div class="form"><div class="notice">Too many registration attempts. Try again in a few minutes.</div></div>'),429
-        if len(name)<2 or len(name)>80 or not valid_email(email) or len(pw)<12 or len(pw)>128 or pw!=confirm:
+        if len(name)<2 or len(name)>80 or not valid_email(email) or len(pw)<12 or len(pw)>128 or pw!=confirm or request.form.get("age_confirm") != "1":
             return layout('<div class="form"><div class="notice">Check your name, email, and password. Passwords must match and be 12–128 characters.</div><p><a href="/register">Try again</a></p></div>'),400
         try:
             con=db(); cur=con.execute("INSERT INTO users(email,name,password) VALUES(?,?,?)",(email,name,generate_password_hash(pw))); con.commit(); uid=cur.lastrowid; con.close(); session.clear(); session["uid"]=uid; session["csrf"]=secrets.token_urlsafe(24); return redirect("/dashboard")
         except sqlite3.IntegrityError:return layout('<div class="form"><div class="notice">That email is already registered.</div><p><a href="/login">Log in instead</a></p></div>'),409
-    return layout(f'<form class="form" method="post" autocomplete="on"><h2>Create account</h2><p>Save progress across the course.</p><input type="hidden" name="csrf" value="{csrf()}"><label for="name">Name</label><input id="name" name="name" maxlength="80" autocomplete="name" required><label for="email">Email</label><input id="email" type="email" name="email" maxlength="254" autocomplete="email" required><label for="password">Password</label><input id="password" type="password" name="password" minlength="12" maxlength="128" autocomplete="new-password" required><label for="confirm_password">Confirm password</label><input id="confirm_password" type="password" name="confirm_password" minlength="12" maxlength="128" autocomplete="new-password" required><button>Create account</button></form>',"Create account")
+    return layout(f'<form class="form" method="post" autocomplete="on"><h2>Create account</h2><p>Save progress across the course.</p><input type="hidden" name="csrf" value="{csrf()}"><label for="name">Name</label><input id="name" name="name" maxlength="80" autocomplete="name" required><label for="email">Email</label><input id="email" type="email" name="email" maxlength="254" autocomplete="email" required><label for="password">Password</label><input id="password" type="password" name="password" minlength="12" maxlength="128" autocomplete="new-password" required><label for="confirm_password">Confirm password</label><input id="confirm_password" type="password" name="confirm_password" minlength="12" maxlength="128" autocomplete="new-password" required><label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;color:#aaa"><input type="checkbox" name="age_confirm" value="1" required style="width:auto;margin-top:3px"> I confirm that I am 13 or older.</label><button>Create account</button></form>',"Create account")
 
 @APP.route("/login",methods=["GET","POST"])
 def login():
