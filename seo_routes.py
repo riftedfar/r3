@@ -20,7 +20,7 @@ def install(app, mod, all_courses, layout=None):
         )
 
     def sitemap():
-        urls=[("/", "1.0"),("/courses","0.9"),("/about","0.3"),("/terms","0.2"),("/privacy","0.2"),("/disclaimer","0.2")]
+        urls=[("/", "1.0"),("/courses","0.9"),("/academy","0.8"),("/practice","0.8"),("/roadmap","0.7"),("/projects","0.7"),("/cheatsheets","0.7"),("/glossary","0.6"),("/challenges","0.7"),("/tools","0.7"),("/about","0.3"),("/terms","0.2"),("/privacy","0.2"),("/disclaimer","0.2")]
         for course in all_courses():
             urls.append((course["href"],"0.8"))
             if course["slug"]=="python":
