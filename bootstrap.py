@@ -22,3 +22,7 @@ def seo_courses():
     return [py]+extras
 
 seo_routes.install(APP, sys.modules["app"], seo_courses, sys.modules["app"].layout)
+
+# Academy expansion: practice center, roadmap, projects, cheatsheets, glossary and challenges.
+import academy_expansion
+academy_expansion.install()
