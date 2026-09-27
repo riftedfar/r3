@@ -87,17 +87,20 @@ def install():
                 app.add_url_rule("/og.svg","og_page",og_page)
             def _legal(title, body):
                 return L(f'<section class="section"><nav class="hint"><a href="/">Home</a> / {html.escape(title)}</nav><h1>{html.escape(title)}</h1><p style="max-width:850px;font-size:17px">{html.escape(body)}</p></section>',title)
-            @app.route("/about")
-            def about_page(): return _legal("About LearnPython","LearnPython is an independent educational coding project for programming lessons, practice and projects.")
-            @app.route("/terms")
-            def terms_page(): return _legal("Terms of Use","Use LearnPython lawfully and responsibly. Do not abuse the service, attempt unauthorized access, upload malicious content, or violate another person's rights.")
-            @app.route("/privacy")
-            def privacy_page(): return _legal("Privacy Notice","Account information and learning progress may be stored to operate the service. Do not submit sensitive information unless specifically required.")
-            @app.route("/disclaimer")
-            def disclaimer_page(): return _legal("Educational Disclaimer","All content and code are provided for educational and informational purposes only. Verify important software, security, legal, financial, and operational decisions against current authoritative sources. Test code before production use.")
-            @app.errorhandler(404)
+            legal_pages = {
+                "about_page": ("/about", "About LearnPython", "LearnPython is an independent educational coding project for programming lessons, practice and projects."),
+                "terms_page": ("/terms", "Terms of Use", "Use LearnPython lawfully and responsibly. Do not abuse the service, attempt unauthorized access, upload malicious content, or violate another person's rights."),
+                "privacy_page": ("/privacy", "Privacy Notice", "Account information and learning progress may be stored to operate the service. Do not submit sensitive information unless specifically required."),
+                "disclaimer_page": ("/disclaimer", "Educational Disclaimer", "All content and code are provided for educational and informational purposes only. Verify important software, security, legal, financial, and operational decisions against current authoritative sources. Test code before production use.")
+            }
+            for endpoint, (path, title, body) in legal_pages.items():
+                if endpoint not in app.view_functions:
+                    app.add_url_rule(path, endpoint, lambda title=title, body=body: _legal(title, body))
+
             def custom_404(e):
                 return L('<section class="section" style="text-align:center;padding:110px 0"><div class="eyebrow">404 · NOT FOUND</div><h1>That page vanished.</h1><p>The URL does not match a LearnPython page.</p><a class="btn primary" href="/">Go home</a></section>',"Page Not Found"),404
+            if 404 not in app.error_handler_spec.get(None, {}):
+                app.register_error_handler(404, custom_404)
 
             def dashboard():
                 u=mod.user()
