@@ -5,7 +5,7 @@ from flask import Response, request
 
 BASE="https://easewithpy.de5.net"
 
-def install(app, mod, all_courses, layout):
+def install(app, mod, all_courses, layout=None):
     def robots():
         return Response(
             "User-agent: *\n"
