@@ -186,7 +186,8 @@ def install():
             app.view_functions["dashboard"]=dashboard
             app.view_functions["login"]=login
             app.view_functions["register"]=register
-            app.add_url_rule("/courses/<slug>",endpoint="course_overview",view_func=course_overview,methods=["GET"])
+            if "course_overview" not in app.view_functions:
+                app.add_url_rule("/courses/<slug>",endpoint="course_overview",view_func=course_overview,methods=["GET"])
             if "extra_course_lesson" in app.view_functions:
                 app.view_functions["extra_course_lesson"]=extra_lesson
             else:
