@@ -136,7 +136,7 @@ def install():
                 if request.method=="POST":
                     mod.require_csrf()
                     email=request.form.get("email","").strip().lower(); pw=request.form.get("password","")
-                    if not mod.valid_email(email) or len(pw)>128: return L('<div class="form"><div class="eyebrow">LOGIN</div><h1>That did not work.</h1><p>Check your email and password and try again.</p><a class="btn primary" href="/login">Try again</a></div>',"Log in")
+                    if not mod.valid_email(email) or not mod.valid_password(pw): return L('<div class="form"><div class="eyebrow">LOGIN</div><h1>That did not work.</h1><p>Check your email and password and try again.</p><a class="btn primary" href="/login">Try again</a></div>',"Log in")
                     if not mod.rate_limit("login:"+request.remote_addr+":"+email,8,600): return L('<div class="form"><div class="eyebrow">SLOW DOWN</div><h1>Too many tries.</h1><p>Wait a few minutes and try again.</p></div>',"Log in")
                     con=mod.db(); u=con.execute("SELECT * FROM users WHERE email=?",(email,)).fetchone(); con.close()
                     if not u or not mod.verify_password(u["password"],pw): return L('<div class="form"><div class="eyebrow">LOGIN</div><h1>That did not work.</h1><p>We could not sign you in. Check your details and try again.</p><a class="btn primary" href="/login">Try again</a></div>',"Log in")
