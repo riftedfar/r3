@@ -28,3 +28,7 @@ seo_routes.install(APP, sys.modules["app"], seo_courses, sys.modules["app"].layo
 # Academy expansion: practice center, roadmap, projects, cheatsheets, glossary and challenges.
 import academy_expansion
 academy_expansion.install()
+
+# Advanced learner features: playground, labs, progression, saved lessons, notes, offline mode and utilities.
+import learning_features
+learning_features.install()
