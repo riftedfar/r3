@@ -1,6 +1,6 @@
 # Reference lessons rebuild deployment retry
 # LearnPython production build
-import os, re, json, sqlite3, secrets, html, time
+import os, re, json, sqlite3, secrets, html, time, unicodedata
 from functools import wraps
 from flask import Flask, request, session, redirect, url_for, render_template_string, jsonify, abort
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -36,6 +36,26 @@ def init_db():
 
 init_db()
 
+@APP.errorhandler(400)
+def bad_request(e):
+    return generic_error("We couldn't process that request.",400) if "layout" in globals() else ("Bad request",400)
+
+@APP.errorhandler(404)
+def not_found(e):
+    return generic_error("The page you requested wasn't found.",404) if "layout" in globals() else ("Not found",404)
+
+@APP.errorhandler(413)
+def too_large(e):
+    return generic_error("That request is too large.",413) if "layout" in globals() else ("Request too large",413)
+
+@APP.errorhandler(429)
+def too_many(e):
+    return generic_error("Too many requests. Please try again later.",429) if "layout" in globals() else ("Too many requests",429)
+
+@APP.errorhandler(500)
+def server_error(e):
+    return generic_error("Something went wrong on our side. Please try again.",500) if "layout" in globals() else ("Server error",500)
+
 def csrf():
     if "csrf" not in session: session["csrf"]=secrets.token_urlsafe(24)
     return session["csrf"]
@@ -60,7 +80,26 @@ def rate_limit(bucket, limit=8, window=600):
     con.commit(); con.close(); return True
 
 def valid_email(email):
-    return bool(re.fullmatch(r"[^@\s]{1,254}@[^@\s]{1,254}\.[^@\s]{2,63}", email))
+    # Server-side validation only; browser attributes are convenience, not security.
+    if not isinstance(email, str) or len(email) > 254 or any(ord(ch) < 32 for ch in email):
+        return False
+    return bool(re.fullmatch(r"[^@\\s]{1,64}(?:\\.[^@\\s]{1,64})*@[^@\\s]{1,255}(?:\\.[^@\\s]{1,63})+", email))
+
+def valid_name(name):
+    if not isinstance(name, str):
+        return False
+    name = unicodedata.normalize("NFKC", name).strip()
+    if not 2 <= len(name) <= 80 or any(ord(ch) < 32 for ch in name):
+        return False
+    return bool(re.fullmatch(r"[\\w .\\-']+", name, flags=re.UNICODE)) and any(ch.isalpha() for ch in name)
+
+def valid_password(password):
+    if not isinstance(password, str) or not 12 <= len(password) <= 128:
+        return False
+    return not any(ord(ch) < 32 for ch in password)
+
+def generic_error(message="Something went wrong. Please try again.", status=400):
+    return layout(f'<div class="form"><div class="notice">{html.escape(message)}</div><p><a href="/">Return home</a></p></div>', status)
 
 def user():
     uid=session.get("uid")
@@ -412,23 +451,37 @@ def progress(n):
 @APP.route("/register",methods=["GET","POST"])
 def register():
     if request.method=="POST":
-        require_csrf(); email=request.form.get("email","").strip().lower(); name=request.form.get("name","").strip(); pw=request.form.get("password",""); confirm=request.form.get("confirm_password","")
-        if not rate_limit("register:"+request.remote_addr+":"+email,5,600): return layout('<div class="form"><div class="notice">Too many registration attempts. Try again in a few minutes.</div></div>'),429
-        if len(name)<2 or len(name)>80 or not valid_email(email) or len(pw)<12 or len(pw)>128 or pw!=confirm or request.form.get("age_confirm") != "1":
-            return layout('<div class="form"><div class="notice">Check your name, email, and password. Passwords must match and be 12–128 characters.</div><p><a href="/register">Try again</a></p></div>'),400
+        email=request.form.get("email","").strip().lower(); name=unicodedata.normalize("NFKC", request.form.get("name","")).strip(); pw=request.form.get("password",""); confirm=request.form.get("confirm_password","")
+        require_csrf()
+        if not rate_limit("register:"+request.remote_addr+":"+email,5,600): return generic_error("Too many attempts. Please try again later.",429)
+        if not valid_name(name) or not valid_email(email) or not valid_password(pw) or pw != confirm or request.form.get("age_confirm") != "1":
+            return generic_error("We couldn't create your account. Check the information you entered and try again.",400)
         try:
-            con=db(); cur=con.execute("INSERT INTO users(email,name,password) VALUES(?,?,?)",(email,name,generate_password_hash(pw))); con.commit(); uid=cur.lastrowid; con.close(); session.clear(); session["uid"]=uid; session["csrf"]=secrets.token_urlsafe(24); return redirect("/dashboard")
-        except sqlite3.IntegrityError:return layout('<div class="form"><div class="notice">That email is already registered.</div><p><a href="/login">Log in instead</a></p></div>'),409
+            con=db()
+            cur=con.execute("INSERT INTO users(email,name,password) VALUES(?,?,?)",(email,name,generate_password_hash(pw)))
+            con.commit()
+            uid=cur.lastrowid
+            con.close()
+            session.clear(); session["uid"]=uid; session["csrf"]=secrets.token_urlsafe(24)
+            return redirect("/dashboard")
+        except Exception:
+            try: con.rollback(); con.close()
+            except Exception: pass
+            return generic_error("We couldn't create your account. Please try again.",500)
     return layout(f'<form class="form" method="post" autocomplete="on"><h2>Create account</h2><p>Save progress across the course.</p><input type="hidden" name="csrf" value="{csrf()}"><label for="name">Name</label><input id="name" name="name" maxlength="80" autocomplete="name" required><label for="email">Email</label><input id="email" type="email" name="email" maxlength="254" autocomplete="email" required><label for="password">Password</label><input id="password" type="password" name="password" minlength="12" maxlength="128" autocomplete="new-password" required><label for="confirm_password">Confirm password</label><input id="confirm_password" type="password" name="confirm_password" minlength="12" maxlength="128" autocomplete="new-password" required><label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;color:#aaa"><input type="checkbox" name="age_confirm" value="1" required style="width:auto;margin-top:3px"> I confirm that I am 13 or older.</label><button>Create account</button></form>',"Create account")
 
 @APP.route("/login",methods=["GET","POST"])
 def login():
     if request.method=="POST":
-        require_csrf(); email=request.form.get("email","").strip().lower(); pw=request.form.get("password","")
-        if not valid_email(email) or len(pw)>128: return layout('<div class="form"><div class="notice">Invalid email or password.</div><p><a href="/login">Try again</a></p></div>'),401
-        if not rate_limit("login:"+request.remote_addr+":"+email,8,600): return layout('<div class="form"><div class="notice">Too many login attempts. Try again in a few minutes.</div></div>'),429
-        con=db(); u=con.execute("SELECT * FROM users WHERE email=?",(email,)).fetchone(); con.close()
-        if not u or not check_password_hash(u["password"],pw): return layout('<div class="form"><div class="notice">Invalid email or password.</div><p><a href="/login">Try again</a></p></div>'),401
+        email=request.form.get("email","").strip().lower(); pw=request.form.get("password","")
+        require_csrf()
+        if not valid_email(email) or not valid_password(pw): return generic_error("Invalid email or password.",401)
+        if not rate_limit("login:"+request.remote_addr+":"+email,8,600): return generic_error("Too many attempts. Please try again later.",429)
+        try:
+            con=db(); u=con.execute("SELECT * FROM users WHERE email=?",(email,)).fetchone(); con.close()
+        except Exception:
+            return generic_error("We couldn't complete the sign-in request. Please try again.",500)
+        if not u or not check_password_hash(u["password"],pw): return generic_error("Invalid email or password.",401)
         session.clear(); session["uid"]=u["id"]; session["csrf"]=secrets.token_urlsafe(24); return redirect("/dashboard")
     return layout(f'<form class="form" method="post" autocomplete="on"><h2>Welcome back</h2><input type="hidden" name="csrf" value="{csrf()}"><label for="login-email">Email</label><input id="login-email" type="email" name="email" maxlength="254" autocomplete="email" required><label for="login-password">Password</label><input id="login-password" type="password" name="password" maxlength="128" autocomplete="current-password" required><button>Log in</button></form>',"Log in")
 
