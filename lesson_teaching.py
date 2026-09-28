@@ -704,12 +704,12 @@ def _git(t):
     if _has(t, "remote", "push", "pull", "github"):
         return pack("git remote add origin URL\ngit push -u origin main", "git remote -v\ngit status\ngit push", "The local repository is synchronized with its configured remote.", "A remote is another copy of repository history. Review what you are pushing and never commit credentials.", "Inspect the diff before a push.")
     if _has(t, "ignore", "secret", "secrets"):
-        return pack('git tag -a v1.0.0 -m "message"', 'git tag -a v1.0.0 -m "First course release"\ngit tag', "v1.0.0", "Tags give meaningful names to important points in repository history, such as releases.", "Choose a version for your next project release.")
+        return pack("pattern in .gitignore", "printf '.env\\n__pycache__/\\n' > .gitignore\\ngit status", ".env and __pycache__ are ignored.", ".gitignore prevents selected generated or sensitive files from being tracked. If a secret was already committed, remove it from history and rotate it.", "Create a .gitignore for a Python project.")
     if _has(t, "tag", "release"):
-        return pack("git tag -a v1.0.0 -m "message"", "git tag -a v1.0.0 -m "First course release"\ngit tag", "v1.0.0", "Tags give meaningful names to important points in repository history, such as releases.", "Choose a version for your next project release.")
-    return pack('git status\ngit add <file>\ngit commit -m "message"', 'git status\ngit add .\ngit commit -m "Update course content"', "The working tree is staged and a commit is created.", "Git tracks repository state through working files, the staging area, and commits.", "Make one harmless change and inspect each state.")
+        return pack('git tag -a v1.0.0 -m "message"', 'git tag -a v1.0.0 -m "First course release"\\ngit tag', "v1.0.0", "Tags give meaningful names to important points in repository history, such as releases.", "Choose a version for your next project release.")
+    if _has(t, "diff", "log", "blame", "bisect", "debug"):
         return pack("git diff / git log / git blame / git bisect", "git diff\ngit log --oneline -5", "Changed lines and recent commits are shown.", "Git history is a debugging tool: inspect changes, narrow the time range, and identify the commit that changed behavior.", "Find the last commit that touched a lesson file.")
-    return pack("git status\ngit add <file>\ngit commit -m "message"", "git status\ngit add .\ngit commit -m "Update course content"", "The working tree is staged and a commit is created.", "Git tracks repository state through working files, the staging area, and commits.", "Make one harmless change and inspect each state.")
+    return pack('git status\ngit add <file>\ngit commit -m "message"', 'git status\ngit add .\ngit commit -m "Update course content"', "The working tree is staged and a commit is created.", "Git tracks repository state through working files, the staging area, and commits.", "Make one harmless change and inspect each state.")
 
 
 def _bash(t):
