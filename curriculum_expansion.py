@@ -190,4 +190,15 @@ def extend_courses(courses):
         ]
     }
 
+    for course in courses.values():
+        lessons=course.get("lessons",[])
+        total=len(lessons)
+        for idx,lesson in enumerate(lessons,1):
+            if lesson.get("level"): 
+                continue
+            ratio=idx/total if total else 1
+            level="Beginner" if ratio <= .25 else "Intermediate" if ratio <= .50 else "Advanced" if ratio <= .75 else "Master"
+            lesson["level"]=level
+            lesson.setdefault("part", f"Part {1 if ratio <= .25 else 2 if ratio <= .50 else 3 if ratio <= .75 else 4} — {level}")
+        course.setdefault("levels",["Beginner","Intermediate","Advanced","Master"])
     return list(courses.values()) if list_mode else courses
