@@ -141,7 +141,7 @@ def _topic_pack(slug, title):
 
 def example_for(slug, title):
     pack = _topic_pack(slug, title)
-    return pack[1], pack[2]
+    return pack
 
 
 def enrich_lessons(courses):\n    for course in courses:\n        for lesson in course.get("lessons", []):\n            body = lesson.get("body", "")\n            if MARKER in body: continue\n            code, output = example_for(course.get("slug", "python"), lesson.get("title", ""))\n            lesson["body"] = (\n                body.rstrip() + "\n\n" + MARKER + "\n" +\n                "### Syntax\nLearn the pattern first; then change it. The syntax is not something to memorize blindly.\n\n" +\n                "### Example\nEXAMPLE_CODE\n" + code + "\nEND_CODE\n\n" +\n                "### Output / Result\nOUTPUT\n" + output + "\nEND_OUTPUT\n\n" +\n                "### How It Works\n1. Read each line before running it.\n2. Identify the input, operation, and output.\n3. Predict what changes if you edit one value.\n4. Run it and explain the result in your own words.\n\n" +\n                "### Practice\nRewrite the example for a different value or use case, then create one small example without copying the original."\n            )\n    return courses
