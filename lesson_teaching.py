@@ -287,7 +287,7 @@ def _python(t):
         )
     if _has(t, "enum", "enums", "constants"):
         return pack(
-            "class Status(Enum):\n    READY = "ready"",
+            'class Status(Enum):\n    READY = "ready"',
             'from enum import Enum\n\nclass Status(Enum):\n    TODO = "todo"\n    DONE = "done"\n\nprint(Status.DONE.value)',
             "done",
             "Enum gives a fixed set of named values. It is clearer and safer than scattering magic strings through state-handling code.",
