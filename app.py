@@ -5,6 +5,17 @@ from functools import wraps
 from flask import Flask, request, session, redirect, url_for, render_template_string, jsonify, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 
+PASSWORD_HASH_METHOD = os.environ.get("PASSWORD_HASH_METHOD", "scrypt:32768:8:3")
+
+def hash_password(password):
+    return generate_password_hash(password, method=PASSWORD_HASH_METHOD)
+
+def verify_password(stored_hash, password):
+    try:
+        return check_password_hash(stored_hash, password)
+    except (ValueError, TypeError):
+        return False
+
 APP = Flask(__name__)
 APP.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 APP.config.update(
