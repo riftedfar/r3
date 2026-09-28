@@ -303,9 +303,7 @@ def render_lesson_body(body):
             else:
                 out.append('<h3 class="lessonsection">' + html.escape(s) + '</h3>')
             i += 1; continue
-        if s.startswith("DIAGRAM:"):
-            flush_para()
-            raw_flow=s.split(":",1)[1].strip()
+        if s.startswith("### "):\n            flush_para()\n            out.append('<h3 class="lessonsection">' + html.escape(s[4:].strip()) + '</h3>')\n            i += 1; continue\n        if s == "EXAMPLE_CODE":\n            flush_para(); vals=[]; i += 1\n            while i < len(lines) and lines[i].strip() != "END_CODE":\n                vals.append(lines[i]); i += 1\n            if i < len(lines): i += 1\n            out.append('<pre class="lessoncode"><code>' + html.escape("\\n".join(vals).strip()) + '</code></pre>')\n            continue\n        if s == "END_CODE":\n            i += 1; continue\n        if s == "OUTPUT":\n            flush_para(); vals=[]; i += 1\n            while i < len(lines) and lines[i].strip() != "END_OUTPUT":\n                vals.append(lines[i]); i += 1\n            if i < len(lines): i += 1\n            out.append('<div class="outlabel">OUTPUT / RESULT</div><pre class="lessonoutput">' + html.escape("\\n".join(vals).strip()) + '</pre>')\n            continue\n        if s == "END_OUTPUT":\n            i += 1; continue\n        if s.startswith("DIAGRAM:"):\n            flush_para()            raw_flow=s.split(":",1)[1].strip()
             nodes=[x.strip() for x in raw_flow.split("→") if x.strip()]
             if nodes:
                 parts=[]
