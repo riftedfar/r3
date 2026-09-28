@@ -563,7 +563,10 @@ from python_expansion import extend_python
 COURSE = extend_python(COURSE)
 
 from python_extension import EXTENDED_PYTHON
-COURSE.extend(EXTENDED_PYTHON)\n\nfrom lesson_teaching import enrich_lessons\nenrich_lessons([{"slug": "python", "lessons": COURSE}])
+COURSE.extend(EXTENDED_PYTHON)
+
+from lesson_teaching import enrich_lessons
+enrich_lessons([{"slug": "python", "lessons": COURSE}])
 
 if __name__ == "__main__":
     APP.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
