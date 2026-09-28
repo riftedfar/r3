@@ -10,8 +10,8 @@ def install():
             continue
         try:
             from additional_courses import COURSES as EXTRA
-from lesson_teaching import enrich_lessons
-enrich_lessons(EXTRA)
+            from lesson_teaching import enrich_lessons
+            enrich_lessons(EXTRA)
             from flask import abort, redirect, request, jsonify, Response
 
             def L(body, title="LearnPython"):
