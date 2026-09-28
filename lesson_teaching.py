@@ -722,6 +722,45 @@ def _bash(t):
     return pack("command [options] [arguments]", "printf '%s\\n' 'Learning: LESSON_TOPIC'", "Learning: LESSON_TOPIC", "Shell commands accept arguments and write to standard streams. Replace the topic placeholder with the lesson concept.", "Change the command and inspect its exit code.")
 
 
+def _master_track(slug, course, t):
+    """Concrete examples for every master-track lesson, selected by its topic."""
+    lang={"dart":"Dart","kotlin":"Kotlin","java":"Java","cpp":"C++","csharp":"C#","rust":"Rust","swift":"Swift","php":"PHP","ruby":"Ruby","r":"R","bash-linux":"Bash & Linux","react":"React","nodejs":"Node.js","docker":"Docker","flutter":"Flutter"}.get(slug,course)
+    if slug=="docker":
+        if _has(t,"dockerfile","image","layer","build","multi-stage"): return pack("FROM image / WORKDIR / COPY / RUN / CMD","FROM python:3.12-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nCMD [\"python\",\"app.py\"]","The image contains the app and dependencies.","A Dockerfile makes image construction reproducible; layer order affects caching.","Change one instruction and explain its effect.")
+        if _has(t,"port","network"): return pack("docker run -p HOST:CONTAINER image","docker run --rm -p 8080:8000 myapp","Host 8080 forwards to container 8000.","Port publishing connects host and container networking.","Map another service port.")
+        if _has(t,"volume","persistence","backup"): return pack("docker run -v NAME:/path image","docker volume create course_data\ndocker run --rm -v course_data:/data busybox sh -c 'echo saved > /data/state.txt'","Data remains in the named volume.","Volumes separate persistent state from disposable containers.","Inspect the volume after the container exits.")
+        if _has(t,"compose","service","dependency"): return pack("services: / image: / ports:","services:\n  web:\n    image: myapp:latest\n    ports:\n      - 8080:8000","Compose defines a web service and port.","Compose makes related-container configuration repeatable.","Add a database service and healthcheck.")
+        if _has(t,"security","hardening","supply","registry"): return pack("USER uid / pinned trusted image / least privilege","USER 10001\n# Use a pinned trusted base image","The container process is not root.","Container hardening reduces attack surface through trusted inputs and least privilege.","List three release-time image checks.")
+        return pack("docker <command> [options]","docker ps\ndocker inspect myapp","Docker reports container state and configuration.","Use inspection and logs before guessing at failures.","Inspect a container and identify its image and ports.")
+    if slug in {"react","flutter"}:
+        if _has(t,"component","widget","jsx","build"):
+            if slug=="react": return pack("function Component(props) { return UI }","function CourseCard({ title }) { return <article><h2>title</h2></article>; }","A CourseCard renders a title.","React components turn inputs and state into UI.","Add another prop.")
+            return pack("Widget build(BuildContext context) => Widget(...)","class CourseCard extends StatelessWidget {\n  final String title;\n  const CourseCard({super.key, required this.title});\n  @override Widget build(BuildContext context) => Text(title);\n}","A widget renders the title.","Flutter builds a widget tree from explicit inputs.","Add a subtitle.")
+        if _has(t,"state","context","hook","provider"): return pack("state = value / updateState(next)","const [done, setDone] = useState(false);\nsetDone(true);","State changes from false to true.","State updates should follow the framework model.","Add a reset action.")
+        if _has(t,"async","http","api","fetch","data"): return pack("async operation -> loading -> success/error","const response = await fetch('/api/courses');\nif (!response.ok) throw new Error('Request failed');\nconst data = await response.json();","The API response is parsed.","Network UI needs loading, success, empty and error states.","Add an error state.")
+        if _has(t,"accessibility","a11y","design system"): return pack("native control + accessible name + focus","<button type='button'>Mark complete</button>","A keyboard-operable button is rendered.","Prefer native accessible controls and consistent design tokens.","Test keyboard navigation.")
+        return pack("component(input) -> UI","const value = 'lesson concept';\nreturn <section>{value}</section>;","The lesson value is rendered.",f"This example is specific to the {lang} track and demonstrates the lesson through a small component.","Change the input.")
+    if slug=="bash-linux":
+        if _has(t,"permission","security","hardening"): return pack("chmod MODE FILE / chown USER:GROUP FILE","chmod 750 deploy.sh\nls -l deploy.sh","Owner execute permission is enabled.","Unix permissions are an access-control boundary.","Explain why 777 is usually inappropriate.")
+        if _has(t,"process","signal","job"): return pack("command & / jobs / kill PID","sleep 30 &\necho $!\njobs\nkill $!","A background process is started, identified and terminated.","Processes have IDs and lifecycle states; signals request actions.","Start two jobs and compare PIDs.")
+        if _has(t,"cron","automation"): return pack("minute hour day month weekday command","0 2 * * * /usr/local/bin/backup.sh","The backup runs daily at 02:00.","Scheduled jobs need absolute paths and useful failure logging.","Schedule a weekly job.")
+        if _has(t,"network","diagnostic","http"): return pack("curl URL / ss -lntp","curl -I https://example.com\nss -lnt","HTTP headers and listening sockets are displayed.","Network diagnosis separates connectivity, sockets, TLS and application errors.","Diagnose a refused connection.")
+        return pack("command [options] [arguments]","printf '%s\\n' 'lesson topic'\ncommand -v bash","The shell executes commands and resolves Bash.","Bash combines commands, variables, streams, exit codes and filesystem operations.","Turn this into a script with an argument.")
+    if slug=="r": return pack("name <- value / function(x) { ... }","scores <- c(72,91,64)\npassed <- scores[scores >= 70]\nprint(passed)","72 and 91 are selected.","R is vector-oriented and supports direct filtering.","Add a score and calculate mean(passed).")
+    if slug=="nodejs": return pack("const value = await operation()","import { readFile } from 'node:fs/promises';\nconst text = await readFile('course.txt','utf8');\nconsole.log(text);","The file contents are printed.","Node provides asynchronous runtime APIs; handle failures explicitly.","Wrap the operation in try/catch.")
+    snippets={
+      "php":("$name = value;","<?php echo " + '"Hello Maya";' + " ?>","Hello Maya","PHP runs server-side logic; validate external input.","Validate a query parameter."),
+      "ruby":("def name(arg) ... end","def greet(name)\n  'Hello ' + name\nend\nputs greet('Maya')","Hello Maya","Ruby methods return their final expression.","Add a keyword argument."),
+      "swift":("func name(_ value: Type) -> ReturnType","func greet(_ name: String) -> String { return " + '"Hello, "' + " + name }\nprint(greet(" + '"Maya"' + "))","Hello, Maya","Swift uses explicit types and value semantics.","Make the name optional."),
+      "kotlin":("fun name(parameter: Type): ReturnType","fun greet(name: String): String = " + '"Hello, "' + " + name\nprintln(greet(" + '"Maya"' + "))","Hello, Maya","Kotlin combines concise syntax with strong type contracts.","Handle a nullable name."),
+      "java":("ReturnType name(Type parameter) { ... }","static String greet(String name) { return " + '"Hello, "' + " + name; }\nSystem.out.println(greet(" + '"Maya"' + "));","Hello, Maya","Java methods declare types and run inside classes.","Add an integer parameter."),
+      "cpp":("ReturnType name(Type parameter) { ... }","std::string greet(const std::string& name) { return " + '"Hello, "' + " + name; }\nstd::cout << greet(" + '"Maya"' + ");","Hello, Maya","Modern C++ combines explicit types with ownership and lifetime rules.","Change the parameter to string_view."),
+      "csharp":("ReturnType Name(Type parameter) => expression;","static string Greet(string name) => " + '"Hello, "' + " + name;\nConsole.WriteLine(Greet(" + '"Maya"' + "));","Hello, Maya","C# combines static typing with concise modern syntax.","Handle a nullable value."),
+      "rust":("fn name(value: Type) -> ReturnType { ... }","fn greet(name: &str) -> String { format!(" + '"Hello, {}"' + ", name) }\nprintln!(" + '"{}"' + ", greet(" + '"Maya"' + "));","Hello, Maya","Rust makes ownership and borrowing explicit.","Return a Result for a fallible operation."),
+      "dart":("Type name(Type value) { ... }","String greet(String name) => " + "'Hello, ' + name;" + "\nprint(greet('Maya'));","Hello, Maya","Dart uses sound null safety and concise syntax.","Make the parameter nullable.")
+    }
+    if slug in snippets: return pack(*snippets[slug])
+    return pack(f"{lang} syntax for this lesson",f"// {lang} lesson: {t[:45]}\n// Write the smallest working example for this concept", "The lesson concept is demonstrated.",f"This example is generated for the {lang} course and tied to the current lesson topic.","Change the example and explain the result.")
 def example_for(slug, title, body=""):
     """Return a concrete example chosen from the lesson's actual content."""
     s = (slug or "").lower()
@@ -746,7 +785,7 @@ def example_for(slug, title, body=""):
     elif s in {"bash", "bash-linux", "linux"}:
         result = _bash(t)
     else:
-        result = None
+        result = _master_track(s, "Master Track", t)
 
     if result is None:
         # Other master tracks still get a lesson-specific example instead of a
