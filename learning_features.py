@@ -52,6 +52,29 @@ async function awardXP(n){{try{{await fetch("/api/feature/xp",{{method:"POST",he
 </script>'''
                     return shell("Code Playground","BUILD MODE","Experiment without leaving the platform. Use it to learn, test and prototype.",body)
 
+                @app.get("/saved")
+                def saved():
+                    u=current_user()
+                    if not u:return redirect("/login")
+                    con=mod.db(); rows=con.execute("SELECT title,href,created_at FROM bookmarks WHERE user_id=? ORDER BY created_at DESC",(u["id"],)).fetchall();con.close()
+                    body='<div class="grid" style="margin-top:28px">'+''.join(f'<a class="card" href="{html.escape(r["href"])}"><h3>{html.escape(r["title"] or "Saved item")}</h3><p>Saved for later · {html.escape(str(r["created_at"]))}</p></a>' for r in rows) or '<div class="card"><p>No saved items yet. Use the bookmark button on lessons.</p></div>'
+                    return shell("Saved Learning","YOUR LIBRARY","Keep lessons and resources you want to return to.",body+'</div>')
+
+                @app.get("/notes")
+                def notes():
+                    u=current_user()
+                    if not u:return redirect("/login")
+                    con=mod.db(); rows=con.execute("SELECT item_key,note,updated_at FROM learner_notes WHERE user_id=? ORDER BY updated_at DESC",(u["id"],)).fetchall();con.close()
+                    body='<div class="grid" style="margin-top:28px">'+''.join(f'<div class="card"><a class="eyebrow" href="{html.escape(r["item_key"])}">Open lesson</a><p>{html.escape(r["note"])}</p><small class="muted">{html.escape(str(r["updated_at"]))}</small></div>' for r in rows) or '<div class="card"><p>No notes yet. Add notes from any lesson.</p></div>'
+                    return shell("My Notes","YOUR NOTES","Keep your own explanations, reminders and questions attached to lessons.",body+'</div>')
+
+                @app.get("/continue")
+                def continue_learning():
+                    u=current_user()
+                    if not u:return redirect("/login")
+                    con=mod.db(); row=con.execute("SELECT href,title FROM learner_activity WHERE user_id=? ORDER BY seen_at DESC LIMIT 1",(u["id"],)).fetchone(); con.close()
+                    return redirect(row["href"] if row else "/courses")
+
                 @app.get("/visualizer")
                 def visualizer():
                     body='''<div class="grid" style="margin-top:28px">
@@ -197,12 +220,14 @@ const problems={json.dumps(problems,separators=(",",":"))};let pi=Math.floor(Mat
                 old_layout=layout
                 def upgraded_layout(content,title="EaseWithPy",description=None):
                     base=old_layout(content,title)
-                    base=base.replace('<div class="navlinks">','<div class="navlinks"><a href="/playground">Playground</a><a href="/practice-lab">Practice Lab</a><a href="/visualizer">Visualize</a><a href="/projects">Projects</a>',1)
+                    base=base.replace('<div class="navlinks">','<div class="navlinks"><a href="/playground">Playground</a><a href="/practice-lab">Practice Lab</a><a href="/visualizer">Visualize</a><a href="/projects">Projects</a><a href="/saved">Saved</a>',1)
                     base=base.replace('</head>','<style>.feature-shell{padding-bottom:80px}.labtoolbar{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}.labtoolbar select{background:#0d0d0d;color:#fff;border:1px solid #292929;border-radius:10px;padding:10px}.leader-row{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:14px;border-bottom:1px solid #292929}.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.badge-card{padding:20px;border:1px solid #292929;border-radius:16px;background:#0d0d0d}.badge-card.unlocked{border-color:#777}.badge-icon{font-size:28px;margin-bottom:12px}.viz{min-height:100px;padding:18px;background:#080808;border:1px solid #292929;border-radius:12px;margin:14px 0;display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}.vizbox{display:inline-flex;padding:10px 14px;border:1px solid #444;border-radius:8px;background:#151515}.vizbar{display:inline-flex;width:34px;min-height:20px;background:#aaa;color:#000;align-items:flex-end;justify-content:center;border-radius:5px 5px 0 0}.cmd-overlay{position:fixed;inset:0;background:#000a;z-index:9999;padding:12vh 5vw}.cmd{max-width:720px;margin:auto;background:#0d0d0d;border:1px solid #444;border-radius:18px;padding:14px;box-shadow:0 30px 100px #000}.cmd input{width:100%;background:#080808;color:#fff;border:1px solid #333;border-radius:10px;padding:15px}.cmd a{display:flex;justify-content:space-between;padding:13px;border-radius:9px}.cmd a:hover{background:#181818}.cmd small{color:#888}.searchbox{margin-top:25px}.kbd,kbd{border:1px solid #444;border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:#111;color:#ddd}@media(max-width:800px){.badge-grid{grid-template-columns:1fr}.leader-row{grid-template-columns:45px 1fr auto}.labtoolbar>*{flex:1}.feature-shell{padding-top:25px}}</style></head>',1)
                     base=base.replace('</body>','''<div id="cmd" class="cmd-overlay" hidden><div class="cmd"><input id="cmdq" placeholder="⌘K · Search EaseWithPy"><div id="cmdr"></div></div></div><script>
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();const x=document.getElementById("cmd");if(x){x.hidden=false;document.getElementById("cmdq").focus()}}if(e.key==="Escape"){const x=document.getElementById("cmd");if(x)x.hidden=true}});
 const cq=document.getElementById("cmdq");if(cq)cq.oninput=async()=>{const q=cq.value.trim();if(!q)return;const z=await fetch("/api/feature/search?q="+encodeURIComponent(q)).then(r=>r.json());document.getElementById("cmdr").innerHTML=z.results.slice(0,8).map(x=>'<a href="'+x.href+'"><b>'+x.title+'</b><small>'+x.kind+'</small></a>').join("")};
+if(location.pathname.startsWith("/learn/")){const key=location.pathname;const box=document.createElement("div");box.className="card";box.style.margin="22px 0";box.innerHTML='<div class="actions"><button id="saveLesson" class="btn">☆ Save lesson</button><a class="btn" href="/notes">My notes</a></div><textarea id="lessonNote" placeholder="Write a private note for this lesson…"></textarea><div id="noteStatus" class="hint" style="margin-top:7px"></div>';const main=document.querySelector("main");if(main)main.prepend(box);const save=document.getElementById("saveLesson"),note=document.getElementById("lessonNote");save.onclick=async()=>{const r=await fetch("/api/feature/bookmark",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({csrf:"{html.escape(str(mod.csrf()))}",key:key,title:document.title.replace(" · LearnPython",""),href:key})});save.textContent=r.ok?"★ Saved":"Log in to save"};note.addEventListener("blur",async()=>{const r=await fetch("/api/feature/note",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({csrf:"{html.escape(str(mod.csrf()))}",key:key,note:note.value})});document.getElementById("noteStatus").textContent=r.ok?"Note saved.":"Log in to save notes"});fetch("/api/feature/library").then(r=>r.ok?r.json():null).then(z=>{if(z){const n=z.notes.find(x=>x.item_key===key);if(n)note.value=n.note;const b=z.bookmarks.find(x=>x.item_key===key);if(b)save.textContent="★ Saved"}}).catch(()=>{})}
+
 document.querySelectorAll('a[href^="/learn/"],a[href^="/course/"]').forEach(a=>a.addEventListener("click",()=>fetch("/api/feature/activity",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({csrf:"{html.escape(str(mod.csrf()))}",key:a.getAttribute("href"),title:a.textContent.trim(),href:a.getAttribute("href")})}).catch(()=>{})));
 </script></body>''',1)
                     return base
