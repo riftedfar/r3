@@ -83,7 +83,7 @@ def valid_email(email):
     # Server-side validation only; browser attributes are convenience, not security.
     if not isinstance(email, str) or len(email) > 254 or any(ord(ch) < 32 for ch in email):
         return False
-    return bool(re.fullmatch(r"[^@\\s]{1,64}(?:\\.[^@\\s]{1,64})*@[^@\\s]{1,255}(?:\\.[^@\\s]{1,63})+", email))
+    return bool(re.fullmatch(r"[^@\s]{1,64}(?:\.[^@\s]{1,64})*@[^@\s]{1,255}(?:\.[^@\s]{1,63})+", email))
 
 def valid_name(name):
     if not isinstance(name, str):
@@ -91,7 +91,7 @@ def valid_name(name):
     name = unicodedata.normalize("NFKC", name).strip()
     if not 2 <= len(name) <= 80 or any(ord(ch) < 32 for ch in name):
         return False
-    return bool(re.fullmatch(r"[\\w .\\-']+", name, flags=re.UNICODE)) and any(ch.isalpha() for ch in name)
+    return bool(re.fullmatch(r"[\w .\-']+", name, flags=re.UNICODE)) && any(ch.isalpha() for ch in name)
 
 def valid_password(password):
     if not isinstance(password, str) or not 12 <= len(password) <= 128:
@@ -458,7 +458,7 @@ def register():
             return generic_error("We couldn't create your account. Check the information you entered and try again.",400)
         try:
             con=db()
-            cur=con.execute("INSERT INTO users(email,name,password) VALUES(?,?,?)",(email,name,generate_password_hash(pw)))
+            cur=con.execute("INSERT INTO users(email,name,password) VALUES(?,?,?)",(email,name,generate_password_hash(pw, method="scrypt")))
             con.commit()
             uid=cur.lastrowid
             con.close()
