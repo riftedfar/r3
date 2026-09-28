@@ -43,7 +43,7 @@ def _python(t):
             'name = "Maya"\nscore = 95\nprint("Player:", name)\nprint("Score:", score)',
             "Player: Maya\nScore: 95",
             "print() converts its arguments to text and writes them to standard output. Multiple arguments are separated by a space by default.",
-            "Try sep=" | " and predict the new output."
+            'Try sep=" | " and predict the new output.'
         )
     if _has(t, "comment", "comments"):
         return pack(
@@ -407,7 +407,7 @@ def _python(t):
         )
     if _has(t, "environment variable", "environment variables", "configuration", "config"):
         return pack(
-            "os.getenv("NAME", default)",
+            'os.getenv("NAME", default)',
             'import os\nport = int(os.getenv("PORT", "8000"))\ndebug = os.getenv("DEBUG", "false").lower() == "true"\nprint(port, debug)',
             "8000 False",
             "Environment variables keep deployment-specific configuration outside source code. Defaults make local development predictable.",
@@ -419,7 +419,7 @@ def _python(t):
             'import re\ntext = "Lesson ID: PY-042"\nmatch = re.search(r"PY-(\\d+)", text)\nprint(match.group(1))',
             "042",
             "A regular expression describes text patterns. Capture groups let you extract a specific part of a match.",
-            "Extract an ID from "Course AI-17"."
+            'Extract an ID from "Course AI-17".'
         )
     if _has(t, "profil", "performance", "optimization", "cache", "caching"):
         return pack(
@@ -455,7 +455,7 @@ def _python(t):
         )
     if _has(t, "flask", "route", "web app", "web security", "csrf", "session", "cookie", "rest api", "background job"):
         return pack(
-            "@app.route("/path", methods=["GET"])",
+            '@app.route("/path", methods=["GET"])',
             'from flask import Flask, jsonify\napp = Flask(__name__)\n\n@app.get("/api/lessons/<int:number>")\ndef lesson(number):\n    return jsonify(number=number, title="Loops")',
             '{"number": 8, "title": "Loops"}',
             "A web route maps an HTTP request to application logic. Production APIs should validate input, authenticate protected actions, and return consistent response shapes.",
@@ -483,7 +483,7 @@ def _javascript(t):
         )
     if _has(t, "event", "events", "click", "form"):
         return pack(
-            "element.addEventListener("event", handler)",
+            'element.addEventListener("event", handler)',
             'const button = document.querySelector("#start");\nbutton.addEventListener("click", () => {\n  console.log("Course started");\n});',
             "Course started",
             "Event listeners connect browser actions to JavaScript functions. For forms, preventDefault() can stop an unwanted navigation while validation runs.",
@@ -539,7 +539,7 @@ def _javascript(t):
         )
     if _has(t, "module", "modules", "import", "export"):
         return pack(
-            "export function name() {}\nimport { name } from "./module.js";",
+            'export function name() {}\nimport { name } from "./module.js";',
             '// progress.js\nexport function percent(done, total) {\n  return Math.round(done / total * 100);\n}',
             "A reusable percent() function can be imported.",
             "ES modules split code into explicit dependencies. Small module boundaries make browser projects easier to maintain.",
