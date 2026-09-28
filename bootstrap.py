@@ -32,3 +32,7 @@ academy_expansion.install()
 # Advanced learner features: playground, labs, progression, saved lessons, notes, offline mode and utilities.
 import learning_features
 learning_features.install()
+
+# Final learning layer: lesson challenges, real-world context, skill mastery and adaptive recommendations.
+import learning_extras
+learning_extras.install()
