@@ -175,7 +175,7 @@ def install():
                 complete=(f'<button id="done" class="btn primary" onclick="doneLesson()">{"✓ Completed" if done else "✓ Complete lesson"}</button>' if u else '<a class="btn" href="/login">Log in to save progress</a>')
                 nxt=f'<a class="btn primary" href="/learn/{slug}/{n+1}">Next lesson →</a>' if n<len(c["lessons"]) else '<a class="btn primary" href="/courses/'+slug+'">Course complete →</a>'
                 js=f'''<script>async function doneLesson(){{const r=await fetch("/api/course-progress/{slug}/{n}",{{method:"POST",headers:{{"Content-Type":"application/json"}},body:JSON.stringify({{csrf:"{html.escape(str(mod.csrf()))}"}})}});if(r.ok){{document.getElementById("done").textContent="✓ Completed";document.getElementById("done").disabled=true}}}}</script>'''
-                return L(f'<section class="section"><a class="hint" href="/courses/{slug}">← {html.escape(c["title"])}</a><div style="margin-top:30px" class="eyebrow">{html.escape(c["tag"])} · LESSON {n}/{len(c["lessons"])}</div><h1 style="font-size:clamp(42px,6vw,68px)"> {html.escape(item["title"])}</h1><div class="card" style="margin-bottom:16px">{safe}</div><div class="actions"><a class="btn" href="/courses/{slug}">Course index</a>{complete}{nxt}</div></section>{js}',f'{item["title"]} · {c["title"]}')
+                return L(f'<section class="section"><a class="hint" href="/course/{slug}">← {html.escape(c["title"])}</a><div style="margin-top:30px" class="eyebrow">{html.escape(c["tag"])} · LESSON {n}/{len(c["lessons"])}</div><h1 style="font-size:clamp(42px,6vw,68px)"> {html.escape(item["title"])}</h1><div class="card" style="margin-bottom:16px">{safe}</div><div class="actions"><a class="btn" href="/courses/{slug}">Course index</a>{complete}{nxt}</div></section>{js}',f'{item["title"]} · {c["title"]}')
 
             def save_progress(slug,n):
                 u=mod.user(); c=next((x for x in EXTRA if x["slug"]==slug),None)
@@ -191,8 +191,8 @@ def install():
             app.view_functions["dashboard"]=dashboard
             app.view_functions["login"]=login
             app.view_functions["register"]=register
-            if "course_overview" not in app.view_functions:
-                app.add_url_rule("/courses/<slug>",endpoint="course_overview",view_func=course_overview,methods=["GET"])
+            if "course_overview_v2" not in app.view_functions:
+                app.add_url_rule("/course/<slug>",endpoint="course_overview_v2",view_func=course_overview,methods=["GET"])
             if "extra_course_lesson" in app.view_functions:
                 app.view_functions["extra_course_lesson"]=extra_lesson
             else:
