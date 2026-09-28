@@ -303,6 +303,18 @@ def render_lesson_body(body):
             else:
                 out.append('<h3 class="lessonsection">' + html.escape(s) + '</h3>')
             i += 1; continue
+        if s.startswith("DIAGRAM:"):
+            flush_para()
+            raw_flow=s.split(":",1)[1].strip()
+            nodes=[x.strip() for x in raw_flow.split("→") if x.strip()]
+            if nodes:
+                parts=[]
+                for idx,node in enumerate(nodes):
+                    parts.append('<span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border:1px solid #333;border-radius:12px;background:#111;color:#eee;text-align:center;max-width:190px">'+html.escape(node)+'</span>')
+                    if idx < len(nodes)-1:
+                        parts.append('<b style="color:#888;padding:0 6px;font-size:20px">→</b>')
+                out.append('<div style="margin:18px 0;padding:16px;border:1px solid #222;border-radius:16px;background:#080808"><div class="eyebrow" style="margin-bottom:10px">HOW IT WORKS</div><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px">'+''.join(parts)+'</div></div>')
+            i += 1; continue
         if s == "OUTPUT":
             flush_para(); vals=[]; i+=1
             while i < len(lines):
