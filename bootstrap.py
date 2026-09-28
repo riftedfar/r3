@@ -14,7 +14,9 @@ platform_upgrade.install()
 
 # SEO, crawl directives, social metadata, and custom 404.
 import seo_routes
-from additional_courses import COURSES as EXTRA_COURSES
+from additional_courses import COURSES as LEGACY_EXTRA_COURSES
+from course_registry import extra_courses
+EXTRA_COURSES = extra_courses(sys.modules["app"].COURSE, LEGACY_EXTRA_COURSES)
 
 def seo_courses():
     py={"slug":"python","title":"Python","tag":"PYTHON","description":"The complete Python learning path.","lessons":sys.modules["app"].COURSE,"href":"/courses/python"}
