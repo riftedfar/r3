@@ -19,7 +19,7 @@ def load_courses(python_course,legacy_courses):
     root=Path(__file__).resolve().parent/"courses"
     out=[]
     for slug in LEGACY:
-        course=python_course if slug=="python" else next((c for c in legacy_courses if c.get("slug")==slug),None)
+        course=({"slug":"python","title":"Python","tag":"PYTHON","description":"The complete Python learning path.","lessons":python_course} if slug=="python" else next((c for c in legacy_courses if c.get("slug")==slug),None))
         if course:
             course=dict(course)
             course["course_file"]="courses/legacy_"+slug+".py"
