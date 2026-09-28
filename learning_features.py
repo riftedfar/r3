@@ -1,5 +1,5 @@
 """EaseWithPy learning-platform features: interactive labs, progression, social practice and learner utilities."""
-import html, json, time
+import html, json, time, threading
 
 def install():
     def boot():
