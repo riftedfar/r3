@@ -91,7 +91,7 @@ def valid_name(name):
     name = unicodedata.normalize("NFKC", name).strip()
     if not 2 <= len(name) <= 80 or any(ord(ch) < 32 for ch in name):
         return False
-    return bool(re.fullmatch(r"[\w .\-']+", name, flags=re.UNICODE)) && any(ch.isalpha() for ch in name)
+    return bool(re.fullmatch(r"[\w .\-']+", name, flags=re.UNICODE)) and any(ch.isalpha() for ch in name)
 
 def valid_password(password):
     if not isinstance(password, str) or not 12 <= len(password) <= 128:
