@@ -58,3 +58,7 @@ COURSES=[
 
 # Add deeper modules and additional tracks after the original curriculum.
 COURSES=extend_courses(COURSES)
+
+# Master-track expansion: each new course runs Beginner → Intermediate → Advanced → Master.
+from master_curriculum import COURSES as MASTER_COURSES
+COURSES.extend(MASTER_COURSES)
