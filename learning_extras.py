@@ -86,6 +86,23 @@ def install():
                         challenge=challenge_for(title,c["title"])
                     )
 
+                @app.post("/api/lesson-challenge")
+                def lesson_challenge():
+                    u=mod.user()
+                    if not u: return jsonify(error="login_required"),401
+                    d=request.get_json(silent=True) or {}
+                    if not mod.secrets.compare_digest(str(d.get("csrf","")),str(mod.session.get("csrf",""))):
+                        return jsonify(error="csrf"),400
+                    slug=str(d.get("slug",""))[:80]; n=int(d.get("n",0) or 0)
+                    c,l=find_lesson(slug,n)
+                    if not c: return jsonify(error="not_found"),404
+                    con=mod.db()
+                    row=con.execute("SELECT xp FROM learner_meta WHERE user_id=?",(u["id"],)).fetchone()
+                    if row: con.execute("UPDATE learner_meta SET xp=xp+10,last_active=CURRENT_TIMESTAMP WHERE user_id=?",(u["id"],))
+                    else: con.execute("INSERT INTO learner_meta(user_id,xp,streak,last_active) VALUES(?,?,1,CURRENT_TIMESTAMP)",(u["id"],10))
+                    con.commit(); xp=int((row["xp"] if row else 0))+10; con.close()
+                    return jsonify(ok=True,xp=xp)
+
                 @app.get("/skills")
                 def skill_mastery():
                     u=mod.user()
