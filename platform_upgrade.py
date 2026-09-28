@@ -9,7 +9,9 @@ def install():
             time.sleep(0.25)
             continue
         try:
-            from additional_courses import COURSES as EXTRA
+            from additional_courses import COURSES as LEGACY_EXTRA
+            from course_registry import extra_courses
+            EXTRA = extra_courses(mod.COURSE, LEGACY_EXTRA)
             from lesson_teaching import enrich_lessons
             enrich_lessons(EXTRA)
             from flask import abort, redirect, request, jsonify, Response
@@ -201,7 +203,7 @@ def install():
                 app.add_url_rule("/api/course-progress/<slug>/<int:n>",endpoint="extra_course_progress",view_func=save_progress,methods=["POST"])
             mod.layout=layout
             app.layout=layout
-            print("[LearnPython] platform UI installed: course library + auth + dashboard")
+            print("[LearnPython] platform UI installed: modular course library + auth + dashboard")
             return
         except Exception as e:
             print("[LearnPython] platform install retry:",repr(e)); traceback.print_exc()
