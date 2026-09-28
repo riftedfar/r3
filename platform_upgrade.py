@@ -9,7 +9,7 @@ def install():
             time.sleep(0.25)
             continue
         try:
-            from additional_courses import COURSES as EXTRA
+            from additional_courses import COURSES as EXTRA\n            from lesson_teaching import enrich_lessons\n            enrich_lessons(EXTRA)
             from flask import abort, redirect, request, jsonify, Response
 
             def L(body, title="LearnPython"):
