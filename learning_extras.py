@@ -164,6 +164,35 @@ def install():
 .realworld h3{margin:0 0 7px}.challenge-status{margin-top:9px;color:#aaa}
 </style>'''
                     base=base.replace('</head>',style+'</head>',1)
+                    csrf_token=html.escape(str(mod.csrf()))
+                    script = """<script>
+if(location.pathname.startsWith("/learn/")){
+ const parts=location.pathname.split("/").filter(Boolean);
+ const slug=parts.length===2 ? "python" : parts[1];
+ const n=parts.length===2 ? Number(parts[1]) : Number(parts[2]);
+ if(Number.isFinite(n)){
+  fetch("/api/lesson-layer/"+encodeURIComponent(slug)+"/"+n).then(r=>r.ok?r.json():null).then(d=>{
+   if(!d)return;
+   const main=document.querySelector("main"); if(!main)return;
+   const box=document.createElement("div"); box.className="lesson-challenge";
+   box.innerHTML='<div class="eyebrow">TRY IT YOURSELF</div><h3>Put this lesson into practice</h3><div class="challenge-task">'+d.challenge+'</div><textarea id="lessonChallengeAttempt" placeholder="Write your attempt, code, commands, or explanation here…"></textarea><div class="actions"><button id="challengeDone" class="btn primary">✓ I attempted it</button><span id="challengeStatus" class="challenge-status"></span></div>';
+   const note=document.createElement("div"); note.className="realworld";
+   note.innerHTML='<div class="eyebrow">REAL WORLD</div><h3>'+d.context.heading+'</h3><p>'+d.context.text+'</p>';
+   const target=main.querySelector(".section"); if(target){target.appendChild(box);target.appendChild(note)}else{main.append(box,note)}
+   document.getElementById("challengeDone").onclick=async()=>{
+    const b=document.getElementById("challengeDone"),s=document.getElementById("challengeStatus");
+    if(!document.getElementById("lessonChallengeAttempt").value.trim()){s.textContent="Write an attempt first.";return}
+    try{
+     const r=await fetch("/api/lesson-challenge",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({csrf:"__TOKEN__",slug:slug,n:n})});
+     s.textContent=r.ok?"Challenge logged · +10 XP":"Log in to save challenge XP.";
+     if(r.ok)b.disabled=true;
+    }catch(e){s.textContent="Challenge attempted locally."}
+   };
+  }).catch(()=>{});
+ }
+}
+</script>""".replace("__TOKEN__",csrf_token)
+                    base=base.replace('</body>',script+'</body>',1)
                     return base
                 mod.layout=upgraded_layout
                 app.layout=upgraded_layout
