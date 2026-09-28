@@ -115,7 +115,7 @@ def _python(t):
             'items = []\nprint(bool(items))\nitems.append("lesson")\nprint(bool(items))',
             "False\nTrue",
             "Boolean contexts treat values such as empty lists as false and non-empty lists as true. bool() exposes that conversion explicitly.",
-            Test 0, 1, an empty string, hello, and None.
+            "Test 0, 1, an empty string, hello, and None."
         )
     if _has(t, "operator", "arithmetic"):
         return pack(
