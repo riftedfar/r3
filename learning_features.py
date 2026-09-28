@@ -52,6 +52,35 @@ async function awardXP(n){{try{{await fetch("/api/feature/xp",{{method:"POST",he
 </script>'''
                     return shell("Code Playground","BUILD MODE","Experiment without leaving the platform. Use it to learn, test and prototype.",body)
 
+                @app.get("/visualizer")
+                def visualizer():
+                    body='''<div class="grid" style="margin-top:28px">
+<div class="card"><div class="eyebrow">DATA STRUCTURES</div><h2>Stack / Queue</h2><div id="ds" class="viz"></div><div class="actions"><button class="btn" onclick="pushV()">Push</button><button class="btn" onclick="popV()">Pop</button><button class="btn" onclick="enqueue()">Enqueue</button><button class="btn" onclick="dequeue()">Dequeue</button></div></div>
+<div class="card"><div class="eyebrow">ALGORITHM</div><h2>Bubble sort</h2><div id="sort" class="viz"></div><button class="btn primary" onclick="sortV()">Animate sort</button></div>
+</div><div class="card" style="margin-top:18px"><div class="eyebrow">EXECUTION VISUALIZER</div><h2>Step through a loop</h2><pre id="exec" class="output">Press Step to execute the next iteration.</pre><button class="btn primary" onclick="stepV()">Step</button><button class="btn" onclick="resetV()">Reset</button></div>
+<script>
+let stack=[3,7,2],queue=[1,4,8],arr=[5,2,9,1,6],step=0;function draw(){ds.innerHTML="<b>Stack:</b> "+stack.map(x=>"<span class='vizbox'>"+x+"</span>").join("")+"<br><b>Queue:</b> "+queue.map(x=>"<span class='vizbox'>"+x+"</span>").join("");sort.innerHTML=arr.map(x=>"<span class='vizbar' style='height:"+Math.max(20,x*14)+"px'>"+x+"</span>").join("")}function pushV(){stack.push(Math.floor(Math.random()*9)+1);draw()}function popV(){stack.pop();draw()}function enqueue(){queue.push(Math.floor(Math.random()*9)+1);draw()}function dequeue(){queue.shift();draw()}function sortV(){arr.sort((a,b)=>a-b);draw()}function stepV(){step++;exec.textContent="for i in range(3):\\n  i = "+((step-1)%3)+"\\n  print(i)\\n\\nCurrent step: "+step}function resetV(){step=0;exec.textContent="Press Step to execute the next iteration."}draw();
+</script>'''
+                    return shell("Visual Learning Lab","SEE THE CONCEPT","Interact with stacks, queues, sorting and program execution instead of only reading about them.",body)
+
+                @app.get("/practice-lab")
+                def practice_lab():
+                    problems=[
+                        ("Python","Variables","Create a variable called score with the value 100 and print it."),
+                        ("Python","Lists","Create a list of three languages and print the second item."),
+                        ("Python","Loops","Use a loop to print the numbers 1 through 5."),
+                        ("Python","Functions","Write a function named greet that accepts a name and returns a greeting."),
+                        ("SQL","Filtering","Write a query that selects rows where active equals 1."),
+                        ("JavaScript","Arrays","Create an array of three numbers and print the first one."),
+                        ("Git","Commits","Write the command that records staged changes with the message 'first commit'."),
+                        ("Web","HTML","Create a button whose visible text is 'Start'.")
+                    ]
+                    body=f'''<div class="card"><div class="stats"><span id="pcat"></span><span id="ptopic"></span><span id="pnum"></span></div><h2 id="prompt"></h2><textarea id="attempt" placeholder="Write your solution or explain your approach…"></textarea><div class="actions"><button class="btn primary" id="newp">New problem</button><button class="btn" id="hint">Hint</button><button class="btn" id="answer">Show answer</button></div><div id="feedback" class="notice" style="display:none"></div></div>
+<script>
+const problems={json.dumps(problems,separators=(",",":"))};let pi=Math.floor(Math.random()*problems.length);function drawP(){{const p=problems[pi];pcat.textContent=p[0];ptopic.textContent=p[1];pnum.textContent="Problem "+(pi+1)+" / "+problems.length;prompt.textContent=p[2];attempt.value="";feedback.style.display="none"}}newp.onclick=()=>{{pi=Math.floor(Math.random()*problems.length);drawP()}};hint.onclick=()=>{{feedback.textContent="Hint: identify the exact syntax or operation the prompt is asking for, then test the smallest working version.";feedback.style.display="block"}};answer.onclick=()=>{{feedback.textContent="Open the relevant lesson and implement the smallest solution yourself before comparing with a reference.";feedback.style.display="block"}};drawP();
+</script>'''
+                    return shell("Practice Generator","ACTIVE RECALL","Generate a different small problem, attempt it yourself, then use the lesson material to verify your approach.",body)
+
                 @app.get("/interview")
                 def interview():
                     qs=[("Python","What is the difference between a list and a tuple?","Lists are mutable; tuples are immutable."),("Python","What does a dictionary map?","Keys to values."),("Web","What does HTTP 404 mean?","The requested resource was not found."),("SQL","Why use a parameterized query?","It separates data from SQL syntax and reduces injection risk."),("Git","What does a commit represent?","A recorded snapshot of staged changes."),("JavaScript","What is a Promise?","An object representing the eventual result of an asynchronous operation."),("Systems","What is caching used for?","To reuse stored results and reduce repeated work or latency."),("Security","What is authentication?","Verifying identity; authorization decides what it may do.")]
@@ -168,7 +197,8 @@ async function awardXP(n){{try{{await fetch("/api/feature/xp",{{method:"POST",he
                 old_layout=layout
                 def upgraded_layout(content,title="EaseWithPy",description=None):
                     base=old_layout(content,title)
-                    base=base.replace('<div class="navlinks">','<div class="navlinks"><a href="/playground">Playground</a><a href="/practice">Practice</a><a href="/projects">Projects</a>',1)
+                    base=base.replace('<div class="navlinks">','<div class="navlinks"><a href="/playground">Playground</a><a href="/practice-lab">Practice Lab</a><a href="/visualizer">Visualize</a><a href="/projects">Projects</a>',1)
+                    base=base.replace('</head>','<style>.feature-shell{padding-bottom:80px}.labtoolbar{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}.labtoolbar select{background:#0d0d0d;color:#fff;border:1px solid #292929;border-radius:10px;padding:10px}.leader-row{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:14px;border-bottom:1px solid #292929}.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.badge-card{padding:20px;border:1px solid #292929;border-radius:16px;background:#0d0d0d}.badge-card.unlocked{border-color:#777}.badge-icon{font-size:28px;margin-bottom:12px}.viz{min-height:100px;padding:18px;background:#080808;border:1px solid #292929;border-radius:12px;margin:14px 0;display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}.vizbox{display:inline-flex;padding:10px 14px;border:1px solid #444;border-radius:8px;background:#151515}.vizbar{display:inline-flex;width:34px;min-height:20px;background:#aaa;color:#000;align-items:flex-end;justify-content:center;border-radius:5px 5px 0 0}.cmd-overlay{position:fixed;inset:0;background:#000a;z-index:9999;padding:12vh 5vw}.cmd{max-width:720px;margin:auto;background:#0d0d0d;border:1px solid #444;border-radius:18px;padding:14px;box-shadow:0 30px 100px #000}.cmd input{width:100%;background:#080808;color:#fff;border:1px solid #333;border-radius:10px;padding:15px}.cmd a{display:flex;justify-content:space-between;padding:13px;border-radius:9px}.cmd a:hover{background:#181818}.cmd small{color:#888}.searchbox{margin-top:25px}.kbd,kbd{border:1px solid #444;border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:#111;color:#ddd}@media(max-width:800px){.badge-grid{grid-template-columns:1fr}.leader-row{grid-template-columns:45px 1fr auto}.labtoolbar>*{flex:1}.feature-shell{padding-top:25px}}</style></head>',1)
                     base=base.replace('</body>','''<div id="cmd" class="cmd-overlay" hidden><div class="cmd"><input id="cmdq" placeholder="⌘K · Search EaseWithPy"><div id="cmdr"></div></div></div><script>
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();const x=document.getElementById("cmd");if(x){x.hidden=false;document.getElementById("cmdq").focus()}}if(e.key==="Escape"){const x=document.getElementById("cmd");if(x)x.hidden=true}});
