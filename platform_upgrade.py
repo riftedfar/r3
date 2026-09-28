@@ -139,7 +139,7 @@ def install():
                     if not mod.valid_email(email) or len(pw)>128: return L('<div class="form"><div class="eyebrow">LOGIN</div><h1>That did not work.</h1><p>Check your email and password and try again.</p><a class="btn primary" href="/login">Try again</a></div>',"Log in")
                     if not mod.rate_limit("login:"+request.remote_addr+":"+email,8,600): return L('<div class="form"><div class="eyebrow">SLOW DOWN</div><h1>Too many tries.</h1><p>Wait a few minutes and try again.</p></div>',"Log in")
                     con=mod.db(); u=con.execute("SELECT * FROM users WHERE email=?",(email,)).fetchone(); con.close()
-                    if not u or not mod.check_password_hash(u["password"],pw): return L('<div class="form"><div class="eyebrow">LOGIN</div><h1>Wrong details.</h1><p>The email or password was not accepted.</p><a class="btn primary" href="/login">Try again</a></div>',"Log in")
+                    if not u or not mod.verify_password(u["password"],pw): return L('<div class="form"><div class="eyebrow">LOGIN</div><h1>That did not work.</h1><p>We could not sign you in. Check your details and try again.</p><a class="btn primary" href="/login">Try again</a></div>',"Log in")
                     mod.session.clear(); mod.session["uid"]=u["id"]; mod.session["csrf"]=mod.secrets.token_urlsafe(24)
                     return redirect("/dashboard")
                 return L(f'<form class="form" method="post" autocomplete="on"><div class="eyebrow">WELCOME BACK</div><h1>Log in.</h1><p>Pick up exactly where you left off.</p><input type="hidden" name="csrf" value="{html.escape(str(mod.csrf()))}"><label>Email</label><input type="email" name="email" autocomplete="email" required><label>Password</label><input type="password" name="password" autocomplete="current-password" required><button>Log in →</button><p class="hint">No account? <a href="/register" style="color:#fff">Create one free.</a></p></form>',"Log in")
@@ -150,10 +150,10 @@ def install():
                     mod.require_csrf()
                     email=request.form.get("email","").strip().lower(); name=request.form.get("name","").strip(); pw=request.form.get("password",""); confirm=request.form.get("confirm_password","")
                     if not mod.rate_limit("register:"+request.remote_addr+":"+email,5,600): return L('<div class="form"><div class="eyebrow">SLOW DOWN</div><h1>Too many tries.</h1><p>Wait a few minutes and try again.</p></div>',"Create account")
-                    if len(name)<2 or len(name)>80 or not mod.valid_email(email) or len(pw)<12 or len(pw)>128 or pw!=confirm:
+                    if not mod.valid_name(name) or not mod.valid_email(email) or not mod.valid_password(pw) or pw!=confirm or request.form.get("age_confirm") != "1":
                         return L('<div class="form"><div class="eyebrow">CREATE ACCOUNT</div><h1>Check your details.</h1><p>Use a valid email, a 12–128 character password, and matching confirmation.</p><a class="btn primary" href="/register">Try again</a></div>',"Create account")
                     try:
-                        con=mod.db(); cur=con.execute("INSERT INTO users(email,name,password) VALUES(?,?,?)",(email,name,mod.generate_password_hash(pw))); con.commit(); uid=cur.lastrowid; con.close()
+                        con=mod.db(); cur=con.execute("INSERT INTO users(email,name,password) VALUES(?,?,?)",(email,name,mod.hash_password(pw))); con.commit(); uid=cur.lastrowid; con.close()
                         mod.session.clear(); mod.session["uid"]=uid; mod.session["csrf"]=mod.secrets.token_urlsafe(24)
                         return redirect("/dashboard")
                     except Exception:
