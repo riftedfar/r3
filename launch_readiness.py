@@ -241,6 +241,10 @@ document.getElementById("solution").onclick=()=>sol.style.display="block";
                 def privacy():
                     return legal("Privacy","PRIVACY","<h2>What we store</h2><p>Account details and learning activity are stored to provide accounts, progress tracking, saved items and related features. Exercise drafts may be saved when you are signed in.</p><h2>What you should not submit</h2><p>Do not submit passwords, payment credentials, government identifiers, or other sensitive information into lessons, notes, exercises or feedback.</p><h2>Control</h2><p>Use the account controls available on the platform to manage your account. Contact the site operator if you need help with an account or data request.</p>")
 
+                @app.get("/tos")
+                def tos():
+                    return terms()
+
                 @app.get("/terms")
                 def terms():
                     return legal("Terms of Use","TERMS","<h2>Use of the service</h2><p>Use EaseWithPy lawfully and do not attempt unauthorized access, abuse the service, interfere with other users, or upload malicious content.</p><h2>Educational content</h2><p>Examples are provided for learning. Test code and verify important technical or operational decisions before using them in production.</p><h2>Accounts</h2><p>You are responsible for keeping your account credentials secure and for activity performed through your account.</p>")
