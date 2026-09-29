@@ -221,7 +221,7 @@ const problems={json.dumps(problems,separators=(",",":"))};let pi=Math.floor(Mat
                 def upgraded_layout(content,title="EaseWithPy",description=None):
                     base=old_layout(content,title)
                     base=base.replace('<div class="navlinks">','<div class="navlinks"><a href="/playground">Playground</a><a href="/practice-lab">Practice Lab</a><a href="/visualizer">Visualize</a><a href="/projects">Projects</a><a href="/saved">Saved</a>',1)
-                    base=base.replace('</head>','<style>
+                    base=base.replace('</head>','''<style>
 .feature-shell{padding-bottom:80px;min-width:0}
 .labtoolbar{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}
 .labtoolbar select{background:#0d0d0d;color:#fff;border:1px solid #292929;border-radius:10px;padding:10px;min-width:150px}
