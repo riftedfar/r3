@@ -221,7 +221,112 @@ const problems={json.dumps(problems,separators=(",",":"))};let pi=Math.floor(Mat
                 def upgraded_layout(content,title="EaseWithPy",description=None):
                     base=old_layout(content,title)
                     base=base.replace('<div class="navlinks">','<div class="navlinks"><a href="/playground">Playground</a><a href="/practice-lab">Practice Lab</a><a href="/visualizer">Visualize</a><a href="/projects">Projects</a><a href="/saved">Saved</a>',1)
-                    base=base.replace('</head>','<style>.feature-shell{padding-bottom:80px}.labtoolbar{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}.labtoolbar select{background:#0d0d0d;color:#fff;border:1px solid #292929;border-radius:10px;padding:10px}.leader-row{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:14px;border-bottom:1px solid #292929}.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.badge-card{padding:20px;border:1px solid #292929;border-radius:16px;background:#0d0d0d}.badge-card.unlocked{border-color:#777}.badge-icon{font-size:28px;margin-bottom:12px}.viz{min-height:100px;padding:18px;background:#080808;border:1px solid #292929;border-radius:12px;margin:14px 0;display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}.vizbox{display:inline-flex;padding:10px 14px;border:1px solid #444;border-radius:8px;background:#151515}.vizbar{display:inline-flex;width:34px;min-height:20px;background:#aaa;color:#000;align-items:flex-end;justify-content:center;border-radius:5px 5px 0 0}.cmd-overlay{position:fixed;inset:0;background:#000a;z-index:9999;padding:12vh 5vw}.cmd{max-width:720px;margin:auto;background:#0d0d0d;border:1px solid #444;border-radius:18px;padding:14px;box-shadow:0 30px 100px #000}.cmd input{width:100%;background:#080808;color:#fff;border:1px solid #333;border-radius:10px;padding:15px}.cmd a{display:flex;justify-content:space-between;padding:13px;border-radius:9px}.cmd a:hover{background:#181818}.cmd small{color:#888}.searchbox{margin-top:25px}.kbd,kbd{border:1px solid #444;border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:#111;color:#ddd}@media(max-width:800px){.badge-grid{grid-template-columns:1fr}.leader-row{grid-template-columns:45px 1fr auto}.labtoolbar>*{flex:1}.feature-shell{padding-top:25px}}</style></head>',1)
+                    base=base.replace('</head>','<style>
+.feature-shell{padding-bottom:80px;min-width:0}
+.labtoolbar{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 12px}
+.labtoolbar select{background:#0d0d0d;color:#fff;border:1px solid #292929;border-radius:10px;padding:10px;min-width:150px}
+.leader-row{display:grid;grid-template-columns:60px minmax(0,1fr) auto;gap:12px;padding:14px;border-bottom:1px solid #292929;align-items:center}
+.badge-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.badge-card{padding:20px;border:1px solid #292929;border-radius:16px;background:#0d0d0d;min-width:0}
+.badge-card.unlocked{border-color:#777}.badge-icon{font-size:28px;margin-bottom:12px}
+.viz{min-height:100px;padding:18px;background:#080808;border:1px solid #292929;border-radius:12px;margin:14px 0;display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap;overflow:auto}
+.vizbox{display:inline-flex;padding:10px 14px;border:1px solid #444;border-radius:8px;background:#151515;flex:none}
+.vizbar{display:inline-flex;width:34px;min-height:20px;background:#aaa;color:#000;align-items:flex-end;justify-content:center;border-radius:5px 5px 0 0;flex:none}
+.cmd-overlay{position:fixed;inset:0;background:#000a;z-index:9999;padding:clamp(24px,12vh,120px) 5vw;overflow:auto}
+.cmd{max-width:720px;width:100%;margin:auto;background:#0d0d0d;border:1px solid #444;border-radius:18px;padding:14px;box-shadow:0 30px 100px #000}
+.cmd input{width:100%;background:#080808;color:#fff;border:1px solid #333;border-radius:10px;padding:15px;min-width:0}
+.cmd a{display:flex;justify-content:space-between;gap:12px;padding:13px;border-radius:9px;min-width:0}
+.cmd a:hover{background:#181818}.cmd small{color:#888}.searchbox{margin-top:25px}.kbd,kbd{border:1px solid #444;border-bottom-width:2px;border-radius:5px;padding:2px 6px;background:#111;color:#ddd}
+
+/* Shared responsive hardening */
+img,svg,video,canvas{max-width:100%;height:auto}
+iframe{max-width:100%;border:0}
+pre,code,.snippet,.output{max-width:100%;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+textarea{max-width:100%;width:100%;min-height:150px;resize:vertical}
+input,select,button,textarea{max-width:100%}
+.grid,.cgrid,.path,.statgrid,.badge-grid{min-width:0}
+.grid>* ,.cgrid>* ,.path>* ,.statgrid>* ,.badge-grid>*{min-width:0}
+.card,.coursecard,.coursehero,.banner,.form,.progress,.terminal{overflow-wrap:anywhere}
+.coursecard h3,.coursecard p,.lessonrow b,.card h2,.card h3{overflow-wrap:anywhere}
+.lessonrow{min-width:0}
+.lessonrow>span:nth-child(2){min-width:0}
+.actions{align-items:center}
+.actions .btn,.actions button{max-width:100%}
+.sectionhead{min-width:0}
+.sectionhead>div{min-width:0}
+.filters{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;scrollbar-width:thin}
+.filters .filter{flex:none;white-space:nowrap}
+.area-panel{max-height:min(78vh,620px);overflow:auto}
+.area-panel .area-link{display:flex!important}
+@media(max-width:850px){
+  .top{height:64px;padding:0 14px;gap:8px}
+  .nav{gap:5px;min-width:0}
+  .nav>a:not(.primary):not(.navbtn),.nav>form{display:none}
+  .nav>.area-menu{flex:none}
+  .nav>.navbtn,.nav>.primary{white-space:nowrap}
+  .logo{flex:none}
+  .hero{grid-template-columns:1fr;gap:28px;padding:48px 0 34px}
+  .hero .terminal{order:2}
+  .cgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .path{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .catalog,.dashgrid{grid-template-columns:1fr}
+  .side{position:static}
+  .banner{align-items:flex-start;flex-direction:column}
+  .section{padding:34px 0}
+  .shell{width:min(94vw,760px)}
+  .libraryhero{padding:38px 0 16px}
+  .coursehero{padding:22px}
+  .dash{padding:35px 0}
+  .statgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .badge-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .feature-shell{padding-top:25px}
+  .area-panel{right:-4px;width:min(360px,calc(100vw - 20px))}
+}
+@media(max-width:600px){
+  .top{padding:0 10px}
+  .logo{font-size:19px}
+  .nav>.navbtn{display:none}
+  .nav>.primary{padding:8px 10px;font-size:12px}
+  .area-trigger{padding:8px 10px;font-size:12px}
+  .area-panel{right:-2px;width:calc(100vw - 20px);max-width:calc(100vw - 20px)}
+  .area-grid{grid-template-columns:1fr}
+  .area-link{padding:10px!important}
+  .hero{padding:38px 0 28px}
+  .hero h1,h1{font-size:clamp(38px,11vw,54px)!important}
+  .hero p{font-size:16px}
+  .cgrid,.path,.badge-grid,.statgrid{grid-template-columns:1fr}
+  .coursecard{min-height:0;padding:18px}
+  .coursecard h3{font-size:23px}
+  .coursehero{padding:18px;border-radius:16px}
+  .coursehero .actions,.actions{width:100%}
+  .actions .btn,.actions button{width:auto;flex:1 1 auto}
+  .lessonrow{padding:12px;gap:10px}
+  .lessonrow small{display:none}
+  .num{width:32px;height:32px}
+  .sectionhead{align-items:flex-start;flex-direction:column}
+  .sectionhead>.btn{width:100%}
+  .filters{margin-right:-2px}
+  .libraryhero h1{font-size:clamp(38px,11vw,54px)!important}
+  .dashgrid{gap:12px}
+  .statgrid .stat strong{font-size:20px}
+  .labtoolbar{display:grid;grid-template-columns:1fr 1fr}
+  .labtoolbar select{grid-column:1/-1;width:100%}
+  .labtoolbar .btn{width:100%}
+  .leader-row{grid-template-columns:38px minmax(0,1fr) auto;gap:8px;padding:12px 8px}
+  .viz{padding:12px}
+  .cmd-overlay{padding:16px 10px}
+  .cmd{border-radius:14px;padding:10px}
+  .form{margin:35px auto 55px;padding:20px}
+  footer{padding:28px 5vw}
+}
+@media(min-width:851px){
+  .shell{width:min(1200px,92vw)}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:1200px){
+  .feature-shell{padding-top:55px}
+}
+</style></head>',1)
                     base=base.replace('</body>','''<div id="cmd" class="cmd-overlay" hidden><div class="cmd"><input id="cmdq" placeholder="⌘K · Search EaseWithPy"><div id="cmdr"></div></div></div><script>
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();const x=document.getElementById("cmd");if(x){x.hidden=false;document.getElementById("cmdq").focus()}}if(e.key==="Escape"){const x=document.getElementById("cmd");if(x)x.hidden=true}});
