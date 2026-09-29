@@ -83,16 +83,18 @@ def install():
                 @app.route("/projects")
                 def academy_projects():
                     projects = [
-                        ("01","CLI Task Manager","Build add/list/complete/delete commands, persist data, validate input and write tests."),
-                        ("02","Quiz Engine","Store questions, randomize a quiz, score answers and show a useful review."),
-                        ("03","Course Tracker","Track users, courses and completed lessons in a relational database."),
-                        ("04","REST API","Create CRUD endpoints with validation, authentication, authorization and structured errors."),
-                        ("05","Search Engine","Crawl a controlled dataset, normalize documents, build an inverted index and rank results."),
-                        ("06","AI Study Helper","Build retrieval, prompting, citations and a clear boundary around generated answers."),
-                        ("07","File Organizer","Classify files by extension, add dry-run mode, logs and safe collision handling."),
-                        ("08","Portfolio Site","Ship a responsive site with semantic HTML, CSS, JavaScript and SEO basics."),
+                        ("01","CLI Task Manager","Build add/list/complete/delete commands, persist data, validate input and write tests.",[("Python","python"),("Bash / Linux","bash-linux")]),
+                        ("02","Quiz Engine","Store questions, randomize a quiz, score answers and show a useful review.",[("Python","python")]),
+                        ("03","Course Tracker","Track users, courses and completed lessons in a relational database.",[("Python","python"),("PostgreSQL","postgresql"),("MySQL","mysql")]),
+                        ("04","REST API","Create CRUD endpoints with validation, authentication, authorization and structured errors.",[("FastAPI","fastapi"),("REST API Engineering","rest-api"),("Python","python")]),
+                        ("05","Search Engine","Crawl a controlled dataset, normalize documents, build an inverted index and rank results.",[("Python","python"),("Data Structures & Algorithms","dsa"),("Algorithms","algorithms")]),
+                        ("06","AI Study Helper","Build retrieval, prompting, citations and a clear boundary around generated answers.",[("AI","ai"),("Python","python")]),
+                        ("07","File Organizer","Classify files by extension, add dry-run mode, logs and safe collision handling.",[("Python","python"),("Bash / Linux","bash-linux")]),
+                        ("08","Portfolio Site","Ship a responsive site with semantic HTML, CSS, JavaScript and SEO basics.",[("HTML","html"),("CSS","css"),("JavaScript","javascript")]),
                     ]
-                    cards=''.join(f'<div class="card"><span class="eyebrow">{n}</span><h3>{html.escape(t)}</h3><p>{html.escape(d)}</p><div class="actions"><a class="btn" href="/courses/python">Get the skills →</a></div></div>' for n,t,d in projects)
+                    def project_links(skills):
+                        return ''.join(f'<a class="btn" href="/course/{html.escape(slug)}">{html.escape(name)} →</a>' for name,slug in skills)
+                    cards=''.join(f'<div class="card"><span class="eyebrow">{n}</span><h3>{html.escape(t)}</h3><p>{html.escape(d)}</p><div class="eyebrow" style="margin-top:14px">SKILLS USED</div><div class="actions">{project_links(skills)}</div></div>' for n,t,d,skills in projects)
                     body='<div class="grid" style="margin-top:28px">'+cards+'</div><div class="notice" style="margin-top:24px">Project rule: start with a tiny vertical slice. Make it work, test it, then expand.</div>'
                     return shell("Project Forge", "BUILD MODE", "Projects arranged from small practical builds to systems that force you to combine multiple engineering skills.", body)
 
