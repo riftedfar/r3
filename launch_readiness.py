@@ -8,6 +8,8 @@ import json
 import time
 import threading
 import traceback
+from collections import defaultdict, deque
+from urllib.parse import quote
 
 def install():
     def boot():
@@ -20,6 +22,18 @@ def install():
                     time.sleep(.25)
                     continue
                 from flask import request, jsonify, Response, redirect
+
+                rate_hits = defaultdict(deque)
+                def rate_ok(bucket, limit=12, window=60):
+                    key = (bucket, request.remote_addr or "unknown")
+                    now = time.time()
+                    q = rate_hits[key]
+                    while q and now - q[0] > window:
+                        q.popleft()
+                    if len(q) >= limit:
+                        return False
+                    q.append(now)
+                    return True
 
                 # Route installation is idempotent because Railway can reload/retry this module.
                 if "launch_autosave" in app.view_functions:
@@ -156,6 +170,8 @@ def install():
 
                 @app.post("/api/launch/exercise")
                 def exercise():
+                    if not rate_ok("exercise", 20):
+                        return jsonify(error="rate_limited"),429
                     u=user()
                     if not u:return jsonify(error="login_required"),401
                     d=request.get_json(silent=True) or {}
@@ -207,6 +223,8 @@ document.getElementById("solution").onclick=()=>sol.style.display="block";
 
                 @app.post("/api/launch/feedback")
                 def feedback():
+                    if not rate_ok("feedback", 8):
+                        return jsonify(error="rate_limited"),429
                     d=request.get_json(silent=True) or {}
                     if not csrf_ok(d):return jsonify(error="csrf"),400
                     key=str(d.get("item_key",""))[:255]
@@ -220,6 +238,8 @@ document.getElementById("solution").onclick=()=>sol.style.display="block";
 
                 @app.post("/api/launch/bug")
                 def bug():
+                    if not rate_ok("bug", 5):
+                        return jsonify(error="rate_limited"),429
                     d=request.get_json(silent=True) or {}
                     if not csrf_ok(d):return jsonify(error="csrf"),400
                     message=str(d.get("message","")).strip()[:4000]
@@ -233,6 +253,36 @@ document.getElementById("solution").onclick=()=>sol.style.display="block";
                 def contact():
                     csrf=html.escape(str(mod.csrf()))
                     return layout(f'''<section class="section feature-shell"><div class="eyebrow">CONTACT</div><h1>Tell us what needs fixing.</h1><p>Found a broken lesson, confusing explanation, or UI problem? Send a report directly from here.</p><div class="card launch-form"><label>Category</label><select id="cat"><option>Bug</option><option>Lesson issue</option><option>Content error</option><option>Suggestion</option><option>Other</option></select><label>What happened?</label><textarea id="msg" maxlength="4000" placeholder="Describe the problem clearly…"></textarea><button class="btn primary" id="send">Send report</button><div id="status" class="notice" style="display:none"></div></div></section><script>send.onclick=async()=>{{const m=msg.value.trim();if(!m){{status.textContent="Please describe the issue.";status.style.display="block";return}};const r=await fetch("/api/launch/bug",{{method:"POST",headers:{{"Content-Type":"application/json"}},body:JSON.stringify({{csrf:"{csrf}",category:cat.value,message:m,page_url:location.href}})}});status.textContent=r.ok?"Report received. Thanks.":"Could not send the report.";status.style.display="block";if(r.ok)msg.value=""}};</script>''',"Contact","Report a problem or contact EaseWithPy")
+
+                @app.get("/robots.txt", endpoint="launch_robots")
+                def robots():
+                    return Response(
+                        "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\nSitemap: https://easewithpy.de5.net/sitemap.xml\n",
+                        mimetype="text/plain"
+                    )
+
+                @app.get("/sitemap.xml", endpoint="launch_sitemap")
+                def sitemap():
+                    base = "https://easewithpy.de5.net"
+                    urls = [
+                        "/", "/courses", "/academy", "/practice", "/projects",
+                        "/challenges", "/cheatsheets", "/glossary", "/exercises",
+                        "/playground", "/practice-lab", "/interview", "/battles",
+                        "/leaderboard", "/achievements", "/timed", "/search",
+                        "/contact", "/about", "/terms", "/privacy", "/disclaimer"
+                    ]
+                    try:
+                        from course_registry import extra_courses
+                        from additional_courses import COURSES as legacy
+                        all_courses = [{"slug":"python"}] + extra_courses(mod.COURSE, legacy)
+                        urls += ["/course/" + quote(str(x["slug"]), safe="") for x in all_courses]
+                    except Exception:
+                        urls += ["/course/python"]
+                    xml = '<?xml version="1.0" encoding="UTF-8"?>'
+                    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                    xml += "".join(f"<url><loc>{html.escape(base+u)}</loc></url>" for u in dict.fromkeys(urls))
+                    xml += "</urlset>"
+                    return Response(xml, mimetype="application/xml")
 
                 # The base app already owns /terms, /privacy and /disclaimer.
                 # Only add the convenient /tos alias if it is not already registered.
@@ -263,13 +313,47 @@ document.getElementById("solution").onclick=()=>sol.style.display="block";
                 original_layout=layout
                 def launch_layout(content,title="",description=""):
                     page=original_layout(content,title,description)
+                    safe_title = html.escape(str(title or "EaseWithPy"))
+                    safe_desc = html.escape(str(description or "Learn programming through practical, interactive courses and projects."))
+                    canonical = html.escape("https://easewithpy.de5.net" + request.path)
+                    seo = f'''<meta name="description" content="{safe_desc}">
+<link rel="canonical" href="{canonical}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{safe_title}">
+<meta property="og:description" content="{safe_desc}">
+<meta property="og:url" content="{canonical}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{safe_title}">
+<meta name="twitter:description" content="{safe_desc}">'''
+                    page=page.replace("</head>",seo+"</head>",1)
                     marker='<a class="launch-nav-link" href="/exercises">Exercises</a>'
                     if marker not in page and "</nav>" in page:
                         page=page.replace("</nav>",marker+"</nav>",1)
                     style='''<style>
-.launch-intro{max-width:800px;font-size:18px}.launch-grid{margin-top:28px}.launch-exercise-card{display:flex;flex-direction:column;gap:8px}.launch-exercise-card .btn{align-self:flex-start}.launch-exercise{max-width:900px}.launch-exercise textarea,.launch-form textarea{min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.launch-form{max-width:760px;display:grid;gap:10px}.launch-form label{margin-top:8px}.legal-page{max-width:900px}.error-page{text-align:center;padding-top:100px;padding-bottom:120px}.error-page p{max-width:700px;margin:0 auto 24px}.launch-nav-link{margin-left:10px}
+.launch-intro{max-width:800px;font-size:18px}
+.launch-skip{position:fixed;left:14px;top:-80px;z-index:9999;padding:10px 14px;border-radius:10px;background:#fff;color:#000;font-weight:700;text-decoration:none;transition:top .15s}
+.launch-skip:focus{top:14px}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+button,.btn,a,input,select,textarea{touch-action:manipulation}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+@media(max-width:850px){.launch-form,.launch-exercise{width:100%;max-width:100%;box-sizing:border-box}.launch-grid{grid-template-columns:1fr!important}}.launch-grid{margin-top:28px}.launch-exercise-card{display:flex;flex-direction:column;gap:8px}.launch-exercise-card .btn{align-self:flex-start}.launch-exercise{max-width:900px}.launch-exercise textarea,.launch-form textarea{min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.launch-form{max-width:760px;display:grid;gap:10px}.launch-form label{margin-top:8px}.legal-page{max-width:900px}.launch-feedback{margin:32px auto 10px;max-width:900px;padding:18px 20px;border:1px solid #292929;border-radius:14px;background:#0d0d0d;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}.launch-feedback .actions{margin:0}.error-page{text-align:center;padding-top:100px;padding-bottom:120px}.error-page p{max-width:700px;margin:0 auto 24px}.launch-nav-link{margin-left:10px}
 @media(max-width:600px){.launch-nav-link{display:none}.launch-exercise textarea,.launch-form textarea{min-height:220px}.error-page{padding-top:70px}}
 </style>'''
+                    const skip = '<a class="launch-skip" href="#main">Skip to content</a>'
+                    if (!page.includes('class="launch-skip"')) page = page.replace("<body>", "<body>"+skip, 1)
+                    if (!page.includes('<main id="main">') && page.includes("<main>")) page = page.replace("<main>", '<main id="main">', 1)
+                    if (request.path.startswith("/learn/") && !page.includes("launch-feedback")) {
+                        const token = html.escape(str(mod.csrf()))
+                        const feedback = f'''<div class="launch-feedback" aria-label="Page feedback">
+<div><strong>Was this page useful?</strong> <span id="launchFeedbackStatus"></span></div>
+<div class="actions"><button class="btn" type="button" id="lfYes">👍 Yes</button><button class="btn" type="button" id="lfNo">👎 Not really</button></div>
+</div>
+<script>
+(()=>{{const y=document.getElementById("lfYes"),n=document.getElementById("lfNo"),s=document.getElementById("launchFeedbackStatus");if(!y||!n)return;
+const send=async rating=>{{try{{const r=await fetch("/api/launch/feedback",{{method:"POST",headers:{{"Content-Type":"application/json"}},body:JSON.stringify({{csrf:"{token}",item_key:location.pathname,rating}})}});s.textContent=r.ok?"Thanks — feedback saved.":"Could not save feedback.";y.disabled=n.disabled=true}}catch(e){{s.textContent="Thanks — noted locally."}}}};
+y.onclick=()=>send("helpful");n.onclick=()=>send("not_helpful");}})();
+</script>'''
+                        page = page.replace("</main>", feedback+"</main>", 1)
                     return page.replace("</head>",style+"</head>",1)
                 mod.layout=launch_layout
                 app.layout=launch_layout
