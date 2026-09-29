@@ -14,7 +14,7 @@ def install():
 
                 con = mod.db()
                 con.executescript("""
-                CREATE TABLE IF NOT EXISTS learner_meta(user_id INTEGER PRIMARY KEY,xp INTEGER DEFAULT 0,streak INTEGER DEFAULT 0,last_active TEXT NULL,theme TEXT DEFAULT 'dark');
+                CREATE TABLE IF NOT EXISTS learner_meta(user_id INTEGER PRIMARY KEY,xp INTEGER DEFAULT 0,streak INTEGER DEFAULT 0,last_active TEXT NULL,theme VARCHAR(32) DEFAULT 'dark');
                 CREATE TABLE IF NOT EXISTS bookmarks(user_id INTEGER NOT NULL,item_key VARCHAR(255) NOT NULL,title VARCHAR(500) NOT NULL,href VARCHAR(1000) NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(user_id,item_key));
                 CREATE TABLE IF NOT EXISTS learner_notes(user_id INTEGER NOT NULL,item_key VARCHAR(255) NOT NULL,note TEXT NOT NULL,updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(user_id,item_key));
                 CREATE TABLE IF NOT EXISTS learner_activity(user_id INTEGER NOT NULL,item_key VARCHAR(255) NOT NULL,title VARCHAR(500) NOT NULL,href VARCHAR(1000) NOT NULL,seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(user_id,item_key));
