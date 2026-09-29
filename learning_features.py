@@ -326,7 +326,7 @@ input,select,button,textarea{max-width:100%}
 @media(min-width:1200px){
   .feature-shell{padding-top:55px}
 }
-</style></head>',1)
+</style></head>""",1)
                     base=base.replace('</body>','''<div id="cmd" class="cmd-overlay" hidden><div class="cmd"><input id="cmdq" placeholder="⌘K · Search EaseWithPy"><div id="cmdr"></div></div></div><script>
 if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();const x=document.getElementById("cmd");if(x){x.hidden=false;document.getElementById("cmdq").focus()}}if(e.key==="Escape"){const x=document.getElementById("cmd");if(x)x.hidden=true}});
