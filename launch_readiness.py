@@ -21,6 +21,10 @@ def install():
                     continue
                 from flask import request, jsonify, Response, redirect
 
+                # Route installation is idempotent because Railway can reload/retry this module.
+                if "launch_autosave" in app.view_functions:
+                    return
+
                 con = mod.db()
                 con.executescript("""
                 CREATE TABLE IF NOT EXISTS learner_code(
@@ -124,7 +128,7 @@ def install():
                     }
                 }
 
-                @app.post("/api/launch/autosave")
+                @app.post("/api/launch/autosave", endpoint="launch_autosave")
                 def autosave():
                     u=user()
                     if not u: return jsonify(error="login_required"),401
