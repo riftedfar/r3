@@ -1,9 +1,5 @@
-"""Production entrypoint for LearnPython on Railway.
-
-Loads the database adapter and platform route/UI layer before Gunicorn starts.
-"""
+"""Production entrypoint for EaseWithPy on Railway."""
 import sys
-
 from app import APP
 
 import mysql_adapter
@@ -12,7 +8,6 @@ mysql_adapter.install(sys.modules["app"])
 import platform_upgrade
 platform_upgrade.install()
 
-# SEO, crawl directives, social metadata, and custom 404.
 import seo_routes
 from additional_courses import COURSES as LEGACY_EXTRA_COURSES
 from course_registry import extra_courses
@@ -25,14 +20,16 @@ def seo_courses():
 
 seo_routes.install(APP, sys.modules["app"], seo_courses, sys.modules["app"].layout)
 
-# Academy expansion: practice center, roadmap, projects, cheatsheets, glossary and challenges.
 import academy_expansion
 academy_expansion.install()
 
-# Advanced learner features: playground, labs, progression, saved lessons, notes, offline mode and utilities.
 import learning_features
 learning_features.install()
 
-# Final learning layer: lesson challenges, real-world context, skill mastery and adaptive recommendations.
 import learning_extras
 learning_extras.install()
+
+# Final launch-readiness layer: hands-on exercises, autosave, feedback, security
+# headers, friendly production errors, legal pages and launch diagnostics.
+import launch_readiness
+launch_readiness.install()
