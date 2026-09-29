@@ -32,7 +32,7 @@ def install():
                     PRIMARY KEY(user_id,item_key)
                 );
                 CREATE TABLE IF NOT EXISTS lesson_feedback(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY AUTO_INCREMENT,
                     user_id INTEGER,
                     item_key VARCHAR(255) NOT NULL,
                     rating VARCHAR(20) NOT NULL,
@@ -41,7 +41,7 @@ def install():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
                 CREATE TABLE IF NOT EXISTS exercise_attempts(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY AUTO_INCREMENT,
                     user_id INTEGER NOT NULL,
                     exercise_key VARCHAR(255) NOT NULL,
                     passed INTEGER NOT NULL DEFAULT 0,
@@ -49,7 +49,7 @@ def install():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
                 CREATE TABLE IF NOT EXISTS bug_reports(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY AUTO_INCREMENT,
                     user_id INTEGER,
                     page_url VARCHAR(1000) NOT NULL,
                     category VARCHAR(80) NOT NULL,
@@ -137,8 +137,8 @@ def install():
                     con=mod.db()
                     con.execute("""INSERT INTO learner_code(user_id,item_key,code,language)
                                    VALUES(?,?,?,?)
-                                   ON CONFLICT(user_id,item_key) DO UPDATE SET code=excluded.code,
-                                   language=excluded.language,updated_at=CURRENT_TIMESTAMP""",
+                                   ON DUPLICATE KEY UPDATE code=VALUES(code),
+                                   language=VALUES(language),updated_at=CURRENT_TIMESTAMP""",
                                 (u["id"],key,code,language))
                     con.commit(); con.close()
                     return jsonify(ok=True)
