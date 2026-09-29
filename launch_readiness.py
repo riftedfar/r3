@@ -234,28 +234,12 @@ document.getElementById("solution").onclick=()=>sol.style.display="block";
                     csrf=html.escape(str(mod.csrf()))
                     return layout(f'''<section class="section feature-shell"><div class="eyebrow">CONTACT</div><h1>Tell us what needs fixing.</h1><p>Found a broken lesson, confusing explanation, or UI problem? Send a report directly from here.</p><div class="card launch-form"><label>Category</label><select id="cat"><option>Bug</option><option>Lesson issue</option><option>Content error</option><option>Suggestion</option><option>Other</option></select><label>What happened?</label><textarea id="msg" maxlength="4000" placeholder="Describe the problem clearly…"></textarea><button class="btn primary" id="send">Send report</button><div id="status" class="notice" style="display:none"></div></div></section><script>send.onclick=async()=>{{const m=msg.value.trim();if(!m){{status.textContent="Please describe the issue.";status.style.display="block";return}};const r=await fetch("/api/launch/bug",{{method:"POST",headers:{{"Content-Type":"application/json"}},body:JSON.stringify({{csrf:"{csrf}",category:cat.value,message:m,page_url:location.href}})}});status.textContent=r.ok?"Report received. Thanks.":"Could not send the report.";status.style.display="block";if(r.ok)msg.value=""}};</script>''',"Contact","Report a problem or contact EaseWithPy")
 
-                def legal(title, eyebrow, body):
-                    return layout(f'<section class="section feature-shell legal-page"><div class="eyebrow">{html.escape(eyebrow)}</div><h1>{html.escape(title)}</h1>{body}</section>',title,title)
-
-                @app.get("/about")
-                def about():
-                    return legal("About EaseWithPy","ABOUT","<p>EaseWithPy is an independent programming-learning platform focused on practical lessons, interactive practice, projects and tools for learners at different stages.</p><h2>Our focus</h2><p>Explain concepts clearly, show working syntax, let learners practice, and make progress easy to track.</p>")
-
-                @app.get("/privacy")
-                def privacy():
-                    return legal("Privacy","PRIVACY","<h2>What we store</h2><p>Account details and learning activity are stored to provide accounts, progress tracking, saved items and related features. Exercise drafts may be saved when you are signed in.</p><h2>What you should not submit</h2><p>Do not submit passwords, payment credentials, government identifiers, or other sensitive information into lessons, notes, exercises or feedback.</p><h2>Control</h2><p>Use the account controls available on the platform to manage your account. Contact the site operator if you need help with an account or data request.</p>")
-
-                @app.get("/tos")
-                def tos():
-                    return terms()
-
-                @app.get("/terms")
-                def terms():
-                    return legal("Terms of Use","TERMS","<h2>Use of the service</h2><p>Use EaseWithPy lawfully and do not attempt unauthorized access, abuse the service, interfere with other users, or upload malicious content.</p><h2>Educational content</h2><p>Examples are provided for learning. Test code and verify important technical or operational decisions before using them in production.</p><h2>Accounts</h2><p>You are responsible for keeping your account credentials secure and for activity performed through your account.</p>")
-
-                @app.get("/disclaimer")
-                def disclaimer():
-                    return legal("Educational Disclaimer","DISCLAIMER","<p>EaseWithPy is an educational resource. Code, security guidance, cloud instructions and other technical material can become outdated or behave differently across environments. Verify important decisions against current authoritative documentation and test before production use.</p>")
+                # The base app already owns /terms, /privacy and /disclaimer.
+                # Only add the convenient /tos alias if it is not already registered.
+                if "/tos" not in app.url_map._rules_by_endpoint:
+                    @app.get("/tos", endpoint="launch_tos")
+                    def tos():
+                        return redirect("/terms")
 
                 # Security baseline. Keep these headers conservative and compatible with the existing inline scripts.
                 @app.after_request
