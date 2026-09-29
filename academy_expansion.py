@@ -90,7 +90,7 @@ def install():
                         ("05","Search Engine","Crawl a controlled dataset, normalize documents, build an inverted index and rank results.",[("Python","python"),("Data Structures & Algorithms","dsa"),("Algorithms","algorithms")]),
                         ("06","AI Study Helper","Build retrieval, prompting, citations and a clear boundary around generated answers.",[("AI","ai"),("Python","python")]),
                         ("07","File Organizer","Classify files by extension, add dry-run mode, logs and safe collision handling.",[("Python","python"),("Bash / Linux","bash-linux")]),
-                        ("08","Portfolio Site","Ship a responsive site with semantic HTML, CSS, JavaScript and SEO basics.",[("HTML","html"),("CSS","css"),("JavaScript","javascript")]),
+                        ("08","Portfolio Site","Ship a responsive site with semantic HTML, CSS, JavaScript and SEO basics.",[("HTML","html"),("CSS","css"),("TypeScript","typescript")]),
                     ]
                     def project_links(skills):
                         return ''.join(f'<a class="btn" href="/course/{html.escape(slug)}">{html.escape(name)} →</a>' for name,slug in skills)
