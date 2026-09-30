@@ -181,4 +181,4 @@ draw();
             except Exception as e:
                 print("[LearnPython] academy expansion retry:", repr(e))
                 time.sleep(1)
-    threading.Thread(target=boot, daemon=True).start()
+    boot()
