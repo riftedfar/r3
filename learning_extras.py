@@ -201,4 +201,4 @@ if(location.pathname.startsWith("/learn/")){
             except Exception as e:
                 print("[EaseWithPy] learning extras retry:",repr(e))
                 time.sleep(1)
-    threading.Thread(target=boot,daemon=True).start()
+    boot()
