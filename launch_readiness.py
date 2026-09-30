@@ -366,4 +366,4 @@ y.onclick=()=>send("helpful");n.onclick=()=>send("not_helpful");}})();
                 print("[EaseWithPy] launch layer retry:",repr(e))
                 traceback.print_exc()
                 time.sleep(1)
-    threading.Thread(target=boot,daemon=True).start()
+    boot()
