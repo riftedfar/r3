@@ -341,4 +341,4 @@ document.querySelectorAll('a[href^="/learn/"],a[href^="/course/"]').forEach(a=>a
                 return
             except Exception as e:
                 print("[EaseWithPy] feature install retry:",repr(e));time.sleep(1)
-    threading.Thread(target=boot,daemon=True).start()
+    boot()
