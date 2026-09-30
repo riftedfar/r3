@@ -214,4 +214,4 @@ if(areaMenu&&areaTrigger){{areaTrigger.onclick=e=>{{e.stopPropagation();const op
             print("[LearnPython] platform install retry:",repr(e)); traceback.print_exc()
             time.sleep(1)
 
-threading.Thread(target=install,daemon=True).start()
+install()
