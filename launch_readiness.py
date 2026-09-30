@@ -339,12 +339,14 @@ button,.btn,a,input,select,textarea{touch-action:manipulation}
 @media(max-width:850px){.launch-form,.launch-exercise{width:100%;max-width:100%;box-sizing:border-box}.launch-grid{grid-template-columns:1fr!important}}.launch-grid{margin-top:28px}.launch-exercise-card{display:flex;flex-direction:column;gap:8px}.launch-exercise-card .btn{align-self:flex-start}.launch-exercise{max-width:900px}.launch-exercise textarea,.launch-form textarea{min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.launch-form{max-width:760px;display:grid;gap:10px}.launch-form label{margin-top:8px}.legal-page{max-width:900px}.launch-feedback{margin:32px auto 10px;max-width:900px;padding:18px 20px;border:1px solid #292929;border-radius:14px;background:#0d0d0d;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}.launch-feedback .actions{margin:0}.error-page{text-align:center;padding-top:100px;padding-bottom:120px}.error-page p{max-width:700px;margin:0 auto 24px}.launch-nav-link{margin-left:10px}
 @media(max-width:600px){.launch-nav-link{display:none}.launch-exercise textarea,.launch-form textarea{min-height:220px}.error-page{padding-top:70px}}
 </style>'''
-                    const skip = '<a class="launch-skip" href="#main">Skip to content</a>'
-                    if (!page.includes('class="launch-skip"')) page = page.replace("<body>", "<body>"+skip, 1)
-                    if (!page.includes('<main id="main">') && page.includes("<main>")) page = page.replace("<main>", '<main id="main">', 1)
-                    if (request.path.startswith("/learn/") && !page.includes("launch-feedback")) {
-                        const token = html.escape(str(mod.csrf()))
-                        const feedback = f'''<div class="launch-feedback" aria-label="Page feedback">
+                    skip = '<a class="launch-skip" href="#main">Skip to content</a>'
+                    if 'class="launch-skip"' not in page:
+                        page = page.replace("<body>", "<body>"+skip, 1)
+                    if '<main id="main">' not in page and "<main>" in page:
+                        page = page.replace("<main>", '<main id="main">', 1)
+                    if request.path.startswith("/learn/") and "launch-feedback" not in page:
+                        token = html.escape(str(mod.csrf()))
+                        feedback = f'''<div class="launch-feedback" aria-label="Page feedback">
 <div><strong>Was this page useful?</strong> <span id="launchFeedbackStatus"></span></div>
 <div class="actions"><button class="btn" type="button" id="lfYes">👍 Yes</button><button class="btn" type="button" id="lfNo">👎 Not really</button></div>
 </div>
