@@ -89,7 +89,30 @@ h1{animation:titleIn .65s cubic-bezier(.2,.8,.2,1) both}
 #cursorGlow{position:fixed;width:360px;height:360px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(255,255,255,.045),transparent 65%);transform:translate(-50%,-50%);opacity:0}
 @media(hover:hover){body:hover #cursorGlow{opacity:1}}
 @media(max-width:850px){.hero:before{width:360px;height:360px}.coursecard:hover,.card:hover,.step:hover{transform:none}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#cursorGlow{display:none}}
+<style>
+.motion-ready .reveal{opacity:0;transform:translateY(24px) scale(.985);filter:blur(3px);transition:opacity .65s cubic-bezier(.2,.8,.2,1) var(--reveal-delay),transform .65s cubic-bezier(.2,.8,.2,1) var(--reveal-delay),filter .65s ease var(--reveal-delay)}
+.motion-ready .reveal.is-visible{opacity:1;transform:none;filter:none}
+.motion-ready .coursecard,.motion-ready .card,.motion-ready .step,.motion-ready .terminal,.motion-ready .banner{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)}
+.motion-ready .coursecard:hover,.motion-ready .card:hover,.motion-ready .step:hover{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-7px) scale(1.008)}
+.coursecard:after,.card:after,.step:after,.terminal:after,.banner:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.10),transparent 28%);opacity:0;transition:opacity .25s}
+.coursecard:hover:after,.card:hover:after,.step:hover:after,.terminal:hover:after,.banner:hover:after{opacity:1}
+.area-trigger{position:relative;overflow:hidden}
+.area-trigger:before{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.16),transparent 70%);transform:translateX(-130%);animation:triggerShine 4.5s ease-in-out infinite}
+@keyframes triggerShine{0%,65%{transform:translateX(-130%)}82%,100%{transform:translateX(130%)}}
+.area-trigger>*{position:relative}
+.page-loader{position:fixed;inset:0;z-index:9999;background:#050505;display:flex;align-items:center;justify-content:center;gap:12px;transition:opacity .45s,visibility .45s}
+.page-loader span{width:12px;height:12px;border:2px solid #555;border-top-color:#fff;border-radius:50%;animation:loaderSpin .7s linear infinite}
+.page-loader b{font-size:14px;letter-spacing:.08em}
+.page-loader.done{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes loaderSpin{to{transform:rotate(360deg)}}
+.page-leaving{opacity:.82;transition:opacity .12s}
+.top:after{content:"";position:absolute;left:0;bottom:-1px;width:28%;height:1px;background:linear-gradient(90deg,transparent,#fff,transparent);animation:navSweep 5s ease-in-out infinite}
+@keyframes navSweep{0%,100%{transform:translateX(-10%);opacity:.2}50%{transform:translateX(260%);opacity:.8}}
+@media(max-width:850px){
+ .motion-ready .coursecard,.motion-ready .card,.motion-ready .step,.motion-ready .terminal,.motion-ready .banner{transform:none!important}
+ .motion-ready .reveal{transform:translateY(16px)}
+}
+</style>@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#cursorGlow{display:none}}
 </style></style></head><body><header class="top"><a class="logo" href="/">Learn<span>Python</span></a><nav class="nav"><div class="area-menu" id="areaMenu"><button class="area-trigger" id="areaTrigger" type="button" aria-expanded="false" aria-haspopup="true">Explore <span class="area-chevron">▼</span></button><div class="area-panel" id="areaPanel"><div class="area-label">Explore EaseWithPy</div><div class="area-grid"><a class="area-link" href="/courses"><b>Library</b><span>All courses & lessons</span></a><a class="area-link" href="/academy"><b>Academy</b><span>Practice, projects & references</span></a><a class="area-link" href="/tools"><b>Toolkit</b><span>Labs, playground & utilities</span></a><a class="area-link" href="/practice"><b>Practice</b><span>Hands-on coding practice</span></a><a class="area-link" href="/projects"><b>Projects</b><span>Build real things</span></a><a class="area-link" href="/challenges"><b>Challenges</b><span>Test your knowledge</span></a><a class="area-link" href="/cheatsheets"><b>Cheatsheets</b><span>Quick references</span></a><a class="area-link" href="/glossary"><b>Glossary</b><span>Developer terms</span></a></div><div class="area-divider"></div><div class="area-label">Site & legal</div><div class="area-grid"><a class="area-link" href="/about"><b>About</b><span>About EaseWithPy</span></a><a class="area-link" href="/contact"><b>Contact</b><span>Report a problem</span></a><a class="area-link" href="/terms"><b>Terms of Service</b><span>Rules for using the site</span></a><a class="area-link" href="/privacy"><b>Privacy</b><span>Data and privacy</span></a><a class="area-link" href="/disclaimer"><b>Disclaimer</b><span>Educational disclaimer</span></a></div><div class="area-divider"></div><div class="area-label">Your learning</div><div class="area-grid"><a class="area-link" href="/dashboard"><b>Dashboard</b><span>Progress & activity</span></a><a class="area-link" href="/skills"><b>Skills</b><span>Skill mastery</span></a><a class="area-link" href="/adaptive"><b>Adaptive</b><span>What to do next</span></a><a class="area-link" href="/continue"><b>Continue</b><span>Pick up where you left off</span></a><a class="area-link" href="/saved"><b>Saved</b><span>Saved lessons</span></a><a class="area-link" href="/notes"><b>Notes</b><span>Your learning notes</span></a><a class="area-link" href="/achievements"><b>Achievements</b><span>Badges & XP</span></a><a class="area-link" href="/leaderboard"><b>Leaderboard</b><span>Community XP</span></a></div></div></div><a href="/courses">Courses</a><a href="/academy">Academy</a><a href="/tools">Toolkit</a>{nav_auth()}</nav></header><main class="shell">{body}</main><footer>LearnPython · Learn → practice → build · Free to start · <a href="/about">About</a> · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/disclaimer">Disclaimer</a></footer><script>
 const areaMenu=document.getElementById("areaMenu"),areaTrigger=document.getElementById("areaTrigger");
 if(areaMenu&&areaTrigger){{areaTrigger.onclick=e=>{{e.stopPropagation();const open=areaMenu.classList.toggle("open");areaTrigger.setAttribute("aria-expanded",open?"true":"false")}};document.addEventListener("click",e=>{{if(!areaMenu.contains(e.target)){{areaMenu.classList.remove("open");areaTrigger.setAttribute("aria-expanded","false")}}}});document.addEventListener("keydown",e=>{{if(e.key==="Escape"){{areaMenu.classList.remove("open");areaTrigger.setAttribute("aria-expanded","false")}}}})}}
@@ -109,7 +132,56 @@ window.addEventListener("pointermove",function(e){tx=e.clientX;ty=e.clientY},{pa
                 courses=all_courses()
                 cards=''.join(f'<a class="coursecard" data-course="{html.escape((c["title"]+" "+c["tag"]+" "+c["description"]).lower())}" href="{c["href"]}"><span class="tag">{html.escape(c["tag"])}</span><h3>{html.escape(c["title"])}</h3><p>{html.escape(c["description"])}</p><div class="meta"><span>{len(c["lessons"])} lessons</span><span>Beginner → builder</span></div><span class="btn primary">{"Continue →" if u else "Start course →"}</span></a>' for c in courses)
                 actions='<a class="btn primary" href="/dashboard">Continue learning</a><a class="btn" href="/courses">Browse all courses</a>' if u else '<a class="btn primary" href="/courses">Explore courses</a><a class="btn" href="/register">Create free account</a>'
-                return layout(f'''<section class="hero"><div><div class="eyebrow">THE INTERACTIVE CODE SCHOOL</div><h1>Learn code.<br>Actually build.</h1><p>Choose a path, learn one idea at a time, practice it in a lab, break it, fix it, and finish with projects. Built to feel more like a coding platform than a pile of tutorial pages.</p><div class="actions">{actions}</div></div><div class="terminal"><div class="termhead">~/learnpython · interactive</div><div class="code">{"# Welcome back, "+html.escape(str(u["name"])) if u else "# Start with a course"}\n\ncourse = choose(" + '"your path"' + ")\nlearn(course)\npractice(course)\nbuild(project)\n\n# no gatekeeping. just build.</div></div></section><section class="section"><div class="sectionhead"><div><div class="eyebrow">COURSE LIBRARY</div><h2>Pick what you want to learn.</h2><p>Python, AI, Go, TypeScript, HTML, CSS, JavaScript, SQL and Git — with more tracks ready to add.</p></div><a class="btn" href="/courses">Open library →</a></div><input class="search" id="q" placeholder="⌕  Search Python, AI, web, Go…"><div id="grid" class="cgrid">{cards}</div></section><section class="section"><div class="eyebrow">THE LEARNING LOOP</div><h2>Less passive watching. More doing.</h2><div class="path"><div class="step"><span class="eyebrow">01</span><b>Learn</b><p>Short explanations without the textbook fog.</p></div><div class="step"><span class="eyebrow">02</span><b>Practice</b><p>Labs, questions and experiments while the idea is fresh.</p></div><div class="step"><span class="eyebrow">03</span><b>Break it</b><p>Make mistakes on purpose and learn from the error.</p></div><div class="step"><span class="eyebrow">04</span><b>Build</b><p>Projects that prove you can use the skill.</p></div></div></section><section class="section"><div class="banner"><div><div class="eyebrow">YOUR ACCOUNT</div><h2>Save your progress.</h2><p style="margin:0">Create a free account and your completed lessons follow you between sessions.</p></div><div class="actions" style="margin:0"><a class="btn primary" href="{"/dashboard" if u else "/register"}">{ "Open dashboard" if u else "Create account" }</a></div></div></section><script>const q=document.getElementById("q");q.addEventListener("input",()=>{{const x=q.value.toLowerCase().trim();document.querySelectorAll("[data-course]").forEach(c=>c.style.display=!x||c.dataset.course.includes(x)?"flex":"none")}})</script>''',"LearnPython — Interactive Code School")
+                return layout(f'''<section class="hero"><div><div class="eyebrow">THE INTERACTIVE CODE SCHOOL</div><h1>Learn code.<br>Actually build.</h1><p>Choose a path, learn one idea at a time, practice it in a lab, break it, fix it, and finish with projects. Built to feel more like a coding platform than a pile of tutorial pages.</p><div class="actions">{actions}</div></div><div class="terminal"><div class="termhead">~/learnpython · interactive</div><div class="code">{"# Welcome back, "+html.escape(str(u["name"])) if u else "# Start with a course"}\n\ncourse = choose(" + '"your path"' + ")\nlearn(course)\npractice(course)\nbuild(project)\n\n# no gatekeeping. just build.</div></div></section><section class="section"><div class="sectionhead"><div><div class="eyebrow">COURSE LIBRARY</div><h2>Pick what you want to learn.</h2><p>Python, AI, Go, TypeScript, HTML, CSS, JavaScript, SQL and Git — with more tracks ready to add.</p></div><a class="btn" href="/courses">Open library →</a></div><input class="search" id="q" placeholder="⌕  Search Python, AI, web, Go…"><div id="grid" class="cgrid">{cards}</div></section><section class="section"><div class="eyebrow">THE LEARNING LOOP</div><h2>Less passive watching. More doing.</h2><div class="path"><div class="step"><span class="eyebrow">01</span><b>Learn</b><p>Short explanations without the textbook fog.</p></div><div class="step"><span class="eyebrow">02</span><b>Practice</b><p>Labs, questions and experiments while the idea is fresh.</p></div><div class="step"><span class="eyebrow">03</span><b>Break it</b><p>Make mistakes on purpose and learn from the error.</p></div><div class="step"><span class="eyebrow">04</span><b>Build</b><p>Projects that prove you can use the skill.</p></div></div></section><section class="section"><div class="banner"><div><div class="eyebrow">YOUR ACCOUNT</div><h2>Save your progress.</h2><p style="margin:0">Create a free account and your completed lessons follow you between sessions.</p></div><div class="actions" style="margin:0"><a class="btn primary" href="{"/dashboard" if u else "/register"}">{ "Open dashboard" if u else "Create account" }</a></div></div></section><script>
+(function(){
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce)return;
+  document.documentElement.classList.add("motion-ready");
+
+  const targets=[...document.querySelectorAll(".section,.coursecard,.step,.card,.banner,.lessonrow,.form,.terminal,.coursehero,.progress,.side")];
+  targets.forEach((el,i)=>{el.classList.add("reveal");el.style.setProperty("--reveal-delay",Math.min(i*35,350)+"ms")});
+  if("IntersectionObserver" in window){
+    const io=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("is-visible");io.unobserve(e.target)}});
+    },{threshold:.08,rootMargin:"0px 0px -35px 0px"});
+    targets.forEach(el=>io.observe(el));
+  }else targets.forEach(el=>el.classList.add("is-visible"));
+
+  const glow=document.getElementById("cursorGlow");
+  let tx=innerWidth/2,ty=innerHeight/2,x=tx,y=ty;
+  addEventListener("pointermove",e=>{tx=e.clientX;ty=e.clientY});
+  function tick(){x+=(tx-x)*.12;y+=(ty-y)*.12;if(glow)glow.style.left=x+"px",glow.style.top=y+"px";requestAnimationFrame(tick)}
+  tick();
+
+  document.querySelectorAll(".coursecard,.card,.step,.terminal,.banner").forEach(el=>{
+    el.addEventListener("pointermove",e=>{
+      if(innerWidth<851)return;
+      const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+      el.style.setProperty("--mx",(px*100)+"%");
+      el.style.setProperty("--my",(py*100)+"%");
+      el.style.setProperty("--rx",(py*-2.2)+"deg");
+      el.style.setProperty("--ry",(px*2.2)+"deg");
+    });
+    el.addEventListener("pointerleave",()=>{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")});
+  });
+
+  const loader=document.createElement("div");
+  loader.className="page-loader";
+  loader.innerHTML='<span></span><b>EaseWithPy</b>';
+  document.body.prepend(loader);
+  requestAnimationFrame(()=>setTimeout(()=>loader.classList.add("done"),180));
+
+  document.querySelectorAll("a").forEach(a=>{
+    a.addEventListener("click",e=>{
+      const href=a.getAttribute("href");
+      if(!href||href.startsWith("#")||href.startsWith("http")||href.startsWith("javascript:")||a.target) return;
+      document.body.classList.add("page-leaving");
+      setTimeout(()=>{window.location.href=href},120);
+      e.preventDefault();
+    });
+  });
+})();
+</script><script>const q=document.getElementById("q");q.addEventListener("input",()=>{{const x=q.value.toLowerCase().trim();document.querySelectorAll("[data-course]").forEach(c=>c.style.display=!x||c.dataset.course.includes(x)?"flex":"none")}})</script>''',"LearnPython — Interactive Code School")
 
             def courses_page():
                 cs=all_courses()
