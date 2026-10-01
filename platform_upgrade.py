@@ -57,38 +57,38 @@ def install():
 @media(max-width:850px){{.top{{padding:0 12px;gap:8px;height:60px}}.logo{{font-size:19px}}.nav{{gap:5px}}.nav>a:not(.primary),.nav>form,.userchip{{display:none}}.nav .area-menu{{display:block}}.area-trigger{{padding:8px 10px;font-size:12px}}.area-panel{{position:fixed;top:66px;right:10px;left:10px;width:auto;max-width:none;max-height:calc(100vh - 78px);overflow:auto;border-radius:16px}}.area-grid{{grid-template-columns:1fr 1fr}}.hero{{grid-template-columns:1fr;padding:45px 0 30px;gap:24px}}.hero h1{{font-size:clamp(40px,12vw,62px);line-height:.95}}.hero p{{font-size:16px;line-height:1.6}}.cgrid{{grid-template-columns:1fr}}.path{{grid-template-columns:1fr 1fr}}.catalog,.dashgrid{{grid-template-columns:1fr}}.side{{position:static}}.banner{{align-items:flex-start;flex-direction:column}}.section{{padding:30px 0}}.shell{{width:min(94vw,760px)}}.coursehero{{padding:20px}}.coursehero .actions{{display:grid;grid-template-columns:1fr}}.coursehero .actions .btn{{width:100%}}.lessonrow{{min-width:0}}.lessonrow>div:nth-child(2){{min-width:0}}.lessonrow h3{{font-size:15px;overflow-wrap:anywhere}}.search{{font-size:16px}}.form{{margin:35px auto 50px;padding:20px}}.grid{{grid-template-columns:1fr!important}}}}
 @media(max-width:480px){{.top{{height:58px;padding:0 10px}}.logo{{font-size:18px}}.area-trigger{{padding:8px 9px}}.area-panel{{top:63px;left:8px;right:8px;max-height:calc(100vh - 72px)}}.area-grid{{grid-template-columns:1fr}}.path{{grid-template-columns:1fr}}h1{{font-size:40px}}.hero{{padding-top:35px}}.hero p{{font-size:15px}}.actions{{width:100%}}.actions .btn{{max-width:100%}}.coursecard{{min-height:0}}.coursecard .btn{{width:100%}}.sectionhead{{align-items:flex-start;flex-direction:column}}.sectionhead>.btn{{width:100%}}}}
 <style>
-body{background:#050505;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:radial-gradient(circle at 15% 10%,rgba(255,255,255,.07),transparent 28%),radial-gradient(circle at 85% 20%,rgba(255,255,255,.045),transparent 24%),radial-gradient(circle at 50% 100%,rgba(255,255,255,.035),transparent 30%)}
-body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.2;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
-.top{box-shadow:0 14px 45px rgba(0,0,0,.2);transition:background .3s,border-color .3s}
-.logo:after{content:"";display:block;width:18px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .3s}.logo:hover:after{transform:scaleX(1)}
-.nav a,.navbtn,.ghost,.btn,.area-trigger{transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease}
-.nav a:hover,.navbtn:hover,.ghost:hover{transform:translateY(-1px)}
-.primary:hover,.btn.primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(255,255,255,.13)}
-.area-panel{animation:menuIn .18s ease both;transform-origin:top right}
-@keyframes menuIn{from{opacity:0;transform:translateY(-7px) scale(.98)}to{opacity:1;transform:none}}
-.hero{position:relative}.hero:before{content:"";position:absolute;width:520px;height:520px;left:-180px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 68%);filter:blur(8px);pointer-events:none;animation:floatGlow 9s ease-in-out infinite}
-@keyframes floatGlow{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,18px)}}
-.hero>div{position:relative;z-index:1}
-h1{animation:titleIn .65s cubic-bezier(.2,.8,.2,1) both}
-@keyframes titleIn{from{opacity:0;transform:translateY(18px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
-.hero p{animation:fadeUp .7s .08s both}.hero .actions{animation:fadeUp .7s .16s both}.terminal{animation:terminalIn .8s .1s cubic-bezier(.2,.8,.2,1) both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@keyframes terminalIn{from{opacity:0;transform:translateX(24px) scale(.97)}to{opacity:1;transform:none}}
-.terminal{position:relative;overflow:hidden;box-shadow:0 35px 100px rgba(0,0,0,.65),inset 0 1px rgba(255,255,255,.04)}
-.terminal:before{content:"";position:absolute;left:-45%;top:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.045),transparent);transform:skewX(-18deg);animation:scan 6s linear infinite}
-@keyframes scan{0%{left:-45%}45%,100%{left:125%}}
-.coursecard,.card,.step,.progress,.side,.coursehero,.form,.banner,.lessonrow{position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s,box-shadow .28s}
-.coursecard:before,.card:before,.step:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.055),transparent 32%,transparent 70%,rgba(255,255,255,.025));opacity:0;transition:opacity .3s;pointer-events:none}
-.coursecard:hover:before,.card:hover:before,.step:hover:before{opacity:1}
-.coursecard:hover{transform:translateY(-7px) scale(1.008);border-color:#4a4a4a;box-shadow:0 20px 55px rgba(0,0,0,.35)}
-.card:hover,.step:hover{transform:translateY(-3px);border-color:#3d3d3d;box-shadow:0 15px 40px rgba(0,0,0,.25)}
-.coursecard:hover .tag{background:#fff;color:#000;border-color:#fff}
-.btn{position:relative;overflow:hidden}.btn:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.13) 50%,transparent 75%);transform:translateX(-120%);transition:transform .55s}.btn:hover:after{transform:translateX(120%)}
-.search,input,textarea,select{transition:border-color .2s,box-shadow .2s,background .2s}.search:focus,input:focus,textarea:focus,select:focus{border-color:#666;box-shadow:0 0 0 3px rgba(255,255,255,.045),0 0 30px rgba(255,255,255,.04)}
-#cursorGlow{position:fixed;width:360px;height:360px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(255,255,255,.045),transparent 65%);transform:translate(-50%,-50%);opacity:0}
-@media(hover:hover){body:hover #cursorGlow{opacity:1}}
-@media(max-width:850px){.hero:before{width:360px;height:360px}.coursecard:hover,.card:hover,.step:hover{transform:none}}
+body{{background:#050505;overflow-x:hidden}}
+body:before{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:radial-gradient(circle at 15% 10%,rgba(255,255,255,.07),transparent 28%),radial-gradient(circle at 85% 20%,rgba(255,255,255,.045),transparent 24%),radial-gradient(circle at 50% 100%,rgba(255,255,255,.035),transparent 30%)}}
+body:after{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.2;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 82%)}}
+.top{{box-shadow:0 14px 45px rgba(0,0,0,.2);transition:background .3s,border-color .3s}}
+.logo:after{{content:"";display:block;width:18px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .3s}}.logo:hover:after{{transform:scaleX(1)}}
+.nav a,.navbtn,.ghost,.btn,.area-trigger{{transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease}}
+.nav a:hover,.navbtn:hover,.ghost:hover{{transform:translateY(-1px)}}
+.primary:hover,.btn.primary:hover{{transform:translateY(-2px);box-shadow:0 12px 35px rgba(255,255,255,.13)}}
+.area-panel{{animation:menuIn .18s ease both;transform-origin:top right}}
+@keyframes menuIn{{from{{opacity:0;transform:translateY(-7px) scale(.98)}}to{{opacity:1;transform:none}}}}
+.hero{{position:relative}}.hero:before{{content:"";position:absolute;width:520px;height:520px;left:-180px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 68%);filter:blur(8px);pointer-events:none;animation:floatGlow 9s ease-in-out infinite}}
+@keyframes floatGlow{{0%,100%{{transform:translate(0,0)}}50%{{transform:translate(30px,18px)}}}}
+.hero>div{{position:relative;z-index:1}}
+h1{{animation:titleIn .65s cubic-bezier(.2,.8,.2,1) both}}
+@keyframes titleIn{{from{{opacity:0;transform:translateY(18px);filter:blur(8px)}}to{{opacity:1;transform:none;filter:none}}}}
+.hero p{{animation:fadeUp .7s .08s both}}.hero .actions{{animation:fadeUp .7s .16s both}}.terminal{{animation:terminalIn .8s .1s cubic-bezier(.2,.8,.2,1) both}}
+@keyframes fadeUp{{from{{opacity:0;transform:translateY(12px)}}to{{opacity:1;transform:none}}}}
+@keyframes terminalIn{{from{{opacity:0;transform:translateX(24px) scale(.97)}}to{{opacity:1;transform:none}}}}
+.terminal{{position:relative;overflow:hidden;box-shadow:0 35px 100px rgba(0,0,0,.65),inset 0 1px rgba(255,255,255,.04)}}
+.terminal:before{{content:"";position:absolute;left:-45%;top:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.045),transparent);transform:skewX(-18deg);animation:scan 6s linear infinite}}
+@keyframes scan{{0%{{left:-45%}}45%,100%{{left:125%}}}}
+.coursecard,.card,.step,.progress,.side,.coursehero,.form,.banner,.lessonrow{{position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s,box-shadow .28s}}
+.coursecard:before,.card:before,.step:before{{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.055),transparent 32%,transparent 70%,rgba(255,255,255,.025));opacity:0;transition:opacity .3s;pointer-events:none}}
+.coursecard:hover:before,.card:hover:before,.step:hover:before{{opacity:1}}
+.coursecard:hover{{transform:translateY(-7px) scale(1.008);border-color:#4a4a4a;box-shadow:0 20px 55px rgba(0,0,0,.35)}}
+.card:hover,.step:hover{{transform:translateY(-3px);border-color:#3d3d3d;box-shadow:0 15px 40px rgba(0,0,0,.25)}}
+.coursecard:hover .tag{{background:#fff;color:#000;border-color:#fff}}
+.btn{{position:relative;overflow:hidden}}.btn:after{{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.13) 50%,transparent 75%);transform:translateX(-120%);transition:transform .55s}}.btn:hover:after{{transform:translateX(120%)}}
+.search,input,textarea,select{{transition:border-color .2s,box-shadow .2s,background .2s}}.search:focus,input:focus,textarea:focus,select:focus{{border-color:#666;box-shadow:0 0 0 3px rgba(255,255,255,.045),0 0 30px rgba(255,255,255,.04)}}
+#cursorGlow{{position:fixed;width:360px;height:360px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(255,255,255,.045),transparent 65%);transform:translate(-50%,-50%);opacity:0}}
+@media(hover:hover){{body:hover #cursorGlow{{opacity:1}}}}
+@media(max-width:850px){{.hero:before{{width:360px;height:360px}}.coursecard:hover,.card:hover,.step:hover{{transform:none}}}}
 <style>
 .motion-ready .reveal{{opacity:0;transform:translateY(24px) scale(.985);filter:blur(3px);transition:opacity .65s cubic-bezier(.2,.8,.2,1) var(--reveal-delay),transform .65s cubic-bezier(.2,.8,.2,1) var(--reveal-delay),filter .65s ease var(--reveal-delay)}}
 .motion-ready .reveal.is-visible{{opacity:1;transform:none;filter:none}}
@@ -112,7 +112,7 @@ h1{animation:titleIn .65s cubic-bezier(.2,.8,.2,1) both}
  .motion-ready .coursecard,.motion-ready .card,.motion-ready .step,.motion-ready .terminal,.motion-ready .banner{{transform:none!important}}
  .motion-ready .reveal{{transform:translateY(16px)}}
 }}
-</style>@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#cursorGlow{display:none}}
+</style>@media(prefers-reduced-motion:reduce){{*,*:before,*:after{{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}#cursorGlow{{display:none}}}}
 </style></style></head><body><header class="top"><a class="logo" href="/">Learn<span>Python</span></a><nav class="nav"><div class="area-menu" id="areaMenu"><button class="area-trigger" id="areaTrigger" type="button" aria-expanded="false" aria-haspopup="true">Explore <span class="area-chevron">▼</span></button><div class="area-panel" id="areaPanel"><div class="area-label">Explore EaseWithPy</div><div class="area-grid"><a class="area-link" href="/courses"><b>Library</b><span>All courses & lessons</span></a><a class="area-link" href="/academy"><b>Academy</b><span>Practice, projects & references</span></a><a class="area-link" href="/tools"><b>Toolkit</b><span>Labs, playground & utilities</span></a><a class="area-link" href="/practice"><b>Practice</b><span>Hands-on coding practice</span></a><a class="area-link" href="/projects"><b>Projects</b><span>Build real things</span></a><a class="area-link" href="/challenges"><b>Challenges</b><span>Test your knowledge</span></a><a class="area-link" href="/cheatsheets"><b>Cheatsheets</b><span>Quick references</span></a><a class="area-link" href="/glossary"><b>Glossary</b><span>Developer terms</span></a></div><div class="area-divider"></div><div class="area-label">Site & legal</div><div class="area-grid"><a class="area-link" href="/about"><b>About</b><span>About EaseWithPy</span></a><a class="area-link" href="/contact"><b>Contact</b><span>Report a problem</span></a><a class="area-link" href="/terms"><b>Terms of Service</b><span>Rules for using the site</span></a><a class="area-link" href="/privacy"><b>Privacy</b><span>Data and privacy</span></a><a class="area-link" href="/disclaimer"><b>Disclaimer</b><span>Educational disclaimer</span></a></div><div class="area-divider"></div><div class="area-label">Your learning</div><div class="area-grid"><a class="area-link" href="/dashboard"><b>Dashboard</b><span>Progress & activity</span></a><a class="area-link" href="/skills"><b>Skills</b><span>Skill mastery</span></a><a class="area-link" href="/adaptive"><b>Adaptive</b><span>What to do next</span></a><a class="area-link" href="/continue"><b>Continue</b><span>Pick up where you left off</span></a><a class="area-link" href="/saved"><b>Saved</b><span>Saved lessons</span></a><a class="area-link" href="/notes"><b>Notes</b><span>Your learning notes</span></a><a class="area-link" href="/achievements"><b>Achievements</b><span>Badges & XP</span></a><a class="area-link" href="/leaderboard"><b>Leaderboard</b><span>Community XP</span></a></div></div></div><a href="/courses">Courses</a><a href="/academy">Academy</a><a href="/tools">Toolkit</a>{nav_auth()}</nav></header><main class="shell">{body}</main><footer>LearnPython · Learn → practice → build · Free to start · <a href="/about">About</a> · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/disclaimer">Disclaimer</a></footer><script>
 const areaMenu=document.getElementById("areaMenu"),areaTrigger=document.getElementById("areaTrigger");
 if(areaMenu&&areaTrigger){{areaTrigger.onclick=e=>{{e.stopPropagation();const open=areaMenu.classList.toggle("open");areaTrigger.setAttribute("aria-expanded",open?"true":"false")}};document.addEventListener("click",e=>{{if(!areaMenu.contains(e.target)){{areaMenu.classList.remove("open");areaTrigger.setAttribute("aria-expanded","false")}}}});document.addEventListener("keydown",e=>{{if(e.key==="Escape"){{areaMenu.classList.remove("open");areaTrigger.setAttribute("aria-expanded","false")}}}})}}
