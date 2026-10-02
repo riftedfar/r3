@@ -1,4 +1,4 @@
-"""LearnPython platform UI: course library, auth, dashboard, and extra-course routing."""
+"""EaseWithPy platform UI: course library, auth, dashboard, and extra-course routing."""
 import sys, threading, time, html, traceback
 
 def install():
@@ -16,7 +16,7 @@ def install():
             enrich_lessons(EXTRA)
             from flask import abort, redirect, request, jsonify, Response
 
-            def L(body, title="LearnPython"):
+            def L(body, title="EaseWithPy"):
                 return mod.layout(body, title)
 
             def all_courses():
@@ -29,136 +29,148 @@ def install():
                     return '<a class="navbtn" href="/dashboard">Dashboard</a><span class="userchip">Hi, '+html.escape(str(u["name"]))+'</span><form method="post" action="/logout" class="inline"><input type="hidden" name="csrf" value="'+html.escape(str(mod.csrf()))+'"><button class="ghost">Log out</button></form>'
                 return '<a class="navbtn" href="/login">Log in</a><a class="navbtn primary" href="/register">Create account</a>'
 
-            def layout(body,title="LearnPython",description="Interactive coding courses with lessons, labs, projects and progress tracking."):
+            def layout(body,title="EaseWithPy",description="Interactive coding courses with lessons, labs, projects and progress tracking."):
                 canonical=html.escape("https://easewithpy.de5.net" + request.path, quote=True)
                 desc=html.escape(description[:160], quote=True)
                 page_title=html.escape(title, quote=True)
                 base=request.url_root.rstrip("/")
-                return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{page_title} · LearnPython</title>
+                return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{page_title} · EaseWithPy</title>
 <meta name="description" content="{desc}">
 <meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{canonical}"><link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta property="og:type" content="website"><meta property="og:site_name" content="LearnPython"><meta property="og:title" content="{page_title} · LearnPython"><meta property="og:description" content="{desc}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{html.escape(base + '/og.svg', quote=True)}">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{page_title} · LearnPython"><meta name="twitter:description" content="{desc}"><meta name="twitter:image" content="{html.escape(base + '/og.svg', quote=True)}">
-<script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebSite","name":"LearnPython","url":{__import__('json').dumps(base)},"description":{__import__('json').dumps(description)}}}</script>
+<meta property="og:type" content="website"><meta property="og:site_name" content="EaseWithPy"><meta property="og:title" content="{page_title} · EaseWithPy"><meta property="og:description" content="{desc}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{html.escape(base + '/og.svg', quote=True)}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{page_title} · EaseWithPy"><meta name="twitter:description" content="{desc}"><meta name="twitter:image" content="{html.escape(base + '/og.svg', quote=True)}">
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebSite","name":"EaseWithPy","url":{__import__('json').dumps(base)},"description":{__import__('json').dumps(description)}}}</script>
 <style>
-:root{{--bg:#060606;--panel:#0d0d0d;--panel2:#141414;--line:#292929;--text:#f5f5f5;--muted:#9a9a9a;--soft:#cfcfcf}}
-*{{box-sizing:border-box}}html{{scroll-behavior:smooth}}body{{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}}a{{color:inherit;text-decoration:none}}button,input{{font:inherit}}button{{cursor:pointer}}
-.top{{height:68px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:#060606eF;backdrop-filter:blur(16px);display:flex;align-items:center;padding:0 4vw;gap:25px}}.logo{{font-weight:950;font-size:22px;letter-spacing:-.06em;white-space:nowrap}}.logo span{{color:#aaa}}.nav{{display:flex;align-items:center;gap:7px;margin-left:auto}}.nav a,.navbtn,.ghost{{padding:9px 12px;border:1px solid transparent;border-radius:10px;color:#aaa;background:transparent}}.nav a:hover,.ghost:hover{{color:#fff;background:#101010;border-color:#222}}.area-menu{{position:relative}}.area-trigger{{padding:9px 12px;border:1px solid #292929;border-radius:10px;color:#ddd;background:#101010;font-weight:800;display:inline-flex;align-items:center;gap:7px}}.area-trigger:hover{{border-color:#555;background:#171717}}.area-chevron{{font-size:10px;color:#888;transition:transform .16s}}.area-menu.open .area-chevron{{transform:rotate(180deg)}}.area-panel{{position:absolute;right:0;top:calc(100% + 10px);width:330px;max-width:calc(100vw - 24px);padding:10px;border:1px solid #2b2b2b;border-radius:16px;background:#0b0b0bf7;backdrop-filter:blur(18px);box-shadow:0 24px 70px #000b;display:none;z-index:100}}.area-menu.open .area-panel{{display:block}}.area-label{{font-size:10px;letter-spacing:.13em;color:#777;font-weight:900;padding:8px 9px 6px;text-transform:uppercase}}.area-grid{{display:grid;grid-template-columns:1fr 1fr;gap:5px}}.area-link{{display:flex!important;flex-direction:column;gap:3px;padding:11px!important;border-radius:11px!important;color:#ddd!important;border:1px solid transparent!important}}.area-link:hover{{background:#171717!important;border-color:#292929!important;color:#fff!important}}.area-link b{{font-size:13px}}.area-link span{{font-size:11px;color:#777}}.area-divider{{height:1px;background:#222;margin:8px 0}}.area-menu .area-panel a{{display:block}}.primary{{background:#fff!important;color:#000!important;border-color:#fff!important;font-weight:850}}.userchip{{color:#ddd;font-size:13px;padding:8px 5px}}.inline{{display:inline}}
-.shell{{width:min(1200px,92vw);margin:auto}}.hero{{padding:80px 0 55px;display:grid;grid-template-columns:1.15fr .85fr;gap:45px;align-items:center}}.eyebrow{{font-size:11px;font-weight:900;letter-spacing:.16em;color:#fff;text-transform:uppercase}}h1{{font-size:clamp(46px,7vw,86px);line-height:.92;letter-spacing:-.075em;margin:12px 0 22px}}h2{{letter-spacing:-.045em}}h3{{letter-spacing:-.03em}}p{{color:var(--muted);line-height:1.7}}.hero p{{font-size:18px;max-width:690px}}.actions{{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}}.btn{{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--panel2);padding:11px 15px;border-radius:11px;font-weight:750}}.btn:hover{{border-color:#555}}.btn.primary{{background:#fff;color:#000;border-color:#fff}}.terminal{{border:1px solid var(--line);background:linear-gradient(145deg,#151515,#090909);border-radius:24px;padding:24px;box-shadow:0 30px 100px #000}}.termhead{{color:#666;font-size:12px;margin-bottom:18px}}.code{{font-family:ui-monospace,monospace;white-space:pre-wrap;line-height:1.65;color:#eee}}
-.section{{padding:50px 0}}.sectionhead{{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}}.sectionhead p{{margin:5px 0}}.search{{width:100%;padding:15px 17px;border:1px solid var(--line);border-radius:13px;background:#090909;color:#fff;outline:none;margin:8px 0 18px}}.search:focus{{border-color:#666}}
-.filters{{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}}.filter{{border:1px solid var(--line);background:#0c0c0c;color:#aaa;padding:8px 11px;border-radius:999px;cursor:pointer}}.filter.active{{background:#fff;color:#000;border-color:#fff}}
-.cgrid{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}}.coursecard{{min-height:270px;padding:22px;border:1px solid var(--line);border-radius:19px;background:linear-gradient(155deg,#151515,#0a0a0a);display:flex;flex-direction:column;transition:.16s}}.coursecard:hover{{transform:translateY(-4px);border-color:#555}}.tag{{font-size:10px;font-weight:900;letter-spacing:.12em;color:#aaa;border:1px solid #333;border-radius:999px;padding:5px 8px;width:max-content}}.coursecard h3{{font-size:26px;margin:12px 0 7px}}.coursecard p{{font-size:14px;margin:0 0 15px}}.meta{{display:flex;justify-content:space-between;color:#777;font-size:12px;margin-top:auto;margin-bottom:13px}}
-.path{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}}.step,.card{{border:1px solid var(--line);background:#0d0d0d;border-radius:16px;padding:18px}}.step b{{display:block;margin-top:7px}}.step p{{font-size:13px;margin-bottom:0}}
-.banner{{border:1px solid #3a3a3a;background:linear-gradient(110deg,#161616,#0a0a0a);border-radius:20px;padding:25px;display:flex;justify-content:space-between;align-items:center;gap:20px}}footer{{border-top:1px solid var(--line);padding:35px 4vw;color:#666;margin-top:45px}}
-.libraryhero{{padding:55px 0 20px}}.libraryhero h1{{font-size:clamp(42px,6vw,70px)}}.catalog{{display:grid;grid-template-columns:240px 1fr;gap:20px}}.side{{position:sticky;top:88px;height:max-content;border:1px solid var(--line);background:#0b0b0b;border-radius:16px;padding:16px}}.side a{{display:block;padding:10px;border-radius:9px;color:#aaa}}.side a:hover{{background:#171717;color:#fff}}.coursehero{{border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#151515,#090909);padding:27px;margin-bottom:16px}}.lessonrow{{display:flex;align-items:center;gap:14px;padding:15px;border:1px solid var(--line);border-radius:12px;background:#0c0c0c;margin:8px 0}}.lessonrow:hover{{background:#141414;border-color:#444}}.num{{width:34px;height:34px;border-radius:10px;background:#1b1b1b;display:flex;align-items:center;justify-content:center;font-weight:900;flex:none}}.lessonrow small{{margin-left:auto;color:#666}}
-.form{{max-width:500px;margin:70px auto 90px;border:1px solid var(--line);background:#0d0d0d;border-radius:20px;padding:27px}}.form h1{{font-size:43px;margin-bottom:10px}}label{{display:block;margin:16px 0 7px;font-size:13px;color:#ddd}}input[type=text],input[type=email],input[type=password]{{width:100%;padding:14px;border:1px solid var(--line);border-radius:10px;background:#080808;color:#fff;outline:none}}input:focus{{border-color:#666}}.form button{{width:100%;margin-top:18px;padding:13px;border:1px solid #fff;background:#fff;color:#000;border-radius:10px;font-weight:900}}.hint{{font-size:13px;color:#777}}
-.dash{{padding:50px 0}}.dashgrid{{display:grid;grid-template-columns:1fr 320px;gap:16px}}.progress{{border:1px solid var(--line);border-radius:16px;background:#0d0d0d;padding:20px}}.bar{{height:8px;background:#222;border-radius:99px;overflow:hidden}}.bar i{{display:block;height:100%;background:#fff}}.statgrid{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}}.stat{{border:1px solid var(--line);border-radius:13px;padding:15px;background:#0c0c0c}}.stat strong{{font-size:24px;display:block}}.stat span{{color:#777;font-size:12px}}
-@media(max-width:850px){{.top{{padding:0 12px;gap:8px;height:60px}}.logo{{font-size:19px}}.nav{{gap:5px}}.nav>a:not(.primary),.nav>form,.userchip{{display:none}}.nav .area-menu{{display:block}}.area-trigger{{padding:8px 10px;font-size:12px}}.area-panel{{position:fixed;top:66px;right:10px;left:10px;width:auto;max-width:none;max-height:calc(100vh - 78px);overflow:auto;border-radius:16px}}.area-grid{{grid-template-columns:1fr 1fr}}.hero{{grid-template-columns:1fr;padding:45px 0 30px;gap:24px}}.hero h1{{font-size:clamp(40px,12vw,62px);line-height:.95}}.hero p{{font-size:16px;line-height:1.6}}.cgrid{{grid-template-columns:1fr}}.path{{grid-template-columns:1fr 1fr}}.catalog,.dashgrid{{grid-template-columns:1fr}}.side{{position:static}}.banner{{align-items:flex-start;flex-direction:column}}.section{{padding:30px 0}}.shell{{width:min(94vw,760px)}}.coursehero{{padding:20px}}.coursehero .actions{{display:grid;grid-template-columns:1fr}}.coursehero .actions .btn{{width:100%}}.lessonrow{{min-width:0}}.lessonrow>div:nth-child(2){{min-width:0}}.lessonrow h3{{font-size:15px;overflow-wrap:anywhere}}.search{{font-size:16px}}.form{{margin:35px auto 50px;padding:20px}}.grid{{grid-template-columns:1fr!important}}}}
-@media(max-width:480px){{.top{{height:58px;padding:0 10px}}.logo{{font-size:18px}}.area-trigger{{padding:8px 9px}}.area-panel{{top:63px;left:8px;right:8px;max-height:calc(100vh - 72px)}}.area-grid{{grid-template-columns:1fr}}.path{{grid-template-columns:1fr}}h1{{font-size:40px}}.hero{{padding-top:35px}}.hero p{{font-size:15px}}.actions{{width:100%}}.actions .btn{{max-width:100%}}.coursecard{{min-height:0}}.coursecard .btn{{width:100%}}.sectionhead{{align-items:flex-start;flex-direction:column}}.sectionhead>.btn{{width:100%}}}}
-<style>
-body{{background:#050505;overflow-x:hidden}}
-body:before{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:radial-gradient(circle at 15% 10%,rgba(255,255,255,.07),transparent 28%),radial-gradient(circle at 85% 20%,rgba(255,255,255,.045),transparent 24%),radial-gradient(circle at 50% 100%,rgba(255,255,255,.035),transparent 30%)}}
-body:after{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.2;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 82%)}}
-.top{{box-shadow:0 14px 45px rgba(0,0,0,.2);transition:background .3s,border-color .3s}}
-.logo:after{{content:"";display:block;width:18px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .3s}}.logo:hover:after{{transform:scaleX(1)}}
-.nav a,.navbtn,.ghost,.btn,.area-trigger{{transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease}}
-.nav a:hover,.navbtn:hover,.ghost:hover{{transform:translateY(-1px)}}
-.primary:hover,.btn.primary:hover{{transform:translateY(-2px);box-shadow:0 12px 35px rgba(255,255,255,.13)}}
-.area-panel{{animation:menuIn .18s ease both;transform-origin:top right}}
-@keyframes menuIn{{from{{opacity:0;transform:translateY(-7px) scale(.98)}}to{{opacity:1;transform:none}}}}
-.hero{{position:relative}}.hero:before{{content:"";position:absolute;width:520px;height:520px;left:-180px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 68%);filter:blur(8px);pointer-events:none;animation:floatGlow 9s ease-in-out infinite}}
-@keyframes floatGlow{{0%,100%{{transform:translate(0,0)}}50%{{transform:translate(30px,18px)}}}}
-.hero>div{{position:relative;z-index:1}}
-h1{{animation:titleIn .65s cubic-bezier(.2,.8,.2,1) both}}
-@keyframes titleIn{{from{{opacity:0;transform:translateY(18px);filter:blur(8px)}}to{{opacity:1;transform:none;filter:none}}}}
-.hero p{{animation:fadeUp .7s .08s both}}.hero .actions{{animation:fadeUp .7s .16s both}}.terminal{{animation:terminalIn .8s .1s cubic-bezier(.2,.8,.2,1) both}}
-@keyframes fadeUp{{from{{opacity:0;transform:translateY(12px)}}to{{opacity:1;transform:none}}}}
-@keyframes terminalIn{{from{{opacity:0;transform:translateX(24px) scale(.97)}}to{{opacity:1;transform:none}}}}
-.terminal{{position:relative;overflow:hidden;box-shadow:0 35px 100px rgba(0,0,0,.65),inset 0 1px rgba(255,255,255,.04)}}
-.terminal:before{{content:"";position:absolute;left:-45%;top:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.045),transparent);transform:skewX(-18deg);animation:scan 6s linear infinite}}
-@keyframes scan{{0%{{left:-45%}}45%,100%{{left:125%}}}}
-.coursecard,.card,.step,.progress,.side,.coursehero,.form,.banner,.lessonrow{{position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s,box-shadow .28s}}
-.coursecard:before,.card:before,.step:before{{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.055),transparent 32%,transparent 70%,rgba(255,255,255,.025));opacity:0;transition:opacity .3s;pointer-events:none}}
-.coursecard:hover:before,.card:hover:before,.step:hover:before{{opacity:1}}
-.coursecard:hover{{transform:translateY(-7px) scale(1.008);border-color:#4a4a4a;box-shadow:0 20px 55px rgba(0,0,0,.35)}}
-.card:hover,.step:hover{{transform:translateY(-3px);border-color:#3d3d3d;box-shadow:0 15px 40px rgba(0,0,0,.25)}}
-.coursecard:hover .tag{{background:#fff;color:#000;border-color:#fff}}
-.btn{{position:relative;overflow:hidden}}.btn:after{{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.13) 50%,transparent 75%);transform:translateX(-120%);transition:transform .55s}}.btn:hover:after{{transform:translateX(120%)}}
-.search,input,textarea,select{{transition:border-color .2s,box-shadow .2s,background .2s}}.search:focus,input:focus,textarea:focus,select:focus{{border-color:#666;box-shadow:0 0 0 3px rgba(255,255,255,.045),0 0 30px rgba(255,255,255,.04)}}
-#cursorGlow{{position:fixed;width:360px;height:360px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(255,255,255,.045),transparent 65%);transform:translate(-50%,-50%);opacity:0}}
-@media(hover:hover){{body:hover #cursorGlow{{opacity:1}}}}
-@media(max-width:850px){{.hero:before{{width:360px;height:360px}}.coursecard:hover,.card:hover,.step:hover{{transform:none}}}}
-<style>
-.motion-ready .reveal{{opacity:0;transform:translateY(24px) scale(.985);filter:blur(3px);transition:opacity .65s cubic-bezier(.2,.8,.2,1) var(--reveal-delay),transform .65s cubic-bezier(.2,.8,.2,1) var(--reveal-delay),filter .65s ease var(--reveal-delay)}}
-.motion-ready .reveal.is-visible{{opacity:1;transform:none;filter:none}}
-.motion-ready .coursecard,.motion-ready .card,.motion-ready .step,.motion-ready .terminal,.motion-ready .banner{{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)}}
-.motion-ready .coursecard:hover,.motion-ready .card:hover,.motion-ready .step:hover{{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-7px) scale(1.008)}}
-.coursecard:after,.card:after,.step:after,.terminal:after,.banner:after{{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.10),transparent 28%);opacity:0;transition:opacity .25s}}
-.coursecard:hover:after,.card:hover:after,.step:hover:after,.terminal:hover:after,.banner:hover:after{{opacity:1}}
-.area-trigger{{position:relative;overflow:hidden}}
-.area-trigger:before{{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.16),transparent 70%);transform:translateX(-130%);animation:triggerShine 4.5s ease-in-out infinite}}
-@keyframes triggerShine{{0%,65%{{transform:translateX(-130%)}}82%,100%{{transform:translateX(130%)}}}}
-.area-trigger>*{{position:relative}}
-.page-loader{{position:fixed;inset:0;z-index:9999;background:#050505;display:flex;align-items:center;justify-content:center;gap:12px;transition:opacity .45s,visibility .45s}}
-.page-loader span{{width:12px;height:12px;border:2px solid #555;border-top-color:#fff;border-radius:50%;animation:loaderSpin .7s linear infinite}}
-.page-loader b{{font-size:14px;letter-spacing:.08em}}
-.page-loader.done{{opacity:0;visibility:hidden;pointer-events:none}}
-@keyframes loaderSpin{{to{{transform:rotate(360deg)}}}}
-.page-leaving{{opacity:.82;transition:opacity .12s}}
-.top:after{{content:"";position:absolute;left:0;bottom:-1px;width:28%;height:1px;background:linear-gradient(90deg,transparent,#fff,transparent);animation:navSweep 5s ease-in-out infinite}}
-@keyframes navSweep{{0%,100%{{transform:translateX(-10%);opacity:.2}}50%{{transform:translateX(260%);opacity:.8}}}}
+:root{{--bg:#0b0d0c;--panel:#111412;--panel2:#151916;--line:#303631;--line2:#454d47;--text:#eeeade;--muted:#9aa39b;--dim:#69716b;--accent:#b8ff57;--accent2:#8bd63d;--danger:#ff746b}}
+*{{box-sizing:border-box}}
+html{{scroll-behavior:smooth}}
+body{{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}}
+body:before{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:linear-gradient(90deg,rgba(184,255,87,.025),transparent 28%,transparent 72%,rgba(184,255,87,.018))}}
+body:after{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.34;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.35) 48%,transparent 88%);animation:gridMove 24s linear infinite}}
+a{{color:inherit;text-decoration:none}}
+button,input,textarea,select{{font:inherit}}
+button{{cursor:pointer}}
+.top{{height:66px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:rgba(11,13,12,.96);display:flex;align-items:center;padding:0 4vw;gap:28px}}
+.logo{{font-weight:950;font-size:21px;letter-spacing:-.065em;white-space:nowrap;display:inline-flex;gap:2px;align-items:center}}
+.logo span{{color:var(--accent)}}
+.logo:before{{content:"";width:7px;height:7px;background:var(--accent);display:inline-block;margin-right:7px;animation:logoPulse 2.6s ease-in-out infinite}}
+.nav{{display:flex;align-items:center;gap:4px;margin-left:auto}}
+.nav>a,.navbtn,.ghost{{padding:8px 11px;border:1px solid transparent;border-radius:6px;color:var(--muted);background:transparent}}
+.nav>a:hover,.navbtn:hover,.ghost:hover{{color:var(--text);border-color:var(--line);background:var(--panel2)}}
+.area-menu{{position:relative}}
+.area-trigger{{padding:8px 12px;border:1px solid var(--line2);border-radius:6px;color:var(--text);background:var(--panel);font-weight:800;display:inline-flex;align-items:center;gap:7px}}
+.area-trigger:hover{{border-color:var(--accent);color:var(--accent)}}
+.area-chevron{{font-size:9px;color:var(--dim);transition:transform .2s}}
+.area-menu.open .area-chevron{{transform:rotate(180deg)}}
+.area-panel{{position:absolute;right:0;top:calc(100% + 9px);width:350px;max-width:calc(100vw - 24px);padding:8px;border:1px solid var(--line2);background:#0d100e;box-shadow:0 28px 70px rgba(0,0,0,.65);display:none;z-index:100}}
+.area-menu.open .area-panel{{display:block;animation:panelIn .18s ease both}}
+.area-label{{font-size:9px;letter-spacing:.18em;color:var(--dim);font-weight:900;padding:9px 10px 6px;text-transform:uppercase}}
+.area-grid{{display:grid;grid-template-columns:1fr 1fr;gap:2px}}
+.area-link{{display:flex!important;flex-direction:column;gap:3px;padding:10px!important;border:1px solid transparent!important;border-radius:4px!important;color:var(--muted)!important}}
+.area-link b{{font-size:13px;color:var(--text)}}
+.area-link span{{font-size:10px;color:var(--dim)}}
+.area-link:hover{{background:#171b18!important;border-color:var(--line)!important;transform:translateX(3px)}}
+.area-divider{{height:1px;background:var(--line);margin:7px 0}}
+.area-menu .area-panel a{{display:block}}
+.primary{{background:var(--accent)!important;color:#111!important;border-color:var(--accent)!important;font-weight:900}}
+.userchip{{color:var(--text);font-size:13px;padding:8px 5px}}
+.inline{{display:inline}}
+.shell{{width:min(1180px,91vw);margin:auto}}
+.hero{{min-height:620px;padding:84px 0 70px;display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center;position:relative}}
+.hero:before{{content:"";position:absolute;left:-18vw;top:18%;width:55vw;height:1px;background:var(--line);opacity:.55;animation:ruleSweep 8s ease-in-out infinite}}
+.hero>div{{position:relative}}
+.eyebrow{{font-size:10px;font-weight:900;letter-spacing:.19em;color:var(--accent);text-transform:uppercase}}
+h1{{font-size:clamp(50px,7vw,94px);line-height:.9;letter-spacing:-.085em;margin:13px 0 24px;max-width:850px}}
+h2{{letter-spacing:-.055em;font-size:clamp(28px,4vw,44px);margin:9px 0}}
+h3{{letter-spacing:-.035em}}
+p{{color:var(--muted);line-height:1.72}}
+.hero p{{font-size:17px;max-width:620px}}
+.actions{{display:flex;gap:8px;flex-wrap:wrap;margin-top:25px}}
+.btn{{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--panel);padding:10px 14px;border-radius:6px;font-weight:800;position:relative;overflow:hidden;transition:transform .22s,border-color .22s,background .22s}}
+.btn:hover{{transform:translateY(-2px);border-color:var(--accent)}}
+.btn.primary:hover{{box-shadow:0 8px 28px rgba(184,255,87,.13)}}
+.btn:after{{content:"";position:absolute;left:-100%;top:0;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-20deg);transition:left .55s}}
+.btn:hover:after{{left:140%}}
+.terminal{{border:1px solid var(--line2);background:#0d100e;border-radius:4px;padding:0;box-shadow:22px 22px 0 rgba(184,255,87,.045);overflow:hidden;animation:terminalIn .75s .12s both}}
+.termhead{{height:38px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 13px;color:var(--dim);font:600 10px ui-monospace,monospace;letter-spacing:.08em}}
+.termhead:before{{content:"";width:7px;height:7px;border:1px solid var(--accent);margin-right:8px}}
+.code{{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;line-height:1.8;color:#d8ddd9;padding:24px;min-height:285px}}
+.code:after{{content:"";display:inline-block;width:7px;height:15px;background:var(--accent);margin-left:3px;vertical-align:-2px;animation:cursorBlink .9s steps(1) infinite}}
+.section{{padding:70px 0}}
+.sectionhead{{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:16px}}
+.sectionhead p{{margin:5px 0}}
+.search{{width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:5px;background:#0a0d0b;color:var(--text);outline:none;margin:8px 0 18px}}
+.search:focus,input:focus,textarea:focus,select:focus{{border-color:var(--accent);box-shadow:0 0 0 2px rgba(184,255,87,.08)}}
+.filters{{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}}
+.filter{{border:1px solid var(--line);background:transparent;color:var(--muted);padding:7px 10px;border-radius:4px;cursor:pointer}}
+.filter.active,.filter:hover{{background:var(--accent);color:#101410;border-color:var(--accent)}}
+.cgrid{{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border-top:1px solid var(--line);border-left:1px solid var(--line)}}
+.coursecard{{min-height:285px;padding:22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(15,18,16,.92);display:flex;flex-direction:column;position:relative;overflow:hidden;transition:background .25s,transform .35s,border-color .25s}}
+.coursecard:before{{content:"";position:absolute;top:0;left:0;width:3px;height:0;background:var(--accent);transition:height .35s}}
+.coursecard:after{{content:"";position:absolute;right:16px;top:17px;width:5px;height:5px;background:var(--line2);transition:background .25s}}
+.coursecard:hover{{background:#151a16;transform:translateY(-5px);z-index:2}}
+.coursecard:hover:before{{height:100%}}
+.coursecard:hover:after{{background:var(--accent)}}
+.tag{{font-size:9px;font-weight:900;letter-spacing:.15em;color:var(--accent);border:1px solid #3d493d;border-radius:3px;padding:4px 6px;width:max-content}}
+.coursecard h3{{font-size:25px;margin:13px 0 7px}}
+.coursecard p{{font-size:13px;margin:0 0 15px}}
+.meta{{display:flex;justify-content:space-between;color:var(--dim);font:600 10px ui-monospace,monospace;margin-top:auto;margin-bottom:13px;text-transform:uppercase}}
+.coursecard .btn{{width:max-content}}
+.path{{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border-top:1px solid var(--line);border-left:1px solid var(--line)}}
+.step,.card{{border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#0f1210;border-radius:0;padding:20px;position:relative}}
+.step:before{{content:"";position:absolute;left:0;top:0;width:100%;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s}}
+.step:hover:before{{transform:scaleX(1)}}
+.step b{{display:block;margin-top:9px;font-size:17px}}
+.step p{{font-size:12px;margin-bottom:0}}
+.banner{{border:1px solid var(--line2);background:#111511;border-radius:3px;padding:25px;display:flex;justify-content:space-between;align-items:center;gap:20px;position:relative;overflow:hidden}}
+.banner:before{{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);animation:barPulse 3s ease-in-out infinite}}
+footer{{border-top:1px solid var(--line);padding:30px 4vw;color:var(--dim);margin-top:45px;font-size:12px}}
+.libraryhero{{padding:55px 0 20px}}.libraryhero h1{{font-size:clamp(44px,6vw,72px)}}
+.catalog{{display:grid;grid-template-columns:230px 1fr;gap:20px}}
+.side{{position:sticky;top:84px;height:max-content;border:1px solid var(--line);background:#0e110f;padding:13px}}
+.side a{{display:block;padding:9px;color:var(--muted);border-left:2px solid transparent}}.side a:hover{{color:var(--text);border-left-color:var(--accent);background:#151915}}
+.coursehero{{border:1px solid var(--line2);background:#101310;padding:27px;margin-bottom:16px;position:relative}}
+.lessonrow{{display:flex;align-items:center;gap:14px;padding:14px;border-bottom:1px solid var(--line);background:#0c0f0d;margin:0;transition:padding-left .22s,background .22s}}
+.lessonrow:first-of-type{{border-top:1px solid var(--line)}}.lessonrow:hover{{padding-left:20px;background:#141814}}
+.num{{width:32px;height:32px;border:1px solid var(--line2);background:#151916;display:flex;align-items:center;justify-content:center;font:800 11px ui-monospace,monospace;flex:none;color:var(--accent)}}
+.lessonrow small{{margin-left:auto;color:var(--dim)}}
+.form{{max-width:500px;margin:70px auto 90px;border:1px solid var(--line2);background:#101310;padding:27px}}
+.form h1{{font-size:43px;margin-bottom:10px}}
+label{{display:block;margin:16px 0 7px;font-size:12px;color:var(--text)}}
+input[type=text],input[type=email],input[type=password]{{width:100%;padding:13px;border:1px solid var(--line);border-radius:4px;background:#090c0a;color:var(--text);outline:none}}
+.form button{{width:100%;margin-top:18px;padding:12px;border:1px solid var(--accent);background:var(--accent);color:#101410;border-radius:4px;font-weight:900}}
+.hint{{font-size:12px;color:var(--dim)}}
+.dash{{padding:50px 0}}.dashgrid{{display:grid;grid-template-columns:1fr 320px;gap:16px}}
+.progress{{border:1px solid var(--line);background:#0f1210;padding:20px}}.bar{{height:5px;background:#252a26;overflow:hidden}}.bar i{{display:block;height:100%;background:var(--accent)}}
+.statgrid{{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:15px 0;border-top:1px solid var(--line);border-left:1px solid var(--line)}}
+.stat{{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:15px;background:#0f1210}}.stat strong{{font-size:24px;display:block}}.stat span{{color:var(--dim);font-size:11px}}
+.reveal{{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s cubic-bezier(.16,1,.3,1);transition-delay:var(--delay,0ms)}}
+.reveal.visible{{opacity:1;transform:none}}
+@keyframes gridMove{{to{{background-position:42px 42px}}}}
+@keyframes logoPulse{{0%,100%{{box-shadow:0 0 0 0 rgba(184,255,87,0)}}50%{{box-shadow:0 0 0 5px rgba(184,255,87,.07)}}}}
+@keyframes panelIn{{from{{opacity:0;transform:translateY(-6px)}}to{{opacity:1;transform:none}}}}
+@keyframes ruleSweep{{0%,100%{{transform:translateX(-4%);opacity:.25}}50%{{transform:translateX(18%);opacity:.7}}}}
+@keyframes terminalIn{{from{{opacity:0;transform:translateX(25px)}}to{{opacity:1;transform:none}}}}
+@keyframes cursorBlink{{50%{{opacity:0}}}}
+@keyframes barPulse{{0%,100%{{opacity:.55}}50%{{opacity:1}}}}
 @media(max-width:850px){{
- .motion-ready .coursecard,.motion-ready .card,.motion-ready .step,.motion-ready .terminal,.motion-ready .banner{{transform:none!important}}
- .motion-ready .reveal{{transform:translateY(16px)}}
+.top{{height:60px;padding:0 12px;gap:8px}}.logo{{font-size:18px}}.nav{{gap:4px}}.nav>a:not(.primary),.nav>form,.userchip{{display:none}}.area-trigger{{padding:8px 10px;font-size:12px}}
+.area-panel{{position:fixed;top:66px;right:10px;left:10px;width:auto;max-width:none;max-height:calc(100vh - 78px);overflow:auto}}.area-grid{{grid-template-columns:1fr 1fr}}
+.hero{{min-height:0;grid-template-columns:1fr;padding:55px 0 35px;gap:35px}}.hero h1{{font-size:clamp(44px,12vw,66px)}}.hero p{{font-size:15px}}.hero:before{{display:none}}
+.cgrid{{grid-template-columns:1fr}}.path{{grid-template-columns:1fr 1fr}}.catalog,.dashgrid{{grid-template-columns:1fr}}.side{{position:static}}.banner{{align-items:flex-start;flex-direction:column}}.section{{padding:45px 0}}.shell{{width:min(94vw,760px)}}
+.coursehero{{padding:20px}}.coursehero .actions{{display:grid;grid-template-columns:1fr}}.coursehero .actions .btn{{width:100%}}.lessonrow{{min-width:0}}.lessonrow>div:nth-child(2){{min-width:0}}.lessonrow h3{{font-size:15px;overflow-wrap:anywhere}}.search{{font-size:16px}}.form{{margin:35px auto 50px;padding:20px}}
 }}
-<style>
-/* EaseWithPy motion system */
-.motion-bg{{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,#000 0%,transparent 88%);animation:gridDrift 18s linear infinite}}
-.motion-orb{{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.10),transparent 68%);filter:blur(18px);animation:orbFloat 11s ease-in-out infinite}}
-.motion-orb.one{{top:5%;left:-180px}}.motion-orb.two{{top:42%;right:-220px;animation-delay:-5s;opacity:.55}}
-.motion-code{{position:absolute;inset:0;overflow:hidden;opacity:.08;font:600 12px/1.8 ui-monospace,SFMono-Regular,monospace;white-space:pre;animation:codeDrift 28s linear infinite}}
-.motion-ready body>*{{position:relative;z-index:1}}
-.hero h1{{animation:heroIn .9s cubic-bezier(.16,1,.3,1) both}}
-.hero .eyebrow{{animation:fadeUp .7s .05s both}}.hero p{{animation:fadeUp .7s .16s both}}.hero .actions{{animation:fadeUp .7s .26s both}}
-.terminal{{animation:terminalIn 1s .18s cubic-bezier(.16,1,.3,1) both}}
-.terminal .code{{position:relative;overflow:hidden}}
-.terminal .code:after{{content:"";position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:.75;animation:scanCode 3.2s ease-in-out infinite}}
-.coursecard{{position:relative;overflow:hidden;transition:transform .55s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .55s}}
-.coursecard:before{{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 15%,rgba(255,255,255,.08) 48%,transparent 80%);transform:translateX(-130%);transition:transform .8s cubic-bezier(.16,1,.3,1);pointer-events:none}}
-.coursecard:hover:before{{transform:translateX(130%)}}
-.coursecard .tag{{transition:transform .4s,color .3s}}.coursecard:hover .tag{{transform:translateX(4px)}}
-.section h2{{letter-spacing:-.035em}}
-.motion-ready .reveal{{opacity:0;transform:translateY(32px) scale(.985);filter:blur(4px);transition:opacity .8s cubic-bezier(.16,1,.3,1) var(--delay),transform .8s cubic-bezier(.16,1,.3,1) var(--delay),filter .8s ease var(--delay)}}
-.motion-ready .reveal.is-visible{{opacity:1;transform:none;filter:none}}
-.motion-ready .stagger>*{{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}}
-.motion-ready .stagger.is-visible>*{{opacity:1;transform:none}}
-.motion-ready .stagger.is-visible>*:nth-child(1){{transition-delay:.04s}}.motion-ready .stagger.is-visible>*:nth-child(2){{transition-delay:.09s}}.motion-ready .stagger.is-visible>*:nth-child(3){{transition-delay:.14s}}.motion-ready .stagger.is-visible>*:nth-child(4){{transition-delay:.19s}}.motion-ready .stagger.is-visible>*:nth-child(5){{transition-delay:.24s}}.motion-ready .stagger.is-visible>*:nth-child(6){{transition-delay:.29s}}
-.btn{{position:relative;overflow:hidden;transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s,border-color .25s}}
-.btn:hover{{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.28)}}
-.btn:active{{transform:translateY(0) scale(.97)}}
-.btn:after{{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.18) 50%,transparent 75%);transform:translateX(-140%);transition:transform .7s}}
-.btn:hover:after{{transform:translateX(140%)}}
-.path{{perspective:1000px}}.step{{transition:transform .55s cubic-bezier(.16,1,.3,1),border-color .3s,background .3s}}.step:hover{{transform:translateY(-9px) rotateX(2deg)}}
-.banner{{overflow:hidden}}.banner:before{{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-100px;top:-130px;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 68%);animation:orbFloat 8s ease-in-out infinite}}
-.area-panel{{transform-origin:top right;opacity:0;transform:translateY(-8px) scale(.97);transition:opacity .22s,transform .3s cubic-bezier(.16,1,.3,1)}}
-.area-menu.open .area-panel{{opacity:1;transform:none}}
-.area-link{{transition:transform .25s,background .25s,border-color .25s}}.area-link:hover{{transform:translateX(5px)}}
-.page-loader{{background:#050505}}.page-loader span{{box-shadow:0 0 24px rgba(255,255,255,.45)}}
-@keyframes heroIn{{from{{opacity:0;transform:translateY(24px) scale(.97);filter:blur(7px)}}to{{opacity:1;transform:none;filter:none}}
-@keyframes fadeUp{{from{{opacity:0;transform:translateY(16px)}}to{{opacity:1;transform:none}}
-@keyframes terminalIn{{from{{opacity:0;transform:translateX(45px) rotateY(-8deg) scale(.96);filter:blur(6px)}}to{{opacity:1;transform:none;filter:none}}
-@keyframes scanCode{{0%,25%{{left:-5%}}75%,100%{{left:105%}}
-@keyframes gridDrift{{to{{background-position:44px 44px}}
-@keyframes orbFloat{{0%,100%{{transform:translate3d(0,0,0) scale(1)}}50%{{transform:translate3d(25px,-35px,0) scale(1.08)}}
-@keyframes codeDrift{{from{{transform:translateY(0)}}to{{transform:translateY(-180px)}}
-@media(max-width:850px){{.motion-bg{{background-size:32px 32px}}.motion-ready .reveal{{transform:translateY(20px)}}.motion-ready .coursecard,.motion-ready .step{{transform:none!important}}.motion-orb{{width:260px;height:260px}}
-@media(prefers-reduced-motion:reduce){{.motion-bg,.motion-orb,.motion-code{{animation:none}}.motion-ready .reveal,.motion-ready .stagger>*{{opacity:1;transform:none;filter:none;transition:none}}.hero h1,.hero .eyebrow,.hero p,.hero .actions,.terminal{{animation:none}}
-</style></style><style>@media(prefers-reduced-motion:reduce){{*,*:before,*:after{{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}#cursorGlow{{display:none}}}}
+@media(max-width:480px){{
+.area-panel{{top:63px;left:8px;right:8px;max-height:calc(100vh - 72px)}}.area-grid{{grid-template-columns:1fr}}.path{{grid-template-columns:1fr}}h1{{font-size:40px}}.hero{{padding-top:38px}}.actions{{width:100%}}.actions .btn{{width:100%}}.coursecard{{min-height:0}}.coursecard .btn{{width:100%}}.sectionhead{{align-items:flex-start;flex-direction:column}}.sectionhead>.btn{{width:100%}}.statgrid{{grid-template-columns:1fr}}
+}}
+@media(prefers-reduced-motion:reduce){{
+*,*:before,*:after{{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}.reveal{{opacity:1!important;transform:none!important}}
+}}
 </style></head><body><div class="motion-bg" aria-hidden="true"><div class="motion-orb one"></div><div class="motion-orb two"></div><div class="motion-code">010101  class Course:  build()  learn()  practice()
 def practice(skill):  return progress(skill)
 const learner = new Learner()
-while learning:  learner.practice()</div></div><header class="top"><a class="logo" href="/">Learn<span>Python</span></a><nav class="nav"><div class="area-menu" id="areaMenu"><button class="area-trigger" id="areaTrigger" type="button" aria-expanded="false" aria-haspopup="true">Explore <span class="area-chevron">▼</span></button><div class="area-panel" id="areaPanel"><div class="area-label">Explore EaseWithPy</div><div class="area-grid"><a class="area-link" href="/courses"><b>Library</b><span>All courses & lessons</span></a><a class="area-link" href="/academy"><b>Academy</b><span>Practice, projects & references</span></a><a class="area-link" href="/tools"><b>Toolkit</b><span>Labs, playground & utilities</span></a><a class="area-link" href="/practice"><b>Practice</b><span>Hands-on coding practice</span></a><a class="area-link" href="/projects"><b>Projects</b><span>Build real things</span></a><a class="area-link" href="/challenges"><b>Challenges</b><span>Test your knowledge</span></a><a class="area-link" href="/cheatsheets"><b>Cheatsheets</b><span>Quick references</span></a><a class="area-link" href="/glossary"><b>Glossary</b><span>Developer terms</span></a></div><div class="area-divider"></div><div class="area-label">Site & legal</div><div class="area-grid"><a class="area-link" href="/about"><b>About</b><span>About EaseWithPy</span></a><a class="area-link" href="/contact"><b>Contact</b><span>Report a problem</span></a><a class="area-link" href="/terms"><b>Terms of Service</b><span>Rules for using the site</span></a><a class="area-link" href="/privacy"><b>Privacy</b><span>Data and privacy</span></a><a class="area-link" href="/disclaimer"><b>Disclaimer</b><span>Educational disclaimer</span></a></div><div class="area-divider"></div><div class="area-label">Your learning</div><div class="area-grid"><a class="area-link" href="/dashboard"><b>Dashboard</b><span>Progress & activity</span></a><a class="area-link" href="/skills"><b>Skills</b><span>Skill mastery</span></a><a class="area-link" href="/adaptive"><b>Adaptive</b><span>What to do next</span></a><a class="area-link" href="/continue"><b>Continue</b><span>Pick up where you left off</span></a><a class="area-link" href="/saved"><b>Saved</b><span>Saved lessons</span></a><a class="area-link" href="/notes"><b>Notes</b><span>Your learning notes</span></a><a class="area-link" href="/achievements"><b>Achievements</b><span>Badges & XP</span></a><a class="area-link" href="/leaderboard"><b>Leaderboard</b><span>Community XP</span></a></div></div></div><a href="/courses">Courses</a><a href="/academy">Academy</a><a href="/tools">Toolkit</a>{nav_auth()}</nav></header><main class="shell">{body}</main><footer>LearnPython · Learn → practice → build · Free to start · <a href="/about">About</a> · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/disclaimer">Disclaimer</a></footer><script>
+while learning:  learner.practice()</div></div><header class="top"><a class="logo" href="/">Ease<span>WithPy</span></a><nav class="nav"><div class="area-menu" id="areaMenu"><button class="area-trigger" id="areaTrigger" type="button" aria-expanded="false" aria-haspopup="true">Explore <span class="area-chevron">▼</span></button><div class="area-panel" id="areaPanel"><div class="area-label">Explore EaseWithPy</div><div class="area-grid"><a class="area-link" href="/courses"><b>Library</b><span>All courses & lessons</span></a><a class="area-link" href="/academy"><b>Academy</b><span>Practice, projects & references</span></a><a class="area-link" href="/tools"><b>Toolkit</b><span>Labs, playground & utilities</span></a><a class="area-link" href="/practice"><b>Practice</b><span>Hands-on coding practice</span></a><a class="area-link" href="/projects"><b>Projects</b><span>Build real things</span></a><a class="area-link" href="/challenges"><b>Challenges</b><span>Test your knowledge</span></a><a class="area-link" href="/cheatsheets"><b>Cheatsheets</b><span>Quick references</span></a><a class="area-link" href="/glossary"><b>Glossary</b><span>Developer terms</span></a></div><div class="area-divider"></div><div class="area-label">Site & legal</div><div class="area-grid"><a class="area-link" href="/about"><b>About</b><span>About EaseWithPy</span></a><a class="area-link" href="/contact"><b>Contact</b><span>Report a problem</span></a><a class="area-link" href="/terms"><b>Terms of Service</b><span>Rules for using the site</span></a><a class="area-link" href="/privacy"><b>Privacy</b><span>Data and privacy</span></a><a class="area-link" href="/disclaimer"><b>Disclaimer</b><span>Educational disclaimer</span></a></div><div class="area-divider"></div><div class="area-label">Your learning</div><div class="area-grid"><a class="area-link" href="/dashboard"><b>Dashboard</b><span>Progress & activity</span></a><a class="area-link" href="/skills"><b>Skills</b><span>Skill mastery</span></a><a class="area-link" href="/adaptive"><b>Adaptive</b><span>What to do next</span></a><a class="area-link" href="/continue"><b>Continue</b><span>Pick up where you left off</span></a><a class="area-link" href="/saved"><b>Saved</b><span>Saved lessons</span></a><a class="area-link" href="/notes"><b>Notes</b><span>Your learning notes</span></a><a class="area-link" href="/achievements"><b>Achievements</b><span>Badges & XP</span></a><a class="area-link" href="/leaderboard"><b>Leaderboard</b><span>Community XP</span></a></div></div></div><a href="/courses">Courses</a><a href="/academy">Academy</a><a href="/tools">Toolkit</a>{nav_auth()}</nav></header><main class="shell">{body}</main><footer>EaseWithPy · Learn / practice / build · Free to start · <a href="/about">About</a> · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/disclaimer">Disclaimer</a></footer><script>
 (function(){{
   const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(reduce)return;
@@ -187,64 +199,35 @@ window.addEventListener("pointermove",function(e){{tx=e.clientX;ty=e.clientY}},{
             def home():
                 u=mod.user()
                 courses=all_courses()
-                cards=''.join(f'<a class="coursecard" data-course="{html.escape((c["title"]+" "+c["tag"]+" "+c["description"]).lower())}" href="{c["href"]}"><span class="tag">{html.escape(c["tag"])}</span><h3>{html.escape(c["title"])}</h3><p>{html.escape(c["description"])}</p><div class="meta"><span>{len(c["lessons"])} lessons</span><span>Beginner → builder</span></div><span class="btn primary">{"Continue →" if u else "Start course →"}</span></a>' for c in courses)
+                cards=''.join(f'<a class="coursecard" data-course="{html.escape((c["title"]+" "+c["tag"]+" "+c["description"]).lower())}" href="{c["href"]}"><span class="tag">{html.escape(c["tag"])}</span><span class="card-index" aria-hidden="true"></span><h3>{html.escape(c["title"])}</h3><p>{html.escape(c["description"])}</p><div class="meta"><span>{len(c["lessons"])} lessons</span><span>LESSON TRACK</span></div><span class="btn primary">{"Continue →" if u else "Start course →"}</span></a>' for c in courses)
                 actions='<a class="btn primary" href="/dashboard">Continue learning</a><a class="btn" href="/courses">Browse all courses</a>' if u else '<a class="btn primary" href="/courses">Explore courses</a><a class="btn" href="/register">Create free account</a>'
-                return layout(f'''<section class="hero"><div><div class="eyebrow">THE INTERACTIVE CODE SCHOOL</div><h1>Learn code.<br>Actually build.</h1><p>Choose a path, learn one idea at a time, practice it in a lab, break it, fix it, and finish with projects. Built to feel more like a coding platform than a pile of tutorial pages.</p><div class="actions">{actions}</div></div><div class="terminal"><div class="termhead">~/learnpython · interactive</div><div class="code">{"# Welcome back, "+html.escape(str(u["name"])) if u else "# Start with a course"}\n\ncourse = choose(" + '"your path"' + ")\nlearn(course)\npractice(course)\nbuild(project)\n\n# no gatekeeping. just build.</div></div></section><section class="section reveal"><div class="sectionhead"><div><div class="eyebrow">COURSE LIBRARY</div><h2>Pick what you want to learn.</h2><p>Python, AI, Go, TypeScript, HTML, CSS, JavaScript, SQL and Git — with more tracks ready to add.</p></div><a class="btn" href="/courses">Open library →</a></div><input class="search" id="q" placeholder="⌕  Search Python, AI, web, Go…"><div id="grid" class="cgrid stagger reveal">{cards}</div></section><section class="section"><div class="eyebrow">THE LEARNING LOOP</div><h2>Less passive watching. More doing.</h2><div class="path stagger reveal"><div class="step"><span class="eyebrow">01</span><b>Learn</b><p>Short explanations without the textbook fog.</p></div><div class="step"><span class="eyebrow">02</span><b>Practice</b><p>Labs, questions and experiments while the idea is fresh.</p></div><div class="step"><span class="eyebrow">03</span><b>Break it</b><p>Make mistakes on purpose and learn from the error.</p></div><div class="step"><span class="eyebrow">04</span><b>Build</b><p>Projects that prove you can use the skill.</p></div></div></section><section class="section"><div class="banner"><div><div class="eyebrow">YOUR ACCOUNT</div><h2>Save your progress.</h2><p style="margin:0">Create a free account and your completed lessons follow you between sessions.</p></div><div class="actions" style="margin:0"><a class="btn primary" href="{"/dashboard" if u else "/register"}">{ "Open dashboard" if u else "Create account" }</a></div></div></section><script>
+                return layout(f'''<section class="hero"><div><div class="eyebrow">PRACTICAL PROGRAMMING LAB</div><h1>Write code.<br>Ship understanding.</h1><p>Structured lessons, working examples, deliberate practice, and projects. Learn the syntax, use the tool, then prove you can build with it.</p><div class="actions">{actions}</div></div><div class="terminal"><div class="termhead">~/learnpython · interactive</div><div class="code">{"# Welcome back, "+html.escape(str(u["name"])) if u else "# Start with a course"}\n\ncourse = choose(" + '"your path"' + ")\nlearn(course)\npractice(course)\nbuild(project)\n\n# no gatekeeping. just build.</div></div></section><section class="section reveal"><div class="sectionhead"><div><div class="eyebrow">COURSE LIBRARY</div><h2>Pick what you want to learn.</h2><p>Python, AI, Go, TypeScript, HTML, CSS, JavaScript, SQL and Git — with more tracks ready to add.</p></div><a class="btn" href="/courses">Open library →</a></div><input class="search" id="q" placeholder="⌕  Search Python, AI, web, Go…"><div id="grid" class="cgrid stagger reveal">{cards}</div></section><section class="section"><div class="eyebrow">THE LEARNING LOOP</div><h2>Less passive watching. More doing.</h2><div class="path stagger reveal"><div class="step"><span class="eyebrow">01</span><b>Learn</b><p>Learn the concept and the syntax.</p></div><div class="step"><span class="eyebrow">02</span><b>Practice</b><p>Use it immediately in a small exercise.</p></div><div class="step"><span class="eyebrow">03</span><b>Break it</b><p>Change the code and inspect what breaks.</p></div><div class="step"><span class="eyebrow">04</span><b>Build</b><p>Combine the pieces into something useful.</p></div></div></section><section class="section"><div class="banner"><div><div class="eyebrow">YOUR ACCOUNT</div><h2>Save your progress.</h2><p style="margin:0">Create a free account and your completed lessons follow you between sessions.</p></div><div class="actions" style="margin:0"><a class="btn primary" href="{"/dashboard" if u else "/register"}">{ "Open dashboard" if u else "Create account" }</a></div></div></section>
+<script>
 (function(){{
   const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(reduce)return;
-  document.documentElement.classList.add("motion-ready");
+  const items=[...document.querySelectorAll(".section,.coursecard,.step,.banner,.terminal")];
+  items.forEach((el,i)=>{{el.classList.add("reveal");el.style.setProperty("--delay",Math.min(i*35,280)+"ms")}});
+  if(!reduce && "IntersectionObserver" in window){{
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{{if(e.isIntersecting){{e.target.classList.add("visible");io.unobserve(e.target)}}}}),{{threshold:.08}});
+    items.forEach(el=>io.observe(el));
+  }}else items.forEach(el=>el.classList.add("visible"));
 
-  const targets=[...document.querySelectorAll(".section,.coursecard,.step,.card,.banner,.lessonrow,.form,.terminal,.coursehero,.progress,.side")];
-  targets.forEach((el,i)=>{{el.classList.add("reveal");el.style.setProperty("--reveal-delay",Math.min(i*35,350)+"ms")}});
-  if("IntersectionObserver" in window){{
-    const io=new IntersectionObserver(entries=>{{
-      entries.forEach(e=>{{if(e.isIntersecting){{e.target.classList.add("is-visible");io.unobserve(e.target)}}}});
-    }},{{threshold:.08,rootMargin:"0px 0px -35px 0px"}});
-    targets.forEach(el=>io.observe(el));
-  }}else targets.forEach(el=>el.classList.add("is-visible"));
-
-  const glow=document.getElementById("cursorGlow");
-  let tx=innerWidth/2,ty=innerHeight/2,x=tx,y=ty;
-  addEventListener("pointermove",e=>{{tx=e.clientX;ty=e.clientY}});
-  function tick(){{x+=(tx-x)*.12;y+=(ty-y)*.12;if(glow){{glow.style.left=x+"px";glow.style.top=y+"px"}}requestAnimationFrame(tick)}}
-  tick();
-
-  document.querySelectorAll(".coursecard,.card,.step,.terminal,.banner").forEach(el=>{{
-    el.addEventListener("pointermove",e=>{{
-      if(innerWidth<851)return;
-      const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
-      el.style.setProperty("--mx",(px*100)+"%");
-      el.style.setProperty("--my",(py*100)+"%");
-      el.style.setProperty("--rx",(py*-2.2)+"deg");
-      el.style.setProperty("--ry",(px*2.2)+"deg");
-    }});
-    el.addEventListener("pointerleave",()=>{{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")}});
-  }});
-
-  const loader=document.createElement("div");
-  loader.className="page-loader";
-  loader.innerHTML='<span></span><b>EaseWithPy</b>';
-  document.body.prepend(loader);
-  requestAnimationFrame(()=>setTimeout(()=>loader.classList.add("done"),180));
-
-  document.querySelectorAll("a").forEach(a=>{{
-    a.addEventListener("click",e=>{{
-      const href=a.getAttribute("href");
-      if(!href||href.startsWith("#")||href.startsWith("http")||href.startsWith("javascript:")||a.target)return;
-      document.body.classList.add("page-leaving");
-      setTimeout(()=>{{window.location.href=href}},120);
-      e.preventDefault();
-    }});
-  }});
+  const code=document.querySelector(".terminal .code");
+  if(code && !reduce){{
+    const full=code.textContent;
+    code.textContent="";
+    let i=0;
+    const type=()=>{{ if(i<full.length){{code.textContent+=full[i++];setTimeout(type,12)}} }};
+    setTimeout(type,420);
+  }}
 }})();
-</script><script>const q=document.getElementById("q");q.addEventListener("input",()=>{{const x=q.value.toLowerCase().trim();document.querySelectorAll("[data-course]").forEach(c=>c.style.display=!x||c.dataset.course.includes(x)?"flex":"none")}})</script>''',"LearnPython — Interactive Code School")
+</script><script>const q=document.getElementById("q");q.addEventListener("input",()=>{{const x=q.value.toLowerCase().trim();document.querySelectorAll("[data-course]").forEach(c=>c.style.display=!x||c.dataset.course.includes(x)?"flex":"none")}})</script>''',"EaseWithPy — Interactive Code School")
 
             def courses_page():
                 cs=all_courses()
                 cards=''.join(f'<a class="coursecard" data-cat="{html.escape(c["tag"])}" data-course="{html.escape((c["title"]+" "+c["tag"]+" "+c["description"]).lower())}" href="{c["href"]}"><span class="tag">{html.escape(c["tag"])}</span><h3>{html.escape(c["title"])}</h3><p>{html.escape(c["description"])}</p><div class="meta"><span>{len(c["lessons"])} lessons</span><span>Beginner → Master</span></div><span class="btn primary">Open course →</span></a>' for c in cs)
                 filters=''.join(f'<button class="filter" data-filter="{html.escape(t["tag"])}">{html.escape(t["title"])}</button>' for t in cs)
-                return layout(f'''<section class="libraryhero"><div class="eyebrow">LEARNPYTHON ACADEMY</div><h1>Choose your path.</h1><p>Start from zero, switch tracks whenever you want, and keep your progress in one account.</p><input id="search" class="search" placeholder="⌕  Search the library…"><div class="filters"><button class="filter active" data-filter="ALL">All</button>{filters}</div></section><section class="section" style="padding-top:10px"><div id="catalog" class="cgrid">{cards}</div></section><script>const s=document.getElementById("search"),fs=[...document.querySelectorAll(".filter")],cards=[...document.querySelectorAll("[data-cat]")];let f="ALL";function render(){{const q=s.value.toLowerCase().trim();cards.forEach(c=>c.style.display=(f==="ALL"||c.dataset.cat===f)&&(!q||c.dataset.course.includes(q))?"flex":"none")}}s.addEventListener("input",render);fs.forEach(b=>b.onclick=()=>{{fs.forEach(x=>x.classList.remove("active"));b.classList.add("active");f=b.dataset.filter;render()}})</script>''',"Course Library")
+                return layout(f'''<section class="libraryhero"><div class="eyebrow">EASEWITHPY ACADEMY</div><h1>Choose your path.</h1><p>Start from zero, switch tracks whenever you want, and keep your progress in one account.</p><input id="search" class="search" placeholder="⌕  Search the library…"><div class="filters"><button class="filter active" data-filter="ALL">All</button>{filters}</div></section><section class="section" style="padding-top:10px"><div id="catalog" class="cgrid">{cards}</div></section><script>const s=document.getElementById("search"),fs=[...document.querySelectorAll(".filter")],cards=[...document.querySelectorAll("[data-cat]")];let f="ALL";function render(){{const q=s.value.toLowerCase().trim();cards.forEach(c=>c.style.display=(f==="ALL"||c.dataset.cat===f)&&(!q||c.dataset.course.includes(q))?"flex":"none")}}s.addEventListener("input",render);fs.forEach(b=>b.onclick=()=>{{fs.forEach(x=>x.classList.remove("active"));b.classList.add("active");f=b.dataset.filter;render()}})</script>''',"Course Library")
 
             def course_overview(slug):
                 cs=all_courses(); c=next((x for x in cs if x["slug"]==slug),None)
@@ -263,13 +246,13 @@ window.addEventListener("pointermove",function(e){{tx=e.clientX;ty=e.clientY}},{
 
             if "og_page" not in app.view_functions:
                 def og_page():
-                    return Response('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#070707"/><text x="80" y="240" fill="white" font-family="Arial" font-size="76" font-weight="800">LearnPython</text><text x="82" y="315" fill="#aaa" font-family="Arial" font-size="34">Learn code. Actually build.</text></svg>',mimetype="image/svg+xml")
+                    return Response('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#070707"/><text x="80" y="240" fill="white" font-family="Arial" font-size="76" font-weight="800">EaseWithPy</text><text x="82" y="315" fill="#aaa" font-family="Arial" font-size="34">Learn code. Actually build.</text></svg>',mimetype="image/svg+xml")
                 app.add_url_rule("/og.svg","og_page",og_page)
             def _legal(title, body):
                 return L(f'<section class="section"><nav class="hint"><a href="/">Home</a> / {html.escape(title)}</nav><h1>{html.escape(title)}</h1><p style="max-width:850px;font-size:17px">{html.escape(body)}</p></section>',title)
             legal_pages = {
-                "about_page": ("/about", "About LearnPython", "LearnPython is an independent educational coding project for programming lessons, practice and projects."),
-                "terms_page": ("/terms", "Terms of Use", "Use LearnPython lawfully and responsibly. Do not abuse the service, attempt unauthorized access, upload malicious content, or violate another person's rights."),
+                "about_page": ("/about", "About EaseWithPy", "EaseWithPy is an independent educational coding project for programming lessons, practice and projects."),
+                "terms_page": ("/terms", "Terms of Use", "Use EaseWithPy lawfully and responsibly. Do not abuse the service, attempt unauthorized access, upload malicious content, or violate another person's rights."),
                 "privacy_page": ("/privacy", "Privacy Notice", "Account information and learning progress may be stored to operate the service. Do not submit sensitive information unless specifically required."),
                 "disclaimer_page": ("/disclaimer", "Educational Disclaimer", "All content and code are provided for educational and informational purposes only. Verify important software, security, legal, financial, and operational decisions against current authoritative sources. Test code before production use.")
             }
@@ -278,7 +261,7 @@ window.addEventListener("pointermove",function(e){{tx=e.clientX;ty=e.clientY}},{
                     app.add_url_rule(path, endpoint, lambda title=title, body=body: _legal(title, body))
 
             def custom_404(e):
-                return L('<section class="section" style="text-align:center;padding:110px 0"><div class="eyebrow">404 · NOT FOUND</div><h1>That page vanished.</h1><p>The URL does not match a LearnPython page.</p><a class="btn primary" href="/">Go home</a></section>',"Page Not Found"),404
+                return L('<section class="section" style="text-align:center;padding:110px 0"><div class="eyebrow">404 · NOT FOUND</div><h1>That page vanished.</h1><p>The URL does not match a EaseWithPy page.</p><a class="btn primary" href="/">Go home</a></section>',"Page Not Found"),404
             if 404 not in app.error_handler_spec.get(None, {}):
                 app.register_error_handler(404, custom_404)
 
@@ -380,10 +363,10 @@ window.addEventListener("pointermove",function(e){{tx=e.clientX;ty=e.clientY}},{
                 app.add_url_rule("/api/course-progress/<slug>/<int:n>",endpoint="extra_course_progress",view_func=save_progress,methods=["POST"])
             mod.layout=layout
             app.layout=layout
-            print("[LearnPython] platform UI installed: modular course library + auth + dashboard")
+            print("[EaseWithPy] platform UI installed: modular course library + auth + dashboard")
             return
         except Exception as e:
-            print("[LearnPython] platform install retry:",repr(e)); traceback.print_exc()
+            print("[EaseWithPy] platform install retry:",repr(e)); traceback.print_exc()
             time.sleep(1)
 
 install()
