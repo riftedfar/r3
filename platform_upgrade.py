@@ -46,7 +46,12 @@ def install():
 *{{box-sizing:border-box}}
 html{{scroll-behavior:smooth}}
 body{{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}}
-body:before{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:linear-gradient(90deg,rgba(184,255,87,.025),transparent 28%,transparent 72%,rgba(184,255,87,.018))}}
+.motion-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+.motion-orb{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(184,255,87,.10),transparent 68%);filter:blur(20px);animation:orbFloat 10s ease-in-out infinite}
+.motion-orb.one{left:-180px;top:8%}.motion-orb.two{right:-220px;top:48%;animation-delay:-4s;opacity:.5}
+.motion-code{position:absolute;inset:0;color:rgba(184,255,87,.075);font:600 12px/1.8 ui-monospace,SFMono-Regular,monospace;white-space:pre;animation:codeDrift 30s linear infinite}
+@keyframes orbFloat{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(35px,-28px,0) scale(1.08)}}
+@keyframes codeDrift{from{transform:translateY(0)}to{transform:translateY(-240px)}}body:before{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:linear-gradient(90deg,rgba(184,255,87,.025),transparent 28%,transparent 72%,rgba(184,255,87,.018))}}
 body:after{{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.34;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.35) 48%,transparent 88%);animation:gridMove 24s linear infinite}}
 a{{color:inherit;text-decoration:none}}
 button,input,textarea,select{{font:inherit}}
@@ -167,20 +172,57 @@ input[type=text],input[type=email],input[type=password]{{width:100%;padding:13px
 @media(prefers-reduced-motion:reduce){{
 *,*:before,*:after{{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}.reveal{{opacity:1!important;transform:none!important}}
 }}
+.scroll-progress{position:fixed;left:0;top:0;height:2px;width:0;background:var(--accent);z-index:9999;box-shadow:0 0 12px rgba(184,255,87,.45)}
+.floating-code{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;opacity:.22}
+.floating-code span{position:absolute;left:calc(8% + var(--i)*11%);top:calc(20% + (var(--i)%4)*17%);font:800 11px ui-monospace,monospace;color:var(--accent);animation:floatToken calc(7s + var(--i)*.8s) ease-in-out infinite;animation-delay:calc(var(--i)*-.7s)}
+@keyframes floatToken{0%,100%{transform:translate3d(0,18px,0) rotate(-3deg);opacity:.05}50%{transform:translate3d(22px,-25px,0) rotate(3deg);opacity:.7}}
 </style></head><body><div class="motion-bg" aria-hidden="true"><div class="motion-orb one"></div><div class="motion-orb two"></div><div class="motion-code">010101  class Course:  build()  learn()  practice()
 def practice(skill):  return progress(skill)
 const learner = new Learner()
 while learning:  learner.practice()</div></div><header class="top"><a class="logo" href="/">Ease<span>WithPy</span></a><nav class="nav"><div class="area-menu" id="areaMenu"><button class="area-trigger" id="areaTrigger" type="button" aria-expanded="false" aria-haspopup="true">Explore <span class="area-chevron">▼</span></button><div class="area-panel" id="areaPanel"><div class="area-label">Explore EaseWithPy</div><div class="area-grid"><a class="area-link" href="/courses"><b>Library</b><span>All courses & lessons</span></a><a class="area-link" href="/academy"><b>Academy</b><span>Practice, projects & references</span></a><a class="area-link" href="/tools"><b>Toolkit</b><span>Labs, playground & utilities</span></a><a class="area-link" href="/practice"><b>Practice</b><span>Hands-on coding practice</span></a><a class="area-link" href="/projects"><b>Projects</b><span>Build real things</span></a><a class="area-link" href="/challenges"><b>Challenges</b><span>Test your knowledge</span></a><a class="area-link" href="/cheatsheets"><b>Cheatsheets</b><span>Quick references</span></a><a class="area-link" href="/glossary"><b>Glossary</b><span>Developer terms</span></a></div><div class="area-divider"></div><div class="area-label">Site & legal</div><div class="area-grid"><a class="area-link" href="/about"><b>About</b><span>About EaseWithPy</span></a><a class="area-link" href="/contact"><b>Contact</b><span>Report a problem</span></a><a class="area-link" href="/terms"><b>Terms of Service</b><span>Rules for using the site</span></a><a class="area-link" href="/privacy"><b>Privacy</b><span>Data and privacy</span></a><a class="area-link" href="/disclaimer"><b>Disclaimer</b><span>Educational disclaimer</span></a></div><div class="area-divider"></div><div class="area-label">Your learning</div><div class="area-grid"><a class="area-link" href="/dashboard"><b>Dashboard</b><span>Progress & activity</span></a><a class="area-link" href="/skills"><b>Skills</b><span>Skill mastery</span></a><a class="area-link" href="/adaptive"><b>Adaptive</b><span>What to do next</span></a><a class="area-link" href="/continue"><b>Continue</b><span>Pick up where you left off</span></a><a class="area-link" href="/saved"><b>Saved</b><span>Saved lessons</span></a><a class="area-link" href="/notes"><b>Notes</b><span>Your learning notes</span></a><a class="area-link" href="/achievements"><b>Achievements</b><span>Badges & XP</span></a><a class="area-link" href="/leaderboard"><b>Leaderboard</b><span>Community XP</span></a></div></div></div><a href="/courses">Courses</a><a href="/academy">Academy</a><a href="/tools">Toolkit</a>{nav_auth()}</nav></header><main class="shell">{body}</main><footer>EaseWithPy · Learn / practice / build · Free to start · <a href="/about">About</a> · <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/disclaimer">Disclaimer</a></footer><script>
 (function(){{
   const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if(reduce)return;
-  document.documentElement.classList.add("motion-ready");
   const items=document.querySelectorAll(".reveal,.stagger");
-  items.forEach((el,i)=>el.style.setProperty("--delay",Math.min(i*70,420)+"ms"));
+  items.forEach(function(el,i){{el.style.setProperty("--delay",Math.min(i*55,400)+"ms")}});
+  if(reduce){{items.forEach(function(el){{el.classList.add("visible")}});return}}
+  document.documentElement.classList.add("motion-ready");
   if("IntersectionObserver" in window){{
-    const io=new IntersectionObserver(es=>es.forEach(e=>{{if(e.isIntersecting){{e.target.classList.add("is-visible");io.unobserve(e.target)}}),{{threshold:.1,rootMargin:"0px 0px -50px"}});
-    items.forEach(el=>io.observe(el));
-  }}else items.forEach(el=>el.classList.add("is-visible"));
+    const io=new IntersectionObserver(function(entries){{
+      entries.forEach(function(entry){{
+        if(entry.isIntersecting){{entry.target.classList.add("visible");io.unobserve(entry.target)}}
+      }});
+    }},{{threshold:.08,rootMargin:"0px 0px -40px"}});
+    items.forEach(function(el){{io.observe(el)}});
+  }}else items.forEach(function(el){{el.classList.add("visible")}});
+}})();
+</script><script>
+(function(){{
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce)return;
+  const hero=document.querySelector(".hero");
+  const terminal=document.querySelector(".terminal");
+  if(hero && terminal && window.matchMedia("(hover:hover)").matches){{
+    hero.addEventListener("pointermove",function(e){{
+      const r=hero.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      terminal.style.transform="perspective(1000px) rotateY("+(x*5)+"deg) rotateX("+(-y*4)+"deg) translate3d("+(x*8)+"px,"+(y*5)+"px,0)";
+    }});
+    hero.addEventListener("pointerleave",function(){{terminal.style.transform=""}});
+  }}
+  const bar=document.createElement("div");
+  bar.className="scroll-progress";
+  document.body.appendChild(bar);
+  addEventListener("scroll",function(){{
+    const h=document.documentElement.scrollHeight-innerHeight;
+    bar.style.width=(h>0?(scrollY/h)*100:0)+"%";
+  }},{{passive:true}});
+  const labels=["</>","{{ }}","def()","=>","[ ]","01","//","<>"];
+  const field=document.createElement("div");
+  field.className="floating-code";
+  labels.forEach(function(t,i){{
+    const s=document.createElement("span");
+    s.textContent=t;s.style.setProperty("--i",i);field.appendChild(s);
+  }});
+  document.body.appendChild(field);
 }})();
 </script><script>
 const areaMenu=document.getElementById("areaMenu"),areaTrigger=document.getElementById("areaTrigger");
