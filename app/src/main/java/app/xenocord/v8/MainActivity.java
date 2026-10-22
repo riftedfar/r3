@@ -72,7 +72,7 @@ public final class MainActivity extends Activity {
 
         TextView title = text("Hellenstar", 32, TEXT, true);
         root.addView(title);
-        TextView version = text("V8  •  LOCAL AUDIO CONTROLS", 12, MUTED, true);
+        TextView version = text("V9  •  AUDIO WORKSPACE", 12, MUTED, true);
         root.addView(version, params(-1, -2, 0, 2, 0, 20));
 
         LinearLayout hero = card();
@@ -130,6 +130,36 @@ public final class MainActivity extends Activity {
             if (track != null) try { track.setVolume(0.65f); } catch (IllegalStateException ignored) {}
         });
 
+        LinearLayout presets = card();
+        root.addView(presets, params(-1, -2, 0, 0, 0, 14));
+        presets.addView(text("PROFILES & SAVED SETTINGS", 18, TEXT, true));
+        presets.addView(text("Quick tone presets and a local profile saved only on this device.", 12, MUTED, false), params(-1, -2, 0, 6, 0, 8));
+        android.content.SharedPreferences localPrefs = getSharedPreferences("hellenstar_owner_settings", MODE_PRIVATE);
+        presets.setVisibility(localPrefs.getBoolean("advanced_controls_enabled", true) ? View.VISIBLE : View.GONE);
+        addActionButton(presets, "LOW TONE PROFILE", v -> {
+            pitchBar.setProgress(220 - 110); gainBar.setProgress(50); bassBar.setProgress(55); widthBar.setProgress(20);
+        });
+        addActionButton(presets, "BALANCED TONE PROFILE", v -> {
+            pitchBar.setProgress(440 - 110); gainBar.setProgress(65); bassBar.setProgress(25); widthBar.setProgress(35);
+        });
+        addActionButton(presets, "BRIGHT TONE PROFILE", v -> {
+            pitchBar.setProgress(660 - 110); gainBar.setProgress(50); bassBar.setProgress(10); widthBar.setProgress(25);
+        });
+        addActionButton(presets, "SAVE CURRENT PROFILE", v -> {
+            localPrefs.edit().putInt("profile_pitch", pitchBar.getProgress())
+                .putInt("profile_gain", gainBar.getProgress())
+                .putInt("profile_bass", bassBar.getProgress())
+                .putInt("profile_width", widthBar.getProgress()).apply();
+            Toast.makeText(this, "Profile saved on this device.", Toast.LENGTH_SHORT).show();
+        });
+        addActionButton(presets, "LOAD SAVED PROFILE", v -> {
+            pitchBar.setProgress(localPrefs.getInt("profile_pitch", 440 - 110));
+            gainBar.setProgress(localPrefs.getInt("profile_gain", 65));
+            bassBar.setProgress(localPrefs.getInt("profile_bass", 30));
+            widthBar.setProgress(localPrefs.getInt("profile_width", 35));
+            Toast.makeText(this, "Saved profile loaded.", Toast.LENGTH_SHORT).show();
+        });
+
         LinearLayout safety = card();
         root.addView(safety, params(-1, -2, 0, 0, 0, 0));
         safety.addView(text("Privacy by design", 17, TEXT, true));
@@ -180,6 +210,10 @@ public final class MainActivity extends Activity {
     }
 
     private void startTone() {
+        if (!getSharedPreferences("hellenstar_owner_settings", MODE_PRIVATE).getBoolean("test_tone_enabled", true)) {
+            Toast.makeText(this, "Test tone is disabled in the owner panel.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         try {
             int minBuffer = AudioTrack.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
             if (minBuffer <= 0) throw new IllegalStateException("Audio output is unavailable on this device.");
@@ -237,6 +271,7 @@ public final class MainActivity extends Activity {
 
     private void attachEffects(int sessionId) {
         releaseEffects();
+        if (!getSharedPreferences("hellenstar_owner_settings", MODE_PRIVATE).getBoolean("device_effects_enabled", true)) return;
         try {
             bassBoost = new BassBoost(0, sessionId);
             bassBoost.setEnabled(true);
