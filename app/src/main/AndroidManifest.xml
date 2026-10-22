@@ -5,6 +5,7 @@
         android:label="Hellenstar"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
+        <activity android:name=".AdminActivity" android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
