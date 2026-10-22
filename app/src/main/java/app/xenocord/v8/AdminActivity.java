@@ -79,7 +79,6 @@ public final class AdminActivity extends Activity {
         root.addView(back, lp(-1, 48, 0, 0, 0, 0));
         back.setOnClickListener(v -> finish());
         root.addView(text("Security note: because this is a standalone offline APK, this is an app-level lock, not server-enforced identity security.", 11, MUTED, false), lp(-1, -2, 0, 18, 0, 0));
-        setContentView(root);
     }
 
     private void showDashboard() {
@@ -110,7 +109,6 @@ public final class AdminActivity extends Activity {
         Button close = button("LOCK ADMIN PANEL");
         root.addView(close, lp(-1, 50, 0, 0, 0, 0));
         close.setOnClickListener(v -> finish());
-        setContentView(root);
     }
 
     private void addToggle(LinearLayout parent, String label, String key, boolean defaultValue) {
