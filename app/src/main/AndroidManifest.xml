@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:allowBackup="false"
-        android:label="XenoCord V8"
+        android:label="Hellenstar"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
         <activity

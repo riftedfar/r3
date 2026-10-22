@@ -66,11 +66,11 @@ public final class MainActivity extends Activity {
         scroll.addView(root);
         setContentView(scroll);
 
-        TextView brand = text("XENO / AUDIO LAB", 12, ACCENT, true);
+        TextView brand = text("HELLENSTAR / AUDIO LAB", 12, ACCENT, true);
         brand.setLetterSpacing(0.16f);
         root.addView(brand, params(-1, -2, 0, 0, 0, 8));
 
-        TextView title = text("XenoCord", 32, TEXT, true);
+        TextView title = text("Hellenstar", 32, TEXT, true);
         root.addView(title);
         TextView version = text("V8  •  LOCAL AUDIO CONTROLS", 12, MUTED, true);
         root.addView(version, params(-1, -2, 0, 2, 0, 20));
@@ -223,7 +223,7 @@ public final class MainActivity extends Activity {
                     }
                 } catch (Exception ignored) {
                 }
-            }, "XenoTone");
+            }, "HellenstarTone");
             toneThread.start();
         } catch (Exception e) {
             stopTone();

@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "XenoCordV8"
+rootProject.name = "Hellenstar"
 include(":app")
