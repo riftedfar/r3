@@ -139,6 +139,10 @@ public final class MainActivity extends Activity {
         TextView limitation = text("Note: Android does not let an ordinary app automatically apply these effects to Discord's voice stream.", 12, ACCENT, false);
         limitation.setLineSpacing(dp(3), 1f);
         root.addView(limitation, params(-1, -2, 0, 16, 0, 0));
+
+        addActionButton(root, "ADMIN PANEL  ·  OWNER ONLY", v -> {
+            startActivity(new android.content.Intent(this, AdminActivity.class));
+        });
     }
 
     private interface ValueChange { void changed(int value); }
