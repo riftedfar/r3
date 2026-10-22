@@ -161,7 +161,7 @@ public final class MainActivity extends Activity {
         bar.setProgress(initial - min);
         bar.setProgressTintList(android.content.res.ColorStateList.valueOf(ACCENT));
         bar.setThumbTintList(android.content.res.ColorStateList.valueOf(Color.WHITE));
-        block.addView(bar, params(-1, dp(34), 0, 2, 0, 0));
+        block.addView(bar, params(-1, 34, 0, 2, 0, 0));
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int actual = progress + min;
@@ -322,7 +322,7 @@ public final class MainActivity extends Activity {
         button.setAllCaps(false);
         button.setBackground(shape(Color.rgb(43, 38, 65), 12));
         button.setOnClickListener(listener);
-        parent.addView(button, params(-1, dp(48), 0, 8, 0, 0));
+        parent.addView(button, params(-1, 48, 0, 8, 0, 0));
     }
 
     private GradientDrawable shape(int color, int radius) {
