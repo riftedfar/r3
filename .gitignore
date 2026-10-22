@@ -1,6 +1,6 @@
-.env
-__pycache__/
-*.pyc
-course.db
-instance/
-.venv/
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+app/build/

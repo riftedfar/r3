@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /dashboard
-Disallow: /login
-Disallow: /register
-Disallow: /logout
-Sitemap: https://easewithpy.de5.net/sitemap.xml
