@@ -1,8 +1,8 @@
-name: Build Hellenstar APK
+name: Build Hellenstar V9 APK
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "v9-development" ]
   workflow_dispatch:
 
 permissions:
@@ -46,7 +46,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: hellenstar-v8-debug-apk
+          name: hellenstar-v9-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
